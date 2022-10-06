@@ -1,5 +1,5 @@
-#ifndef IMAGE
-#define IMAGE
+#ifndef IMAGE_H
+#define IMAGE_H
 
 #include "Vec3.h"
 
