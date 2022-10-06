@@ -44,6 +44,8 @@ template <typename T = double> struct Vec3 {
   Vec3 operator-(const Vec3 &o) const {
     return Vec3(x - o.x, y - o.y, z - o.z);
   }
+  Vec3 operator+(const double s) const { return Vec3(x + s, y + s, z + s); }
+  Vec3 operator-(const double s) const { return Vec3(x - s, y - s, z - s); }
   Vec3 operator*(const double s) const { return Vec3(x * s, y * s, z * s); }
   Vec3 operator/(const double s) const { return Vec3(x / s, y / s, z / s); }
 
@@ -78,5 +80,6 @@ template <typename T = double> struct Vec3 {
 
 template <typename T = double> using Point3 = Vec3<T>;
 template <typename T = double> using Color3 = Vec3<T>;
+template <typename T = double> using Normal = Vec3<T>;
 
 #endif

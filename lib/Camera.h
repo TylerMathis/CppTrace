@@ -1,17 +1,26 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "./Primitive/Circle.h"
+#include "./Primitive/Primitive.h"
 #include "Ray.h"
 #include "Vec3.h"
 
+#include <vector>
+
 template <typename T = double> struct Camera {
-  using Vec3 = Vec3<T>;
-  using Point3 = Point3<T>;
-  using Color3 = Color3<T>;
-  using Ray = Ray<T>;
+  using Circle = Circle<>;
+  using Primitive = Primitive<>;
+  using Ray = Ray<>;
+  using Vec3 = Vec3<>;
+  using Point3 = Point3<>;
+  using Color3 = Color3<>;
+  using Normal = Normal<>;
 
   double viewportWidth, viewportHeight, focalLength;
   Point3 origin;
+
+  std::vector<Primitive> primitives;
 
   void calcVectors() {
     horizontal = Vec3(viewportWidth, 0, 0);
@@ -33,19 +42,27 @@ template <typename T = double> struct Camera {
     calcVectors();
   }
 
-  // Returns a ray from the camera to the scene that is 1/x to the right and 1/y
-  // up
+  void pushPrimitive(const Primitive &p) { primitives.push_back(p); }
+
   Ray getRay(const double x, const double y) const {
     return Ray(origin,
                lowerLeftCorner + horizontal * x + vertical * y - origin);
   }
 
   Color3 getRayColor(const Ray &r) const {
+    Normal out;
+    for (auto p : primitives) {
+      if (p.rayHit(r, out)) {
+        return (Color3(out) + 1) / 2;
+      }
+    }
+
     Vec3 unitDir = r.dir.unit();
     double t = (unitDir.y + 1.0) / 2;
     return Color3(1, 1, 1) * (1.0 - t) + Color3(0.5, 0.7, 1.0) * t;
   }
 
+  // Get the color of the pixel 1/x to the right and 1/y up
   Color3 getColor(const double x, const double y) const {
     return getRayColor(getRay(x, y));
   }

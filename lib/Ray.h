@@ -4,8 +4,8 @@
 #include "Vec3.h"
 
 template <typename T = double> struct Ray {
-  using Point3 = Point3<T>;
-  using Vec3 = Vec3<T>;
+  using Vec3 = Vec3<>;
+  using Point3 = Point3<>;
 
   Point3 orig;
   Vec3 dir;
