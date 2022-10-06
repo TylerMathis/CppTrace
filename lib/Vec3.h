@@ -6,6 +6,7 @@
 
 struct Vec3 {
   double x, y, z;
+
   Vec3() : x(0), y(0), z(0) {}
   Vec3(const double e0, const double e1, const double e2)
       : x(e0), y(e1), z(e2) {}
