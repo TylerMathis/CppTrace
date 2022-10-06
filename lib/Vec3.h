@@ -72,6 +72,8 @@ struct Vec3 {
   double mag2() const { return x * x + y * y + z * z; }
   double mag() const { return std::sqrt(mag2()); }
   double dist(const Vec3 &o) const { return (*this - o).mag(); }
+
+  Vec3 unit() const { return *this / mag(); }
 };
 
 typedef Vec3 Point3;
