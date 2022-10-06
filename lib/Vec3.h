@@ -10,6 +10,12 @@ template <typename T> struct Vec3 {
   Vec3() : x(0), y(0), z(0) {}
   Vec3(const T e0, const T e1, const T e2) : x(e0), y(e1), z(e2) {}
 
+  template <typename T2> Vec3(const Vec3<T2> &o) {
+    x = static_cast<T>(o.x);
+    y = static_cast<T>(o.y);
+    z = static_cast<T>(o.z);
+  }
+
   double operator[](const int i) const {
     switch (i) {
     case 0:

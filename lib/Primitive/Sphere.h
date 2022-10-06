@@ -1,11 +1,13 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#include "../Hit.h"
 #include "../Ray.h"
 #include "../Vec3.h"
 #include "Primitive.h"
 
 template <typename T> struct Sphere : public Primitive<T> {
+  using Hit = Hit<T>;
   using Ray = Ray<T>;
   using Vec3 = Vec3<T>;
   using Point3 = Point3<T>;
@@ -18,7 +20,7 @@ template <typename T> struct Sphere : public Primitive<T> {
   Sphere(const Point3 &center, const double radius)
       : center(center), radius(radius), radiusSq(radius * radius) {}
 
-  bool rayHit(const Ray &r, Normal &out) const {
+  bool rayHit(const Ray &r, Hit &out) const {
     Vec3 oc = r.orig - center;
     auto a = r.dir.dot(r.dir);
     auto b = oc.dot(r.dir) * 2.0;
@@ -33,7 +35,7 @@ template <typename T> struct Sphere : public Primitive<T> {
 
     if (hit) {
       Normal N = (r.at(t) - center).unit();
-      out = N;
+      out = Hit(N, t);
       return true;
     }
 

@@ -8,7 +8,6 @@
 #include <vector>
 
 template <typename T> struct Camera {
-  using Primitive = Primitive<T>;
   using Ray = Ray<T>;
   using Vec3 = Vec3<T>;
   using Point3 = Point3<T>;
@@ -17,8 +16,6 @@ template <typename T> struct Camera {
 
   double viewportWidth, viewportHeight, focalLength;
   Point3 origin;
-
-  std::vector<Primitive *> primitives;
 
   void calcVectors() {
     horizontal = Vec3(viewportWidth, 0, 0);
@@ -40,29 +37,9 @@ template <typename T> struct Camera {
     calcVectors();
   }
 
-  void pushPrimitive(Primitive *p) { primitives.push_back(p); }
-
   Ray getRay(const double x, const double y) const {
     return Ray(origin,
                lowerLeftCorner + horizontal * x + vertical * y - origin);
-  }
-
-  Color3 getRayColor(const Ray &r) const {
-    Normal out;
-    for (Primitive *p : primitives) {
-      if (p->rayHit(r, out)) {
-        return (Color3(out) + 1) / 2;
-      }
-    }
-
-    Vec3 unitDir = r.dir.unit();
-    double t = (unitDir.y + 1.0) / 2;
-    return Color3(1, 1, 1) * (1.0 - t) + Color3(0.5, 0.7, 1.0) * t;
-  }
-
-  // Get the color of the pixel 1/x to the right and 1/y up
-  Color3 getColor(const double x, const double y) const {
-    return getRayColor(getRay(x, y));
   }
 
 private:
