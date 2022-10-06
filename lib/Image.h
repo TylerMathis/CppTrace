@@ -12,7 +12,7 @@
 #include <string>
 
 struct Image {
-  using Color3 = Color3<>;
+  using Color3 = Color3<uint8_t>;
 
   const char *name;
   int width, height, comps, byte = 0;
@@ -25,7 +25,7 @@ struct Image {
         data((uint8_t *)calloc(comps * width * height, sizeof(uint8_t))),
         aspectRatio(width / height) {}
 
-  void pushPixel(Color3 c) {
+  void pushPixel(const Color3 &c) {
     for (int i = 0; i < 3; i++)
       data[byte + i] = c[i];
     byte += 3;

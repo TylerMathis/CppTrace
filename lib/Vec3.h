@@ -4,7 +4,7 @@
 #include <cmath>
 #include <stdexcept>
 
-template <typename T = double> struct Vec3 {
+template <typename T> struct Vec3 {
   T x, y, z;
 
   Vec3() : x(0), y(0), z(0) {}

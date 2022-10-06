@@ -1,24 +1,23 @@
-#ifndef CIRCLE_H
-#define CIRCLE_H
+#ifndef SPHERE_H
+#define SPHERE_H
 
 #include "../Ray.h"
 #include "../Vec3.h"
 #include "Primitive.h"
 
-template <typename T = double> struct Circle : public Primitive<T> {
-  using Ray = Ray<>;
-  using Vec3 = Vec3<>;
-  using Point3 = Point3<>;
-  using Normal = Normal<>;
+template <typename T> struct Sphere : public Primitive<T> {
+  using Ray = Ray<T>;
+  using Vec3 = Vec3<T>;
+  using Point3 = Point3<T>;
+  using Normal = Normal<T>;
 
   Point3 center;
   double radius, radiusSq;
 
-  Circle() : center(Point3(0, 0, 0)), radius(0), radiusSq(0) {}
-  Circle(const Point3 &center, const double radius)
+  Sphere() : center(Point3(0, 0, 0)), radius(0), radiusSq(0) {}
+  Sphere(const Point3 &center, const double radius)
       : center(center), radius(radius), radiusSq(radius * radius) {}
 
-  // Returns true if hit, and populates out with the normal at hit location
   bool rayHit(const Ray &r, Normal &out) const {
     Vec3 oc = r.orig - center;
     auto a = r.dir.dot(r.dir);

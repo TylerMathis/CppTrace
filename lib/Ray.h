@@ -3,9 +3,9 @@
 
 #include "Vec3.h"
 
-template <typename T = double> struct Ray {
-  using Vec3 = Vec3<>;
-  using Point3 = Point3<>;
+template <typename T> struct Ray {
+  using Vec3 = Vec3<T>;
+  using Point3 = Point3<T>;
 
   Point3 orig;
   Vec3 dir;
