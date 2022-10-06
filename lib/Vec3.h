@@ -4,12 +4,11 @@
 #include <cmath>
 #include <stdexcept>
 
-struct Vec3 {
-  double x, y, z;
+template <typename T = double> struct Vec3 {
+  T x, y, z;
 
   Vec3() : x(0), y(0), z(0) {}
-  Vec3(const double e0, const double e1, const double e2)
-      : x(e0), y(e1), z(e2) {}
+  Vec3(const T e0, const T e1, const T e2) : x(e0), y(e1), z(e2) {}
 
   double operator[](const int i) const {
     switch (i) {
@@ -77,7 +76,7 @@ struct Vec3 {
   Vec3 unit() const { return *this / mag(); }
 };
 
-typedef Vec3 Point3;
-typedef Vec3 Color3;
+template <typename T = double> using Point3 = Vec3<T>;
+template <typename T = double> using Color3 = Vec3<T>;
 
 #endif

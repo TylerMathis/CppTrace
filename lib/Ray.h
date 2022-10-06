@@ -3,7 +3,10 @@
 
 #include "Vec3.h"
 
-struct Ray {
+template <typename T = double> struct Ray {
+  using Point3 = Point3<T>;
+  using Vec3 = Vec3<T>;
+
   Point3 orig;
   Vec3 dir;
 
