@@ -9,11 +9,11 @@ int main() {
   Sphere<double> c2(Point3<double>(0, -100.5, -1), 100);
   scene.loadHittables({&c1, &c2});
 
-  Image image("spheres.png", 1000, 500, 3);
+  Image image("sphere.png", 500, 300, 3);
 
-  const double viewportHeight = 2.0;
+  const double viewportHeight = 1.2;
   Camera<double> camera(viewportHeight * image.aspectRatio, viewportHeight, 1.0,
-                        Point3<double>(0, 0, 0));
+                        Point3<double>(0, 0, 0), 25);
 
   scene.render(camera, image);
 }

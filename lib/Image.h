@@ -23,7 +23,7 @@ struct Image {
         const int comps)
       : name(name.c_str()), width(width), height(height), comps(comps),
         data((uint8_t *)calloc(comps * width * height, sizeof(uint8_t))),
-        aspectRatio(width / height) {}
+        aspectRatio((double)width / height) {}
 
   void pushPixel(const Color3 &c) {
     for (int i = 0; i < 3; i++)

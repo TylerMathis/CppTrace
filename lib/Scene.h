@@ -8,7 +8,10 @@
 #include "Ray.h"
 #include "Vec3.h"
 
+#include <random>
 #include <vector>
+
+#include "time.h"
 
 template <typename T> struct Scene {
   using Hittable = Hittable<T>;
@@ -20,7 +23,7 @@ template <typename T> struct Scene {
 
   std::vector<Hittable *> hittables;
 
-  Scene() {}
+  Scene() { srand(time(NULL)); }
 
   void pushHittable(Hittable *h) { hittables.push_back(h); }
   void loadHittable(Hittable *h) { hittables = {h}; }
@@ -46,14 +49,20 @@ template <typename T> struct Scene {
   }
 
   void render(Camera &camera, Image &image) {
+
     for (int row = 0; row < image.height; row++) {
       for (int col = 0; col < image.width; col++) {
-        double x = (double)col / image.width;
-        double y = (double)row / image.height;
+        Color3 aggregate(0, 0, 0);
+        for (int sample = 0; sample < camera.samples; sample++) {
+          double dx = (double)rand() / RAND_MAX;
+          double dy = (double)rand() / RAND_MAX;
+          double x = (col + dx) / image.width;
+          double y = (row + dy) / image.height;
+          Ray r = camera.getRay(x, y);
+          aggregate += getPixelColor(r);
+        }
 
-        Ray r = camera.getRay(x, y);
-        Color3 color = getPixelColor(r);
-        image.pushPixel(color * 255);
+        image.pushPixel((aggregate / camera.samples) * 255);
       }
     }
 

@@ -17,6 +17,8 @@ template <typename T> struct Camera {
   double viewportWidth, viewportHeight, focalLength;
   Point3 origin;
 
+  int samples;
+
   void calcVectors() {
     horizontal = Vec3(viewportWidth, 0, 0);
     vertical = Vec3(0, -viewportHeight, 0);
@@ -26,14 +28,15 @@ template <typename T> struct Camera {
 
   Camera()
       : viewportWidth(100), viewportHeight(100), focalLength(1),
-        origin(Point3(0, 0, 0)) {
+        origin(Point3(0, 0, 0)), samples(1) {
     calcVectors();
   }
 
   Camera(const double viewportWidth, const double viewportHeight,
-         const double focalLength, const Point3 origin = Point3(0, 0, 0))
+         const double focalLength, const Point3 origin = Point3(0, 0, 0),
+         const int samples = 1)
       : viewportWidth(viewportWidth), viewportHeight(viewportHeight),
-        focalLength(focalLength), origin(origin) {
+        focalLength(focalLength), origin(origin), samples(samples) {
     calcVectors();
   }
 
@@ -42,7 +45,8 @@ template <typename T> struct Camera {
   }
 
 private:
-  Vec3 horizontal, vertical, topLeftCorner;
+  Point3 topLeftCorner;
+  Vec3 horizontal, vertical;
 };
 
 #endif
