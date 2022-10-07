@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "./Primitive/Primitive.h"
+#include "./Hittable/Hittable.h"
 #include "Ray.h"
 #include "Vec3.h"
 

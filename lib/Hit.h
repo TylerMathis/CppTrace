@@ -7,14 +7,16 @@
 
 template <typename T> struct Hit {
   using Vec3 = Vec3<T>;
+  using Point3 = Point3<T>;
 
+  Point3 loc;
   Vec3 normal;
-  double dist;
+  double t;
 
-  Hit() : dist(DBL_MAX) {}
-  Hit(Vec3 &normal, double &dist) : normal(normal), dist(dist) {}
+  Hit() : t(DBL_MAX) {}
+  Hit(Point3 &loc, Vec3 &normal, double t) : loc(loc), normal(normal), t(t) {}
 
-  bool operator<(const Hit &o) const { return dist < o.dist; }
+  bool operator<(const Hit &o) const { return t < o.t; }
 };
 
 #endif
