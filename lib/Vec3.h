@@ -52,6 +52,9 @@ template <typename T> struct Vec3 {
   Vec3 operator-(const Vec3 &o) const {
     return Vec3(x - o.x, y - o.y, z - o.z);
   }
+  Vec3 operator*(const Vec3 &o) const {
+    return Vec3(x * o.x, y * o.y, z * o.z);
+  }
   Vec3 operator+(const double s) const { return Vec3(x + s, y + s, z + s); }
   Vec3 operator-(const double s) const { return Vec3(x - s, y - s, z - s); }
   Vec3 operator*(const double s) const { return Vec3(x * s, y * s, z * s); }
@@ -63,6 +66,10 @@ template <typename T> struct Vec3 {
   }
   Vec3 &operator-=(const Vec3 &o) {
     x -= o.x, y -= o.y, z -= o.z;
+    return *this;
+  }
+  Vec3 &operator*=(const Vec3 &o) {
+    x *= o.x, y *= o.y, z *= o.z;
     return *this;
   }
   Vec3 &operator*=(const double s) {
@@ -78,12 +85,11 @@ template <typename T> struct Vec3 {
     return Vec3(y * o.z - z * o.y, x * o.z - z * o.x, x * o.y - y * o.x);
   }
   double dot(const Vec3 &o) const { return x * o.x + y * o.y + z * o.z; }
-
   double mag2() const { return x * x + y * y + z * z; }
   double mag() const { return std::sqrt(mag2()); }
   double dist(const Vec3 &o) const { return (*this - o).mag(); }
-
   Vec3 unit() const { return *this / mag(); }
+  Vec3 sqrt() const { return Vec3(std::sqrt(x), std::sqrt(y), std::sqrt(z)); }
 
   inline static Vec3 random() {
     return Vec3(common::randomDouble(), common::randomDouble(),
@@ -102,6 +108,13 @@ template <typename T> struct Vec3 {
         continue;
       return p;
     }
+  }
+
+  static Vec3 randomInHemisphere(const Vec3 &normal) {
+    Vec3 inUnitSphere = randomInUnitSphere();
+    if (inUnitSphere.dot(normal) > 0.0)
+      return inUnitSphere;
+    return -inUnitSphere;
   }
 };
 

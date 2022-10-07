@@ -1,32 +1,36 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "../Hit.h"
 #include "../Ray.h"
 #include "../Vec3.h"
+#include "./Material/Material.h"
+#include "Hit.h"
 #include "Hittable.h"
 
 #include "limits.h"
 
 template <typename T, int minT = 0, int maxT = INT_MAX>
 struct Sphere : public Hittable<T, minT, maxT> {
-  using Hit = Hit<T>;
   using Ray = Ray<T>;
   using Vec3 = Vec3<T>;
   using Point3 = Point3<T>;
   using Normal = Normal<T>;
+  using Material = Material<T>;
+  using Hit = Hit<T>;
 
   Point3 center;
   double radius, radiusSq;
 
   Sphere() : center(Point3(0, 0, 0)), radius(0), radiusSq(0) {}
-  Sphere(const Point3 &center, const double radius)
-      : center(center), radius(radius), radiusSq(radius * radius) {}
+  Sphere(const Point3 &center, const double radius, Material *material)
+      : center(center), radius(radius), radiusSq(radius * radius) {
+    this->material = material;
+  }
 
-  bool rayHit(const Ray &r, Hit &out) const override {
-    Vec3 oc = r.orig - center;
-    auto a = r.dir.mag2();
-    auto bHalf = oc.dot(r.dir);
+  virtual bool rayCast(const Ray &ray, Hit &out) const override {
+    Vec3 oc = ray.origin - center;
+    auto a = ray.direction.mag2();
+    auto bHalf = oc.dot(ray.direction);
     auto c = oc.mag2() - radiusSq;
     auto discriminant = bHalf * bHalf - a * c;
 
@@ -44,9 +48,9 @@ struct Sphere : public Hittable<T, minT, maxT> {
         return false;
     }
 
-    Point3 loc(r.at(t));
-    Normal normal((loc - center) / radius);
-    out = Hit(loc, normal, t);
+    Point3 location(ray.at(t));
+    Normal normal((location - center) / radius);
+    out = Hit(location, normal, this->material, t);
 
     return true;
   }

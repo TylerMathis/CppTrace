@@ -6,13 +6,15 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+#include "Common.h"
+
 #include "stdint.h"
 #include "stdlib.h"
 
 #include <string>
 
 struct Image {
-  using Color3 = Color3<uint8_t>;
+  using Color3 = Color3<>;
 
   const char *name;
   int width, height, comps, byte = 0;
@@ -25,9 +27,11 @@ struct Image {
         data((uint8_t *)calloc(comps * width * height, sizeof(uint8_t))),
         aspectRatio((double)width / height) {}
 
-  void pushPixel(const Color3 &c) {
+  void pushPixel(const Color3 &c, const int samples) {
+    Color3 sampleAndGammaCorrected = (c * (1.0 / samples)).sqrt();
     for (int i = 0; i < 3; i++)
-      data[byte + i] = c[i];
+      data[byte + i] = static_cast<int>(
+          256 * common::clamp(sampleAndGammaCorrected[i], 0, 0.999));
     byte += 3;
   }
 
