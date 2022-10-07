@@ -11,9 +11,9 @@ int main() {
 
   Image image("sphere.png", 500, 300, 3);
 
-  const double viewportHeight = 1.2;
+  const double viewportHeight = 2;
   Camera<double> camera(viewportHeight * image.aspectRatio, viewportHeight, 1.0,
-                        Point3<double>(0, 0, 0), 25);
+                        Point3<double>(0, 0, 0), 25, 100);
 
   scene.render(camera, image);
 }

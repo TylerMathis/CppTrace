@@ -1,6 +1,8 @@
 #ifndef VEC3_H
 #define VEC3_H
 
+#include "Common.h"
+
 #include <cmath>
 #include <stdexcept>
 
@@ -82,6 +84,25 @@ template <typename T> struct Vec3 {
   double dist(const Vec3 &o) const { return (*this - o).mag(); }
 
   Vec3 unit() const { return *this / mag(); }
+
+  inline static Vec3 random() {
+    return Vec3(common::randomDouble(), common::randomDouble(),
+                common::randomDouble());
+  }
+
+  inline static Vec3 random(const T min, const T max) {
+    return Vec3(common::randomDouble(min, max), common::randomDouble(min, max),
+                common::randomDouble(min, max));
+  }
+
+  static Vec3 randomInUnitSphere() {
+    while (true) {
+      Vec3 p = random(-1, 1);
+      if (p.mag2() >= 1)
+        continue;
+      return p;
+    }
+  }
 };
 
 template <typename T = double> using Point3 = Vec3<T>;
