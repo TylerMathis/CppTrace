@@ -82,7 +82,7 @@ template <typename T> struct Vec3 {
   }
 
   Vec3 cross(const Vec3 &o) const {
-    return Vec3(y * o.z - z * o.y, x * o.z - z * o.x, x * o.y - y * o.x);
+    return Vec3(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
   }
 
   double dot(const Vec3 &o) const { return x * o.x + y * o.y + z * o.z; }

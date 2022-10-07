@@ -32,8 +32,8 @@ int main() {
   Image image("sphere.png", 600, 300, 3);
 
   const double viewportHeight = 2;
-  Camera<double> camera(viewportHeight * image.aspectRatio, viewportHeight, 1.0,
-                        Point3(0, 0, 0), 100, 1000);
+  Camera<double> camera(Point3(-2, 2, 1), Point3(0, 0, -1), Point3(0, 1, 0), 60,
+                        image.aspectRatio, 100, 1000);
 
   scene.render(camera, image);
 }

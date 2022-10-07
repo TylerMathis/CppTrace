@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "math.h"
+
 template <typename T> struct Camera {
   using Ray = Ray<T>;
   using Vec3 = Vec3<T>;
@@ -14,32 +16,29 @@ template <typename T> struct Camera {
   using Color3 = Color3<T>;
   using Normal = Normal<T>;
 
-  double viewportWidth, viewportHeight, focalLength;
+  double viewportWidth, viewportHeight;
   Point3 origin;
 
   int samples, bounceDepth;
 
-  void calcVectors() {
-    horizontal = Vec3(viewportWidth, 0, 0);
-    vertical = Vec3(0, -viewportHeight, 0);
-    topLeftCorner =
-        origin - horizontal / 2 - vertical / 2 - Vec3(0, 0, focalLength);
-  }
-
-  Camera()
-      : viewportWidth(100), viewportHeight(100), focalLength(1),
-        origin(Point3(0, 0, 0)), samples(1), bounceDepth(10) {
-    calcVectors();
-  }
-
-  Camera(const double viewportWidth, const double viewportHeight,
-         const double focalLength, const Point3 origin = Point3(0, 0, 0),
+  Camera(const Point3 origin, const Point3 lookAt, const Vec3 up,
+         const double verticalFOV, const double aspectRatio,
          const int samples = 1, const int bounceDepth = 10)
-      : viewportWidth(viewportWidth), viewportHeight(viewportHeight),
-        focalLength(focalLength), origin(origin), samples(samples),
-        bounceDepth(bounceDepth) {
-    calcVectors();
+      : origin(origin), samples(samples), bounceDepth(bounceDepth) {
+    double theta = verticalFOV / 180 * M_PI;
+    double h = tan(theta / 2);
+    viewportHeight = 2.0 * h;
+    viewportWidth = aspectRatio * viewportHeight;
+
+    Vec3 w = (origin - lookAt).unit();
+    Vec3 u = (up.cross(w)).unit();
+    Vec3 v = w.cross(u);
+
+    horizontal = u * viewportWidth;
+    vertical = v * -viewportHeight;
+    topLeftCorner = origin - horizontal / 2 - vertical / 2 - w;
   }
+  Camera() : Camera(Point3(0, 0, 0), Point3(0, 0, -1), Vec3(0, 1, 0), 60, 1) {}
 
   Ray getRay(const double x, const double y) const {
     return Ray(origin, topLeftCorner + horizontal * x + vertical * y - origin);
