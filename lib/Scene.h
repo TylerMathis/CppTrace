@@ -24,6 +24,7 @@ template <typename T> struct Scene {
   std::vector<Hittable *> hittables;
 
   Scene() {}
+  Scene(std::vector<Hittable *> &hittables) : hittables(hittables) {}
 
   void pushHittable(Hittable *hittable) { hittables.push_back(hittable); }
   void loadHittable(Hittable *hittable) { hittables = {hittable}; }

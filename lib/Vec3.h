@@ -84,12 +84,18 @@ template <typename T> struct Vec3 {
   Vec3 cross(const Vec3 &o) const {
     return Vec3(y * o.z - z * o.y, x * o.z - z * o.x, x * o.y - y * o.x);
   }
+
   double dot(const Vec3 &o) const { return x * o.x + y * o.y + z * o.z; }
   double mag2() const { return x * x + y * y + z * z; }
   double mag() const { return std::sqrt(mag2()); }
   double dist(const Vec3 &o) const { return (*this - o).mag(); }
+
   Vec3 unit() const { return *this / mag(); }
   Vec3 sqrt() const { return Vec3(std::sqrt(x), std::sqrt(y), std::sqrt(z)); }
+  Vec3 reflect(const Vec3 &axis) const {
+    Vec3 vec = *this;
+    return vec - axis * 2 * vec.dot(axis);
+  }
 
   inline static Vec3 random() {
     return Vec3(common::randomDouble(), common::randomDouble(),
