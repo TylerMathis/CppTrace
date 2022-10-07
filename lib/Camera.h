@@ -19,8 +19,8 @@ template <typename T> struct Camera {
 
   void calcVectors() {
     horizontal = Vec3(viewportWidth, 0, 0);
-    vertical = Vec3(0, viewportHeight, 0);
-    lowerLeftCorner =
+    vertical = Vec3(0, -viewportHeight, 0);
+    topLeftCorner =
         origin - horizontal / 2 - vertical / 2 - Vec3(0, 0, focalLength);
   }
 
@@ -38,12 +38,11 @@ template <typename T> struct Camera {
   }
 
   Ray getRay(const double x, const double y) const {
-    return Ray(origin,
-               lowerLeftCorner + horizontal * x + vertical * y - origin);
+    return Ray(origin, topLeftCorner + horizontal * x + vertical * y - origin);
   }
 
 private:
-  Vec3 horizontal, vertical, lowerLeftCorner;
+  Vec3 horizontal, vertical, topLeftCorner;
 };
 
 #endif
