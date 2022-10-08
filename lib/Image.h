@@ -14,7 +14,7 @@
 #include <string>
 
 struct Image {
-  using Color3 = Color3<>;
+  using Color3 = _Color3<double>;
 
   const char *name;
   int width, height, comps, byte = 0;

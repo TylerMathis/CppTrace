@@ -12,19 +12,19 @@
 #include <random>
 #include <vector>
 
-template <typename T> struct Scene {
-  using Hittable = Hittable<T>;
-  using Camera = Camera<T>;
-  using Hit = Hit<T>;
-  using Ray = Ray<T>;
-  using Vec3 = Vec3<T>;
-  using Point3 = Point3<T>;
-  using Color3 = Color3<T>;
+template <typename T> struct _Scene {
+  using Hittable = _Hittable<T>;
+  using Camera = _Camera<T>;
+  using Hit = _Hit<T>;
+  using Ray = _Ray<T>;
+  using Vec3 = _Vec3<T>;
+  using Point3 = _Point3<T>;
+  using Color3 = _Color3<T>;
 
   std::vector<Hittable *> hittables;
 
-  Scene() {}
-  Scene(std::vector<Hittable *> &hittables) : hittables(hittables) {}
+  _Scene() {}
+  _Scene(std::vector<Hittable *> &hittables) : hittables(hittables) {}
 
   void pushHittable(Hittable *hittable) { hittables.push_back(hittable); }
   void loadHittable(Hittable *hittable) { hittables = {hittable}; }

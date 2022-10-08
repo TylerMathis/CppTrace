@@ -6,16 +6,16 @@
 #include "../Hit.h"
 #include "Material.h"
 
-template <typename T> struct Metal : public Material<T> {
-  using Ray = Ray<T>;
-  using Vec3 = Vec3<T>;
-  using Point3 = Point3<T>;
-  using Color3 = Color3<T>;
-  using Hit = Hit<T>;
+template <typename T> struct _Metal : public _Material<T> {
+  using Ray = _Ray<T>;
+  using Vec3 = _Vec3<T>;
+  using Point3 = _Point3<T>;
+  using Color3 = _Color3<T>;
+  using Hit = _Hit<T>;
 
   Color3 albedo;
 
-  Metal(const Color3 &albedo) : albedo(albedo) {}
+  _Metal(const Color3 &albedo) : albedo(albedo) {}
 
   virtual void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
                        Ray &out) const override {

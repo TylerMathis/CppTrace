@@ -7,10 +7,10 @@
 
 #include "limits.h"
 
-template <typename T, int minT = 0, int maxT = INT_MAX> struct Hittable {
-  using Ray = Ray<T>;
-  using Material = Material<T>;
-  using Hit = Hit<T>;
+template <typename T, int minT = 0, int maxT = INT_MAX> struct _Hittable {
+  using Ray = _Ray<T>;
+  using Material = _Material<T>;
+  using Hit = _Hit<T>;
 
   Material *material;
 

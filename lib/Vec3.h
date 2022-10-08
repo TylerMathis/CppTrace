@@ -6,13 +6,13 @@
 #include <cmath>
 #include <stdexcept>
 
-template <typename T> struct Vec3 {
+template <typename T> struct _Vec3 {
   T x, y, z;
 
-  Vec3() : x(0), y(0), z(0) {}
-  Vec3(const T e0, const T e1, const T e2) : x(e0), y(e1), z(e2) {}
+  _Vec3() : x(0), y(0), z(0) {}
+  _Vec3(const T e0, const T e1, const T e2) : x(e0), y(e1), z(e2) {}
 
-  template <typename T2> Vec3(const Vec3<T2> &o) {
+  template <typename T2> _Vec3(const _Vec3<T2> &o) {
     x = static_cast<T>(o.x);
     y = static_cast<T>(o.y);
     z = static_cast<T>(o.z);
@@ -27,7 +27,7 @@ template <typename T> struct Vec3 {
     case 2:
       return z;
     default:
-      throw std::invalid_argument("Vec3 index oob");
+      throw std::invalid_argument("_Vec3 index oob");
     }
   }
 
@@ -40,92 +40,92 @@ template <typename T> struct Vec3 {
     case 2:
       return z;
     default:
-      throw std::invalid_argument("Vec3 index oob");
+      throw std::invalid_argument("_Vec3 index oob");
     }
   }
 
-  Vec3 operator-() const { return Vec3(-x, -y, -z); }
+  _Vec3 operator-() const { return _Vec3(-x, -y, -z); }
 
-  Vec3 operator+(const Vec3 &o) const {
-    return Vec3(x + o.x, y + o.y, z + o.z);
+  _Vec3 operator+(const _Vec3 &o) const {
+    return _Vec3(x + o.x, y + o.y, z + o.z);
   }
-  Vec3 operator-(const Vec3 &o) const {
-    return Vec3(x - o.x, y - o.y, z - o.z);
+  _Vec3 operator-(const _Vec3 &o) const {
+    return _Vec3(x - o.x, y - o.y, z - o.z);
   }
-  Vec3 operator*(const Vec3 &o) const {
-    return Vec3(x * o.x, y * o.y, z * o.z);
+  _Vec3 operator*(const _Vec3 &o) const {
+    return _Vec3(x * o.x, y * o.y, z * o.z);
   }
-  Vec3 operator+(const double s) const { return Vec3(x + s, y + s, z + s); }
-  Vec3 operator-(const double s) const { return Vec3(x - s, y - s, z - s); }
-  Vec3 operator*(const double s) const { return Vec3(x * s, y * s, z * s); }
-  Vec3 operator/(const double s) const { return Vec3(x / s, y / s, z / s); }
+  _Vec3 operator+(const double s) const { return _Vec3(x + s, y + s, z + s); }
+  _Vec3 operator-(const double s) const { return _Vec3(x - s, y - s, z - s); }
+  _Vec3 operator*(const double s) const { return _Vec3(x * s, y * s, z * s); }
+  _Vec3 operator/(const double s) const { return _Vec3(x / s, y / s, z / s); }
 
-  Vec3 &operator+=(const Vec3 &o) {
+  _Vec3 &operator+=(const _Vec3 &o) {
     x += o.x, y += o.y, z += o.z;
     return *this;
   }
-  Vec3 &operator-=(const Vec3 &o) {
+  _Vec3 &operator-=(const _Vec3 &o) {
     x -= o.x, y -= o.y, z -= o.z;
     return *this;
   }
-  Vec3 &operator*=(const Vec3 &o) {
+  _Vec3 &operator*=(const _Vec3 &o) {
     x *= o.x, y *= o.y, z *= o.z;
     return *this;
   }
-  Vec3 &operator*=(const double s) {
+  _Vec3 &operator*=(const double s) {
     x *= s, y *= s, z *= s;
     return *this;
   }
-  Vec3 &operator/=(const double s) {
+  _Vec3 &operator/=(const double s) {
     x /= s, y /= s, z /= s;
     return *this;
   }
 
-  Vec3 cross(const Vec3 &o) const {
-    return Vec3(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
+  _Vec3 cross(const _Vec3 &o) const {
+    return _Vec3(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
   }
 
-  double dot(const Vec3 &o) const { return x * o.x + y * o.y + z * o.z; }
+  double dot(const _Vec3 &o) const { return x * o.x + y * o.y + z * o.z; }
   double mag2() const { return x * x + y * y + z * z; }
   double mag() const { return std::sqrt(mag2()); }
-  double dist(const Vec3 &o) const { return (*this - o).mag(); }
+  double dist(const _Vec3 &o) const { return (*this - o).mag(); }
 
-  Vec3 unit() const { return *this / mag(); }
-  Vec3 sqrt() const { return Vec3(std::sqrt(x), std::sqrt(y), std::sqrt(z)); }
-  Vec3 reflect(const Vec3 &axis) const {
-    Vec3 vec = *this;
+  _Vec3 unit() const { return *this / mag(); }
+  _Vec3 sqrt() const { return _Vec3(std::sqrt(x), std::sqrt(y), std::sqrt(z)); }
+  _Vec3 reflect(const _Vec3 &axis) const {
+    _Vec3 vec = *this;
     return vec - axis * 2 * vec.dot(axis);
   }
 
-  inline static Vec3 random() {
-    return Vec3(common::randomDouble(), common::randomDouble(),
+  inline static _Vec3 random() {
+    return _Vec3(common::randomDouble(), common::randomDouble(),
                 common::randomDouble());
   }
 
-  inline static Vec3 random(const T min, const T max) {
-    return Vec3(common::randomDouble(min, max), common::randomDouble(min, max),
+  inline static _Vec3 random(const T min, const T max) {
+    return _Vec3(common::randomDouble(min, max), common::randomDouble(min, max),
                 common::randomDouble(min, max));
   }
 
-  static Vec3 randomInUnitSphere() {
+  static _Vec3 randomInUnitSphere() {
     while (true) {
-      Vec3 p = random(-1, 1);
+      _Vec3 p = random(-1, 1);
       if (p.mag2() >= 1)
         continue;
       return p;
     }
   }
 
-  static Vec3 randomInHemisphere(const Vec3 &normal) {
-    Vec3 inUnitSphere = randomInUnitSphere();
+  static _Vec3 randomInHemisphere(const _Vec3 &normal) {
+    _Vec3 inUnitSphere = randomInUnitSphere();
     if (inUnitSphere.dot(normal) > 0.0)
       return inUnitSphere;
     return -inUnitSphere;
   }
 };
 
-template <typename T = double> using Point3 = Vec3<T>;
-template <typename T = double> using Color3 = Vec3<T>;
-template <typename T = double> using Normal = Vec3<T>;
+template <typename T = double> using _Point3 = _Vec3<T>;
+template <typename T = double> using _Color3 = _Vec3<T>;
+template <typename T = double> using _Normal = _Vec3<T>;
 
 #endif
