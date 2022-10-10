@@ -1,9 +1,0 @@
-{
-  "files.associations": {
-    "chrono": "cpp",
-    "limits": "cpp",
-    "random": "cpp",
-    "algorithm": "cpp",
-    "vector": "cpp"
-  }
-}
