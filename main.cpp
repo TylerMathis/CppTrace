@@ -9,20 +9,22 @@
 #include "./lib/Scene.h"
 #include "./lib/Vec3.h"
 
+#include <memory>
 #include <vector>
 
 int main() {
-  Metal rightMat = Metal(Color3(0.4, 0.5, 0.7));
-  Dielectric middleMat = Dielectric(1.5);
-  Lambertian groundMat = Lambertian(Color3(0.8, 0.3, 0.6));
-  Lambertian smalls = Lambertian(Color3(0.5, 0.5, 0.5));
+  auto rightMat = std::make_shared<Metal>(Color3(0.4, 0.5, 0.7));
+  auto middleMat = std::make_shared<Dielectric>(1.5);
+  auto groundMat = std::make_shared<Lambertian>(Color3(0.8, 0.3, 0.6));
+  auto smalls = std::make_shared<Lambertian>(Color3(0.5, 0.5, 0.5));
 
-  Sphere middle(Point3(0, 0, 0), 0.5, &middleMat);
-  Sphere right(Point3(1.1, 0, 0), 0.5, &rightMat);
-  Sphere ground(Point3(0, -100.5, 0), 100, &groundMat);
-  Sphere one(Point3(0, -0.35, 0.6), 0.15, &smalls);
+  auto middle = std::make_shared<Sphere>(Point3(0, 0, 0), 0.5, middleMat);
+  auto right = std::make_shared<Sphere>(Point3(1.1, 0, 0), 0.5, rightMat);
+  auto ground = std::make_shared<Sphere>(Point3(0, -100.5, 0), 100, groundMat);
+  auto one = std::make_shared<Sphere>(Point3(0, -0.35, 0.6), 0.15, smalls);
 
-  std::vector<Hittable *> hittables = {&middle, &right, &ground, &one};
+  std::vector<std::shared_ptr<Hittable>> hittables = {middle, right, ground,
+                                                      one};
   Scene scene(hittables);
 
   Image image("sphere.png", 1000, 1000, 3);

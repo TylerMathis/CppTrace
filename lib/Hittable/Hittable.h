@@ -7,8 +7,10 @@
 
 #include "limits.h"
 
+#include <memory>
+
 template <typename T, int minT = 0, int maxT = INT_MAX> struct _Hittable {
-  Material *material;
+  std::shared_ptr<Material> material;
 
   virtual bool rayCast(const Ray &ray, Hit &out) const = 0;
 

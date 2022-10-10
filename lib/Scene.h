@@ -9,18 +9,24 @@
 #include "Vec3.h"
 
 #include <iostream>
+#include <memory>
 #include <random>
 #include <vector>
 
 template <typename T> struct _Scene {
-  std::vector<Hittable *> hittables;
+  std::vector<std::shared_ptr<Hittable>> hittables;
 
   _Scene() {}
-  _Scene(std::vector<Hittable *> &hittables) : hittables(hittables) {}
+  _Scene(std::vector<std::shared_ptr<Hittable>> &hittables)
+      : hittables(hittables) {}
 
-  void pushHittable(Hittable *hittable) { hittables.push_back(hittable); }
-  void loadHittable(Hittable *hittable) { hittables = {hittable}; }
-  void loadHittables(std::vector<Hittable *> _hittables) {
+  void pushHittable(std::shared_ptr<Hittable> hittable) {
+    hittables.push_back(hittable);
+  }
+  void loadHittable(std::shared_ptr<Hittable> hittable) {
+    hittables = {hittable};
+  }
+  void loadHittables(std::vector<std::shared_ptr<Hittable>> _hittables) {
     hittables = _hittables;
   }
 
@@ -30,7 +36,7 @@ template <typename T> struct _Scene {
 
     Hit out, closest;
     bool found = false;
-    for (Hittable *hittable : hittables)
+    for (auto hittable : hittables)
       if (hittable->rayCast(ray, out) && out < closest) {
         closest = out;
         found = true;

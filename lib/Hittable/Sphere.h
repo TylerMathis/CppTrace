@@ -15,7 +15,8 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
   double radius, radiusSq;
 
   _Sphere() : center(Point3(0, 0, 0)), radius(0), radiusSq(0) {}
-  _Sphere(const Point3 &center, const double radius, Material *material)
+  _Sphere(const Point3 &center, const double radius,
+          std::shared_ptr<Material> material)
       : center(center), radius(radius), radiusSq(radius * radius) {
     this->material = material;
   }
