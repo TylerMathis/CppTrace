@@ -11,10 +11,12 @@ template <typename T> struct _Hit {
   Vec3 normal;
   Material *material;
   double t;
+  bool front;
 
   _Hit() : t(DBL_MAX) {}
-  _Hit(Point3 &location, Vec3 &normal, Material *material, double t)
-      : location(location), normal(normal), material(material), t(t) {}
+  _Hit(Point3 &location, Vec3 &normal, Material *material, double t, bool front)
+      : location(location), normal(normal), material(material), t(t),
+        front(front) {}
 
   bool operator<(const _Hit &o) const { return t < o.t; }
 };

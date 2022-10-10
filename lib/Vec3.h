@@ -92,9 +92,20 @@ template <typename T> struct _Vec3 {
 
   _Vec3 unit() const { return *this / mag(); }
   _Vec3 sqrt() const { return _Vec3(std::sqrt(x), std::sqrt(y), std::sqrt(z)); }
+
   _Vec3 reflect(const _Vec3 &axis) const {
     _Vec3 vec = *this;
     return vec - axis * 2 * vec.dot(axis);
+  }
+
+  _Vec3 refract(const _Vec3 &normal, const double refractionRatio) const {
+    _Vec3 vec = *this;
+
+    double cosTheta = std::min(-vec.dot(normal), 1.0);
+    _Vec3 outPerp = (vec + normal * cosTheta) * refractionRatio;
+    _Vec3 outPara = normal * -std::sqrt(abs(1.0 - outPerp.mag2()));
+
+    return outPerp + outPara;
   }
 
   inline static _Vec3 random() {
@@ -121,6 +132,15 @@ template <typename T> struct _Vec3 {
     if (inUnitSphere.dot(normal) > 0.0)
       return inUnitSphere;
     return -inUnitSphere;
+  }
+
+  static _Vec3 randomInUnitDisk() {
+    while (true) {
+      _Vec3 p(common::randomDouble(-1, 1), common::randomDouble(-1, 1), 0);
+      if (p.mag2() >= 1)
+        continue;
+      return p;
+    }
   }
 };
 

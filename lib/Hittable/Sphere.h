@@ -43,7 +43,11 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
 
     Point3 location(ray.at(t));
     Normal normal((location - center) / radius);
-    out = Hit(location, normal, this->material, t);
+    bool front = ray.direction.dot(normal) < 0;
+    if (!front)
+      normal = -normal;
+
+    out = Hit(location, normal, this->material, t, front);
 
     return true;
   }
