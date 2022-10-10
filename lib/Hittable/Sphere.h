@@ -11,13 +11,6 @@
 
 template <typename T, int minT = 0, int maxT = INT_MAX>
 struct _Sphere : public _Hittable<T, minT, maxT> {
-  using Ray = _Ray<T>;
-  using Vec3 = _Vec3<T>;
-  using Point3 = _Point3<T>;
-  using Normal = _Normal<T>;
-  using Material = _Material<T>;
-  using Hit = _Hit<T>;
-
   Point3 center;
   double radius, radiusSq;
 
@@ -55,5 +48,7 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
     return true;
   }
 };
+
+using Sphere = _Sphere<double>;
 
 #endif

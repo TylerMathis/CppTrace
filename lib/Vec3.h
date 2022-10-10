@@ -99,12 +99,12 @@ template <typename T> struct _Vec3 {
 
   inline static _Vec3 random() {
     return _Vec3(common::randomDouble(), common::randomDouble(),
-                common::randomDouble());
+                 common::randomDouble());
   }
 
   inline static _Vec3 random(const T min, const T max) {
     return _Vec3(common::randomDouble(min, max), common::randomDouble(min, max),
-                common::randomDouble(min, max));
+                 common::randomDouble(min, max));
   }
 
   static _Vec3 randomInUnitSphere() {
@@ -127,5 +127,10 @@ template <typename T> struct _Vec3 {
 template <typename T = double> using _Point3 = _Vec3<T>;
 template <typename T = double> using _Color3 = _Vec3<T>;
 template <typename T = double> using _Normal = _Vec3<T>;
+
+using Vec3 = _Vec3<double>;
+using Point3 = _Point3<double>;
+using Color3 = _Color3<double>;
+using Normal = _Normal<double>;
 
 #endif

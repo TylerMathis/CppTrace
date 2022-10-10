@@ -7,10 +7,6 @@
 #include "float.h"
 
 template <typename T> struct _Hit {
-  using Vec3 = _Vec3<T>;
-  using Point3 = _Point3<T>;
-  using Material = _Material<T>;
-
   Point3 location;
   Vec3 normal;
   Material *material;
@@ -22,5 +18,7 @@ template <typename T> struct _Hit {
 
   bool operator<(const _Hit &o) const { return t < o.t; }
 };
+
+using Hit = _Hit<double>;
 
 #endif

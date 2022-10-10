@@ -7,12 +7,6 @@
 #include "Material.h"
 
 template <typename T> struct _Lambertian : public _Material<T> {
-  using Ray = _Ray<T>;
-  using Vec3 = _Vec3<T>;
-  using Point3 = _Point3<T>;
-  using Color3 = _Color3<T>;
-  using Hit = _Hit<T>;
-
   Color3 albedo;
 
   _Lambertian(const Color3 &albedo) : albedo(albedo) {}
@@ -24,5 +18,7 @@ template <typename T> struct _Lambertian : public _Material<T> {
     attenuation = albedo;
   }
 };
+
+using Lambertian = _Lambertian<double>;
 
 #endif

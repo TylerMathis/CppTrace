@@ -13,14 +13,6 @@
 #include <vector>
 
 template <typename T> struct _Scene {
-  using Hittable = _Hittable<T>;
-  using Camera = _Camera<T>;
-  using Hit = _Hit<T>;
-  using Ray = _Ray<T>;
-  using Vec3 = _Vec3<T>;
-  using Point3 = _Point3<T>;
-  using Color3 = _Color3<T>;
-
   std::vector<Hittable *> hittables;
 
   _Scene() {}
@@ -81,5 +73,7 @@ template <typename T> struct _Scene {
     image.write();
   }
 };
+
+using Scene = _Scene<double>;
 
 #endif

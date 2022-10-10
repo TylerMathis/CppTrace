@@ -11,15 +11,6 @@
 #include <vector>
 
 int main() {
-  using Lambertian = _Lambertian<double>;
-  using Metal = _Metal<double>;
-  using Color3 = _Color3<double>;
-  using Point3 = _Point3<double>;
-  using Hittable = _Hittable<double>;
-  using Scene = _Scene<double>;
-  using Camera = _Camera<double>;
-  using Sphere = _Sphere<double>;
-
   Metal leftMat = Metal(Color3(0.6, 0.7, 0.6));
   Metal rightMat = Metal(Color3(0.4, 0.5, 0.7));
   Lambertian middleMat = Lambertian(Color3(0.6, 0.7, 0.6));
@@ -37,7 +28,7 @@ int main() {
 
   const double viewportHeight = 2;
   Camera camera(Point3(-2, 2, 1), Point3(0, 0, -1), Point3(0, 1, 0), 60,
-                        image.aspectRatio, 100, 1000);
+                image.aspectRatio, 100, 1000);
 
   scene.render(camera, image);
 }

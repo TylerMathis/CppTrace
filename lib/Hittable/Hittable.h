@@ -8,10 +8,6 @@
 #include "limits.h"
 
 template <typename T, int minT = 0, int maxT = INT_MAX> struct _Hittable {
-  using Ray = _Ray<T>;
-  using Material = _Material<T>;
-  using Hit = _Hit<T>;
-
   Material *material;
 
   virtual bool rayCast(const Ray &ray, Hit &out) const = 0;
@@ -20,5 +16,7 @@ template <typename T, int minT = 0, int maxT = INT_MAX> struct _Hittable {
     return t >= (minT + 0.0001) && t <= maxT;
   }
 };
+
+using Hittable = _Hittable<double>;
 
 #endif
