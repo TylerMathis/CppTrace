@@ -11,21 +11,30 @@
 #include "stdint.h"
 #include "stdlib.h"
 
+#include <iostream>
 #include <string>
 
 struct Image {
   using Color3 = _Color3<double>;
 
-  const char *name;
+  std::string name;
   int width, height, comps, byte = 0;
   double aspectRatio;
   uint8_t *data;
 
   Image(const std::string name, const int width, const int height,
         const int comps)
-      : name(name.c_str()), width(width), height(height), comps(comps),
+      : name(name + ".png"), width(width), height(height), comps(comps),
         data((uint8_t *)calloc(comps * width * height, sizeof(uint8_t))),
         aspectRatio((double)width / height) {}
+
+  void setName(const std::string newName) { name = newName + ".png"; }
+
+  void reset(const std::string newName) {
+    setName(newName);
+    reset();
+  }
+  void reset() { byte = 0; }
 
   void pushPixel(const Color3 &c, const int samples) {
     Color3 sampleAndGammaCorrected = (c * (1.0 / samples)).sqrt();
@@ -36,7 +45,8 @@ struct Image {
   }
 
   void write() {
-    stbi_write_png(name, width, height, comps, data, width * comps);
+    std::cerr << "Writing image to " << name << "\n";
+    stbi_write_png(name.c_str(), width, height, comps, data, width * comps);
   }
 };
 

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <memory>
 #include <random>
+#include <string>
 #include <vector>
 
 template <typename T> struct _Scene {
@@ -75,7 +76,6 @@ template <typename T> struct _Scene {
       }
     }
 
-    std::cerr << "Done, writing image\n";
     image.write();
   }
 };

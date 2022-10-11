@@ -13,72 +13,40 @@
 #include <memory>
 #include <vector>
 
-std::vector<std::shared_ptr<Hittable>> randomScene() {
-  using common::randomDouble;
-  using std::make_shared;
-
-  std::vector<std::shared_ptr<Hittable>> hittables;
-
-  auto groundMat = make_shared<Lambertian>(Color3(0.5, 0.5, 0.5));
-  hittables.push_back(
-      make_shared<Sphere>(Point3(0, -1000, 0), 1000, groundMat));
-
-  Sphere deadzone(Point3(4, 0.2, 0), 0.9, groundMat);
-  for (int a = -11; a <= 11; a++) {
-    for (int b = -11; b <= 11; b++) {
-      Point3 center(a + 0.9 * randomDouble(), 0.2, b + 0.9 * randomDouble());
-
-      if ((center - deadzone.center).mag() > deadzone.radius) {
-        std::shared_ptr<Material> sphereMat;
-
-        double random = randomDouble();
-        if (random < 0.8) {
-          Color3 albedo(Vec3::random() * Vec3::random());
-          sphereMat = make_shared<Lambertian>(albedo);
-        } else if (random < 0.95) {
-          Color3 albedo(Vec3::random(0.5, 1));
-          double fuzz = randomDouble(0, 0.5);
-          sphereMat = make_shared<Metal>(albedo, fuzz);
-        } else {
-          sphereMat = make_shared<Dielectric>(1.52);
-        }
-
-        hittables.push_back(make_shared<Sphere>(center, 0.2, sphereMat));
-      }
-    }
-  }
-
-  auto one = make_shared<Dielectric>(1.52);
-  hittables.push_back(make_shared<Sphere>(Point3(0, 1, 0), 1.0, one));
-
-  auto two = make_shared<Lambertian>(Color3(0.4, 0.2, 0.1));
-  hittables.push_back(make_shared<Sphere>(Point3(-4, 1, 0), 1.0, two));
-
-  auto three = make_shared<Metal>(Color3(0.7, 0.6, 0.5), 0);
-  hittables.push_back(make_shared<Sphere>(Point3(4, 1, 0), 1.0, three));
-
-  return hittables;
-}
-
 int main() {
   const double aspectRatio = 3.0 / 2.0;
-  const int width = 1200;
+  const int width = 100;
   const int height = width / aspectRatio;
   Image image("sphere.png", width, height, 3);
 
-  auto hittables = randomScene();
-  Scene scene(hittables);
-
-  Point3 origin(13, 2, 3);
+  Point3 origin(0, 0, -20);
   Point3 lookAt(0, 0, 0);
   Point3 up(0, 1, 0);
-  const double aperture = 0.1;
-  const double focusDist = 10;
+  const double aperture = 0;
+  const double focusDist = (origin - lookAt).mag();
   const double fov = 20;
-  const int samples = 10;
+  const int samples = 50;
   const int depth = 50;
   Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture, focusDist,
                 samples, depth);
 
-  scene.render(camera, image);
+  auto glass = std::make_shared<Dielectric>(1.52);
+  auto solid = std::make_shared<Lambertian>(Color3(0.8, 0.5, 0.6));
+  auto fore = std::make_shared<Sphere>(Point3(0, 0, 0), 2, glass);
+  std::vector<std::shared_ptr<Hittable>> hittables = {fore};
+
+  const int FRAMES = 5;
+  double left = -2, right = 2, r = 0.7;
+  double inc = (right - left) / FRAMES;
+  for (int i = 0; i <= FRAMES; i++) {
+    image.reset("image_" + std::to_string(i));
+
+    Point3 loc(left + inc * i, 0, 0);
+    auto back = std::make_shared<Sphere>(loc, r, solid);
+    auto appendedHittables = hittables;
+    appendedHittables.push_back(back);
+    Scene scene(appendedHittables);
+
+    scene.render(camera, image);
+  }
 }
