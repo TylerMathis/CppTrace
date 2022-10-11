@@ -15,7 +15,7 @@
 
 int main() {
   const double aspectRatio = 1;
-  const int width = 200;
+  const int width = 400;
   const int height = width / aspectRatio;
   Image image("sphere.png", width, height, 3);
 
@@ -25,7 +25,7 @@ int main() {
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
   const double fov = 60;
-  const int samples = 20;
+  const int samples = 50;
   const int depth = 50;
   Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture, focusDist,
                 samples, depth);

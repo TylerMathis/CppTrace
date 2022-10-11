@@ -16,7 +16,7 @@ for filename in sorted(glob.glob('./images/*.png'), key=numericalSort):
     size = (width, height)
     img_array.append(img)
 
-out = cv2.VideoWriter('./render.mov', cv2.VideoWriter_fourcc(*'DIVX'), 40, size)
+out = cv2.VideoWriter('./render.mov', cv2.VideoWriter_fourcc(*'DIVX'), 20, size)
  
 for i in range(len(img_array)):
     out.write(img_array[i])

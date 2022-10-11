@@ -1,5 +1,5 @@
 all: build run clean_bin
-gif: all build_gif
+gif: all build_mov
 
 build:
 	g++ -std=c++17 main.cpp -o main
@@ -7,8 +7,8 @@ build:
 run:
 	./main
 
-build_gif:
-	python3 build_gif.py
+build_mov:
+	python3 build_mov.py
 
 clean_bin:
 	echo "Cleaning binary"; rm main
