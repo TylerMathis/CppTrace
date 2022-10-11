@@ -1,3 +1,4 @@
 *.png
+*.mov
 .vscode
 venv

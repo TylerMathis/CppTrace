@@ -2,51 +2,42 @@
 #define SCENE_H
 
 #include "./Hittable/Hit.h"
-#include "./Hittable/Hittable.h"
+#include "./Hittable/HittableList.h"
 #include "Camera.h"
 #include "Image.h"
 #include "Ray.h"
 #include "Vec3.h"
 
 #include <iostream>
-#include <memory>
 #include <random>
 #include <string>
-#include <vector>
 
 template <typename T> struct _Scene {
-  std::vector<std::shared_ptr<Hittable>> hittables;
+  HittableList hittables;
 
   _Scene() {}
   _Scene(std::vector<std::shared_ptr<Hittable>> &hittables)
       : hittables(hittables) {}
 
   void pushHittable(std::shared_ptr<Hittable> hittable) {
-    hittables.push_back(hittable);
+    hittables.pushHittable(hittable);
   }
   void loadHittable(std::shared_ptr<Hittable> hittable) {
-    hittables = {hittable};
+    hittables.loadHittable(hittable);
   }
   void loadHittables(std::vector<std::shared_ptr<Hittable>> _hittables) {
-    hittables = _hittables;
+    hittables.loadHittable(_hittables);
   }
 
   Color3 getPixelColor(const Ray &ray, const int depth) const {
     if (depth <= 0)
       return Color3(0, 0, 0);
 
-    Hit out, closest;
-    bool found = false;
-    for (auto hittable : hittables)
-      if (hittable->rayCast(ray, out) && out < closest) {
-        closest = out;
-        found = true;
-      }
-
-    if (found) {
+    Hit hit;
+    if (hittables.hit(ray, hit)) {
       Color3 attenuation;
       Ray out;
-      closest.material->scatter(ray, closest, attenuation, out);
+      hit.material->scatter(ray, hit, attenuation, out);
       return getPixelColor(out, depth - 1) * attenuation;
     }
 

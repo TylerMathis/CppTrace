@@ -25,7 +25,7 @@ int main() {
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
   const double fov = 60;
-  const int samples = 1;
+  const int samples = 20;
   const int depth = 50;
   Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture, focusDist,
                 samples, depth);
@@ -35,13 +35,13 @@ int main() {
   auto fore = std::make_shared<Sphere>(Point3(0, 0, 0), 1, glass);
   std::vector<std::shared_ptr<Hittable>> hittables = {fore};
 
-  const int FRAMES = 100;
+  const int FRAMES = 20;
   double left = -5, right = 5, r = 0.7;
   double inc = (right - left) / FRAMES;
   for (int i = 0; i <= FRAMES; i++) {
     image.reset("image_" + std::to_string(i));
 
-    Point3 loc(left + inc * i, 0, 3);
+    Point3 loc(left + inc * i, 0, 4);
     auto back = std::make_shared<Sphere>(loc, r, solid);
     auto appendedHittables = hittables;
     appendedHittables.push_back(back);

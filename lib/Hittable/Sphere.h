@@ -3,6 +3,7 @@
 
 #include "../Ray.h"
 #include "../Vec3.h"
+#include "./Bounding/AABB.h"
 #include "./Material/Material.h"
 #include "Hit.h"
 #include "Hittable.h"
@@ -21,21 +22,19 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
     this->material = material;
   }
 
-  virtual bool rayCast(const Ray &ray, Hit &out) const override {
+  virtual bool hit(const Ray &ray, Hit &out) const override {
     Vec3 oc = ray.origin - center;
     auto a = ray.direction.mag2();
     auto bHalf = oc.dot(ray.direction);
     auto c = oc.mag2() - radiusSq;
     auto discriminant = bHalf * bHalf - a * c;
 
-    // behind us
     if (discriminant < 0)
       return false;
 
     auto sqrtD = sqrt(discriminant);
     double t = (-bHalf - sqrtD) / a;
 
-    // test both intersections for between clip plane
     if (!this->validT(t)) {
       t = (-bHalf + sqrtD) / a;
       if (!this->validT(t))
@@ -50,6 +49,13 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
 
     out = Hit(location, normal, this->material, t, front);
 
+    return true;
+  }
+
+  virtual bool boundingBox(const double t0, const double t1,
+                           AABB &out) const override {
+    out = AABB(center - Vec3(radius, radius, radius),
+               center + Vec3(radius, radius, radius));
     return true;
   }
 };
