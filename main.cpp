@@ -18,39 +18,32 @@
 int main() {
   srand(time(NULL));
 
-  const double aspectRatio = 1;
-  const int width = 400;
+  const double aspectRatio = 16.0 / 9.0;
+  const int width = 1200;
   const int height = width / aspectRatio;
-  Image image("sphere.png", width, height, 3);
+  Image image("sphere", width, height, 3);
 
-  Point3 origin(0, 0, -3);
+  Point3 origin(0, 3, -5);
   Point3 lookAt(0, 0, 0);
   Point3 up(0, 1, 0);
-  const double aperture = 0;
+  const double aperture = 0.1;
   const double focusDist = (origin - lookAt).mag();
   const double fov = 60;
-  const int samples = 10;
+  const int samples = 200;
   const int depth = 50;
   Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture, focusDist,
                 samples, depth);
 
-  auto glass = std::make_shared<Dielectric>(1.52);
-  auto solid = std::make_shared<Lambertian>(Color3(0.8, 0.4, 0.7));
-  auto fore = std::make_shared<Sphere>(Point3(0, 0, 0), 1, glass);
-  std::vector<std::shared_ptr<Hittable>> hittables = {fore};
+  auto groundMat = std::make_shared<Lambertian>(Color3(0.07, 0.07, 0.07));
+  auto glassMat = std::make_shared<Dielectric>(1.52);
+  auto diffuseMat = std::make_shared<Lambertian>(Color3(0.8, 0.4, 0.7));
+  auto metalMat = std::make_shared<Metal>(Color3(0.4, 0.9, 0.3));
 
-  const int FRAMES = 20;
-  double left = -5, right = 5, r = 0.7;
-  double inc = (right - left) / FRAMES;
-  for (int i = 0; i <= FRAMES; i++) {
-    image.reset("image_" + std::to_string(i));
+  auto ground = std::make_shared<Sphere>(Point3(0, -1000, 0), 1000, groundMat);
+  auto glass = std::make_shared<Sphere>(Point3(0, 1, 0), 1, glassMat);
+  auto metal = std::make_shared<Sphere>(Point3(2, 0.5, 0), 0.5, metalMat);
+  std::vector<std::shared_ptr<Hittable>> hittables = {ground, glass, metal};
 
-    Point3 loc(left + inc * i, 0, 4);
-    auto back = std::make_shared<Sphere>(loc, r, solid);
-    auto appendedHittables = hittables;
-    appendedHittables.push_back(back);
-    Scene scene(appendedHittables);
-
-    scene.render(camera, image);
-  }
+  Scene scene(hittables);
+  scene.render(camera, image);
 }
