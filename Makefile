@@ -11,7 +11,8 @@ build_gif:
 	python3 build_gif.py
 
 clean_bin:
-	rm main
+	echo "Cleaning binary" || rm main
 
-clean_img:
-	rm ./images/*.png
+clean_out:
+	echo "Cleaning images" || rm ./images/*.png
+	echo "Cleaning movie" || rm render.mov
