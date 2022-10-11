@@ -18,7 +18,7 @@ struct Image {
   using Color3 = _Color3<double>;
 
   std::string name;
-  int width, height, comps, byte = 0;
+  int width, height, comps;
   double aspectRatio;
   uint8_t *data;
 
@@ -33,18 +33,13 @@ struct Image {
   }
   void setName(const std::string newName) { name = getPath(newName); }
 
-  void reset(const std::string newName) {
-    setName(newName);
-    reset();
-  }
-  void reset() { byte = 0; }
-
-  void pushPixel(const Color3 &c, const int samples) {
+  void setPixel(const int row, const int col, const Color3 &c,
+                const int samples) {
+    int byte = (row * width + col) * 3;
     Color3 sampleAndGammaCorrected = (c * (1.0 / samples)).sqrt();
     for (int i = 0; i < 3; i++)
       data[byte + i] = static_cast<int>(
           256 * common::clamp(sampleAndGammaCorrected[i], 0, 0.999));
-    byte += 3;
   }
 
   void write() {

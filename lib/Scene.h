@@ -5,13 +5,18 @@
 #include "./Hittable/Hit.h"
 #include "./Hittable/HittableList.h"
 #include "Camera.h"
+#include "Common.h"
 #include "Image.h"
 #include "Ray.h"
 #include "Vec3.h"
 
+#include <atomic>
 #include <iostream>
 #include <random>
 #include <string>
+#include <thread>
+#include <utility>
+#include <vector>
 
 template <typename T> struct _Scene {
   HittableList objects;
@@ -53,24 +58,45 @@ template <typename T> struct _Scene {
     return color;
   }
 
-  void render(Camera &camera, Image &image) {
-    for (int row = 0; row < image.height; row++) {
-      std::cerr << "Processing scanline " << row << std::endl;
-      for (int col = 0; col < image.width; col++) {
+  void render(Camera &camera, Image &image, const int threads = 8) {
+    std::vector<std::pair<int, int>> locations;
+    for (int row = 0; row < image.height; row++)
+      for (int col = 0; col < image.width; col++)
+        locations.emplace_back(row, col);
+
+    std::atomic<int> progress = 0;
+    double entries = locations.size();
+
+    int chunkLen = entries / threads;
+    auto getJob = [&](int threadIdx) {
+      int start = threadIdx * chunkLen;
+      int end =
+          threadIdx == threads - 1 ? locations.size() - 1 : start + chunkLen;
+
+      for (int i = start; i < end; i++) {
+        auto [row, col] = locations[i];
 
         Color3 color(0, 0, 0);
         for (int sample = 0; sample < camera.samples; sample++) {
-          double dx = (double)rand() / RAND_MAX;
-          double dy = (double)rand() / RAND_MAX;
+          double dx = common::randomDouble();
+          double dy = common::randomDouble();
           double x = (col + dx) / image.width;
           double y = (row + dy) / image.height;
           Ray ray = camera.getRay(x, y);
           color += getPixelColor(ray, camera.bounceDepth);
         }
 
-        image.pushPixel(color, camera.samples);
+        image.setPixel(row, col, color, camera.samples);
+        std::cerr << (++progress / entries) << "\n";
       }
-    }
+    };
+
+    std::vector<std::thread> jobs;
+    for (int thread = 0; thread < threads; thread++)
+      jobs.emplace_back(getJob, thread);
+
+    for (auto &job : jobs)
+      job.join();
 
     image.write();
   }
