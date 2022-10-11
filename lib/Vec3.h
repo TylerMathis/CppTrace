@@ -103,7 +103,7 @@ template <typename T> struct _Vec3 {
 
     double cosTheta = std::min(-vec.dot(normal), 1.0);
     _Vec3 outPerp = (vec + normal * cosTheta) * refractionRatio;
-    _Vec3 outPara = normal * -std::sqrt(abs(1.0 - outPerp.mag2()));
+    _Vec3 outPara = normal * -std::sqrt(std::abs(1.0 - outPerp.mag2()));
 
     return outPerp + outPara;
   }
