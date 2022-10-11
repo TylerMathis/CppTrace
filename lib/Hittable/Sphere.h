@@ -52,11 +52,9 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
     return true;
   }
 
-  virtual bool boundingBox(const double t0, const double t1,
-                           AABB &out) const override {
-    out = AABB(center - Vec3(radius, radius, radius),
-               center + Vec3(radius, radius, radius));
-    return true;
+  virtual AABB boundingBox() const override {
+    return AABB(center - Vec3(radius, radius, radius),
+                center + Vec3(radius, radius, radius));
   }
 };
 

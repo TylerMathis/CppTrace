@@ -5,6 +5,8 @@
 #include "./Hit.h"
 #include "Hittable.h"
 
+#include "limits.h"
+
 #include <memory>
 #include <vector>
 
@@ -41,22 +43,15 @@ struct _HittableList : public _Hittable<T, minT, maxT> {
     return found;
   }
 
-  virtual bool boundingBox(const double t0, const double t1,
-                           AABB &out) const override {
-    if (hittables.empty())
-      return false;
-
-    AABB box;
+  virtual AABB boundingBox() const override {
     bool first = true;
-
+    AABB out;
     for (auto &hittable : hittables) {
-      if (!hittable->boundingBox(t0, t1, box))
-        return false;
+      AABB box = hittable->boundingBox();
       out = first ? box : surroundingBox(box, out);
       first = false;
     }
-
-    return true;
+    return out;
   }
 };
 

@@ -10,10 +10,14 @@
 #include "./lib/Scene.h"
 #include "./lib/Vec3.h"
 
+#include "time.h"
+
 #include <memory>
 #include <vector>
 
 int main() {
+  srand(time(NULL));
+
   const double aspectRatio = 1;
   const int width = 400;
   const int height = width / aspectRatio;
@@ -25,7 +29,7 @@ int main() {
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
   const double fov = 60;
-  const int samples = 50;
+  const int samples = 10;
   const int depth = 50;
   Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture, focusDist,
                 samples, depth);

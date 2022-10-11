@@ -1,6 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "./Hittable/Bounding/BVH.h"
 #include "./Hittable/Hit.h"
 #include "./Hittable/HittableList.h"
 #include "Camera.h"
@@ -13,20 +14,24 @@
 #include <string>
 
 template <typename T> struct _Scene {
-  HittableList hittables;
+  HittableList objects;
+  BVH bvh;
 
   _Scene() {}
   _Scene(std::vector<std::shared_ptr<Hittable>> &hittables)
-      : hittables(hittables) {}
+      : objects(hittables), bvh(objects) {}
 
   void pushHittable(std::shared_ptr<Hittable> hittable) {
-    hittables.pushHittable(hittable);
+    objects.pushHittable(hittable);
+    bvh = BVH(objects);
   }
   void loadHittable(std::shared_ptr<Hittable> hittable) {
-    hittables.loadHittable(hittable);
+    objects.loadHittable(hittable);
+    bvh = BVH(objects);
   }
-  void loadHittables(std::vector<std::shared_ptr<Hittable>> _hittables) {
-    hittables.loadHittable(_hittables);
+  void loadHittables(std::vector<std::shared_ptr<Hittable>> hittables) {
+    objects.loadHittables(hittables);
+    bvh = BVH(objects);
   }
 
   Color3 getPixelColor(const Ray &ray, const int depth) const {
@@ -34,7 +39,7 @@ template <typename T> struct _Scene {
       return Color3(0, 0, 0);
 
     Hit hit;
-    if (hittables.hit(ray, hit)) {
+    if (bvh.hit(ray, hit)) {
       Color3 attenuation;
       Ray out;
       hit.material->scatter(ray, hit, attenuation, out);
