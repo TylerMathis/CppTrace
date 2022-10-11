@@ -24,11 +24,14 @@ struct Image {
 
   Image(const std::string name, const int width, const int height,
         const int comps)
-      : name(name + ".png"), width(width), height(height), comps(comps),
+      : name(getPath(name)), width(width), height(height), comps(comps),
         data((uint8_t *)calloc(comps * width * height, sizeof(uint8_t))),
         aspectRatio((double)width / height) {}
 
-  void setName(const std::string newName) { name = newName + ".png"; }
+  std::string getPath(const std::string name) {
+    return "./images/" + name + ".png";
+  }
+  void setName(const std::string newName) { name = getPath(newName); }
 
   void reset(const std::string newName) {
     setName(newName);

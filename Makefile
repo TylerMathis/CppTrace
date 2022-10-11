@@ -1,4 +1,5 @@
 all: build run clean_bin
+gif: all build_gif
 
 build:
 	g++ -std=c++17 main.cpp -o main
@@ -6,10 +7,11 @@ build:
 run:
 	./main
 
-clean: clean_bin clean_img
+build_gif:
+	python3 build_gif.py
 
 clean_bin:
 	rm main
 
 clean_img:
-	rm *.png
+	rm ./images/*.png
