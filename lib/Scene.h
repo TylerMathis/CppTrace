@@ -58,24 +58,20 @@ template <typename T> struct _Scene {
     return color;
   }
 
-  void render(Camera &camera, Image &image, const int threads = 8) {
-    std::vector<std::pair<int, int>> locations;
+  void render(Camera &camera, Image &image, const int threads = 7) {
+    std::vector<std::vector<std::pair<int, int>>> locations(threads);
+    int curThread = 0;
     for (int row = 0; row < image.height; row++)
-      for (int col = 0; col < image.width; col++)
-        locations.emplace_back(row, col);
+      for (int col = 0; col < image.width; col++) {
+        locations[curThread].emplace_back(row, col);
+        curThread = (curThread + 1) % threads;
+      }
 
     std::atomic<int> progress = 0;
-    double entries = locations.size();
+    double entries = image.width * image.height;
 
-    int chunkLen = entries / threads;
     auto getJob = [&](int threadIdx) {
-      int start = threadIdx * chunkLen;
-      int end =
-          threadIdx == threads - 1 ? locations.size() - 1 : start + chunkLen;
-
-      for (int i = start; i < end; i++) {
-        auto [row, col] = locations[i];
-
+      for (auto [row, col] : locations[threadIdx]) {
         Color3 color(0, 0, 0);
         for (int sample = 0; sample < camera.samples; sample++) {
           double dx = common::randomDouble();
