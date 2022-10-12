@@ -10,7 +10,7 @@ int main() {
   const int height = width / aspectRatio;
   const int samples = 200;
   const int bounces = 50;
-  Image image("manyObjects", width, height, 3, samples, bounces);
+  Image image("manyObjects", width, height, samples, bounces);
 
   Point3 origin(0, 8, 20);
   Point3 lookAt(0, 0, 0);
