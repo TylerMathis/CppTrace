@@ -1,0 +1,18 @@
+Camera {
+  origin = (0, 0, 1)
+  lookAt = (0, 0, 0)
+  rotation = 0
+  fov = 60
+  aspectRatio = 16:9
+  aperture = 0.1
+  focusDist = auto
+  depth = 50
+}
+
+Sphere {
+  center = (0, 0, 0)
+  radius = 0.25
+  material = Lambertian {
+    albedo = (0.7, 0.3, 0.6)
+  }
+}
