@@ -2,3 +2,4 @@
 *.mov
 .vscode
 venv
+main
