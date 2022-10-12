@@ -28,8 +28,8 @@ int main() {
   Point3 up(0, 1, 0);
   const double aperture = 0.1;
   const double focusDist = (origin - lookAt).mag();
-  const double fov = 60;
-  const int samples = 150;
+  const double fov = 90;
+  const int samples = 250;
   const int depth = 50;
   Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture, focusDist,
                 samples, depth);
@@ -43,7 +43,7 @@ int main() {
   auto ground = std::make_shared<Sphere>(Point3(0, -1000, 0), 1000, groundMat);
   auto glass = std::make_shared<Sphere>(Point3(0, 1, 0), 1, glassMat);
   auto metal = std::make_shared<Sphere>(Point3(2, 0.5, 0), 0.5, metalMat);
-  auto ball = std::make_shared<Sphere>(Point3(1.25, 0.3, 0.45), 0.3, behindMat);
+  auto ball = std::make_shared<Sphere>(Point3(1, 0.3, 0.45), 0.3, behindMat);
   auto behind = std::make_shared<Sphere>(Point3(0.5, 0.3, -5), 0.3, behindMat);
   auto another =
       std::make_shared<Sphere>(Point3(-0.5, 0.3, -4.5), 0.3, diffuseMat);

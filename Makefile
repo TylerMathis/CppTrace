@@ -2,7 +2,7 @@ all: build run clean_bin
 gif: all build_mov
 
 build:
-	g++ -std=c++17 main.cpp -o main
+	g++ -std=c++17 -O2 main.cpp -o main
 
 run:
 	./main
