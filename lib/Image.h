@@ -18,13 +18,14 @@ struct Image {
   using Color3 = _Color3<double>;
 
   std::string name;
-  int width, height, comps;
+  int width, height, comps, samples;
   double aspectRatio;
   uint8_t *data;
 
   Image(const std::string name, const int width, const int height,
-        const int comps)
+        const int comps, const int samples = 50)
       : name(getPath(name)), width(width), height(height), comps(comps),
+        samples(samples),
         data((uint8_t *)calloc(comps * width * height, sizeof(uint8_t))),
         aspectRatio((double)width / height) {}
 
@@ -33,8 +34,7 @@ struct Image {
   }
   void setName(const std::string newName) { name = getPath(newName); }
 
-  void setPixel(const int row, const int col, const Color3 &c,
-                const int samples) {
+  void setPixel(const int row, const int col, const Color3 &c) {
     int byte = (row * width + col) * 3;
     Color3 sampleAndGammaCorrected = (c * (1.0 / samples)).sqrt();
     for (int i = 0; i < 3; i++)

@@ -73,7 +73,7 @@ template <typename T> struct _Scene {
     auto getJob = [&](int threadIdx) {
       for (auto [row, col] : locations[threadIdx]) {
         Color3 color(0, 0, 0);
-        for (int sample = 0; sample < camera.samples; sample++) {
+        for (int sample = 0; sample < image.samples; sample++) {
           double dx = common::randomDouble();
           double dy = common::randomDouble();
           double x = (col + dx) / image.width;
@@ -82,7 +82,7 @@ template <typename T> struct _Scene {
           color += getPixelColor(ray, camera.bounceDepth);
         }
 
-        image.setPixel(row, col, color, camera.samples);
+        image.setPixel(row, col, color);
         std::cerr << (++progress / entries) << "\n";
       }
     };
