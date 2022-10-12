@@ -1,14 +1,14 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "./Hittable/Bounding/BVH.h"
-#include "./Hittable/Hit.h"
-#include "./Hittable/HittableList.h"
-#include "Camera.h"
-#include "Common.h"
-#include "Image.h"
-#include "Ray.h"
-#include "Vec3.h"
+#include "../Camera.h"
+#include "../Common.h"
+#include "../Hittable/Bounding/BVH.h"
+#include "../Hittable/Hit.h"
+#include "../Hittable/HittableList.h"
+#include "../Image.h"
+#include "../Ray.h"
+#include "../Vec3.h"
 
 #include <atomic>
 #include <iostream>

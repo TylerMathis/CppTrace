@@ -1,8 +1,8 @@
 #include "./lib/Camera.h"
 #include "./lib/Image.h"
-#include "./lib/Scene.h"
+#include "./lib/Scene/RandomGen.h"
+#include "./lib/Scene/Scene.h"
 #include "./lib/Vec3.h"
-#include "scenes.h"
 
 int main() {
   const double aspectRatio = 16.0 / 9.0;
