@@ -13,13 +13,10 @@ template <typename T> struct _Camera {
   double viewportWidth, viewportHeight;
   Point3 origin;
 
-  int bounceDepth;
-
   _Camera(const Point3 origin, const Point3 lookAt, const Vec3 up,
           const double verticalFOV, const double aspectRatio,
-          const double aperture, const double focusDist,
-          const int bounceDepth = 10)
-      : origin(origin), bounceDepth(bounceDepth) {
+          const double aperture, const double focusDist)
+      : origin(origin) {
     double theta = verticalFOV / 180 * M_PI;
     double h = tan(theta / 2);
     viewportHeight = 2.0 * h;

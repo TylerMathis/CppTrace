@@ -39,8 +39,8 @@ template <typename T> struct _Scene {
     bvh = BVH(objects);
   }
 
-  Color3 getPixelColor(const Ray &ray, const int depth) const {
-    if (depth <= 0)
+  Color3 getPixelColor(const Ray &ray, const int bouncesLeft) const {
+    if (bouncesLeft <= 0)
       return Color3(0, 0, 0);
 
     Hit hit;
@@ -48,7 +48,7 @@ template <typename T> struct _Scene {
       Color3 attenuation;
       Ray out;
       hit.material->scatter(ray, hit, attenuation, out);
-      return getPixelColor(out, depth - 1) * attenuation;
+      return getPixelColor(out, bouncesLeft - 1) * attenuation;
     }
 
     Vec3 unitDirection = ray.direction.unit();
@@ -79,7 +79,7 @@ template <typename T> struct _Scene {
           double x = (col + dx) / image.width;
           double y = (row + dy) / image.height;
           Ray ray = camera.getRay(x, y);
-          color += getPixelColor(ray, camera.bounceDepth);
+          color += getPixelColor(ray, image.bounces);
         }
 
         image.setPixel(row, col, color);

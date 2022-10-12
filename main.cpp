@@ -9,7 +9,8 @@ int main() {
   const int width = 500;
   const int height = width / aspectRatio;
   const int samples = 200;
-  Image image("manyObjects", width, height, 3, samples);
+  const int bounces = 50;
+  Image image("manyObjects", width, height, 3, samples, bounces);
 
   Point3 origin(0, 8, 20);
   Point3 lookAt(0, 0, 0);
@@ -17,9 +18,8 @@ int main() {
   const double aperture = 0.2;
   const double focusDist = (origin - lookAt).mag();
   const double fov = 60;
-  const int depth = 50;
-  Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture, focusDist,
-                depth);
+  Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture,
+                focusDist);
 
   auto world = randomScene(10000);
   Scene scene(world);
