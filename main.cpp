@@ -22,6 +22,6 @@ int main() {
                 focusDist);
 
   auto world = randomScene(10000);
-  Scene scene(world);
-  scene.render(camera, image);
+  Scene scene(camera, image, world);
+  scene.render();
 }

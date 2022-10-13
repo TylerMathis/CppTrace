@@ -19,12 +19,15 @@
 #include <vector>
 
 template <typename T> struct _Scene {
+  Camera camera;
+  Image image;
   HittableList objects;
   BVH bvh;
 
   _Scene() {}
-  _Scene(std::vector<std::shared_ptr<Hittable>> &hittables)
-      : objects(hittables), bvh(objects) {}
+  _Scene(Camera &camera, Image &image,
+         std::vector<std::shared_ptr<Hittable>> &hittables)
+      : camera(camera), image(image), objects(hittables), bvh(objects) {}
 
   void pushHittable(std::shared_ptr<Hittable> hittable) {
     objects.pushHittable(hittable);
@@ -58,7 +61,7 @@ template <typename T> struct _Scene {
     return color;
   }
 
-  void render(Camera &camera, Image &image, const int threads = 7) {
+  void render(const int threads = 7) {
     std::vector<std::vector<std::pair<int, int>>> locations(threads);
     int curThread = 0;
     for (int row = 0; row < image.height; row++)

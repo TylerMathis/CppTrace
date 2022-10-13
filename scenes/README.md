@@ -46,7 +46,6 @@ Camera {
   lookAt      = (float, float, float) // Where the camera looks
   rotation    = float                 // Rotation around vector from origin to lookAt in degrees
   fov         = float                 // Field of view in degrees
-  aspectRatio = integer:integer       // Ratio of width to height
   aperture    = float                 // Radius of the camera aperture
   focusDist   = auto | float          // How far to focus the camera. When "auto" is specified, the camera will focus on the lookAt point.
 }
