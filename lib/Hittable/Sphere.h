@@ -22,7 +22,7 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
     this->material = material;
   }
 
-  virtual bool hit(const Ray &ray, Hit &out) const override {
+  virtual bool hit(const Ray &ray, Hit &hit) const override {
     Vec3 oc = ray.origin - center;
     auto a = ray.direction.mag2();
     auto bHalf = oc.dot(ray.direction);
@@ -47,8 +47,7 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
     if (!front)
       normal = -normal;
 
-    out = Hit(location, normal, this->material, t, front);
-
+    hit = Hit(location, normal, this->material, t, front);
     return true;
   }
 

@@ -92,6 +92,7 @@ template <typename T> struct _Vec3 {
 
   _Vec3 unit() const { return *this / mag(); }
   _Vec3 sqrt() const { return _Vec3(std::sqrt(x), std::sqrt(y), std::sqrt(z)); }
+  _Vec3 abs() const { return _Vec3(std::abs(x), std::abs(y), std::abs(z)); }
 
   _Vec3 reflect(const _Vec3 &axis) const {
     _Vec3 vec = *this;
