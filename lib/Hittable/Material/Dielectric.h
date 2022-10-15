@@ -9,6 +9,7 @@
 template <typename T> struct _Dielectric : public _Material<T> {
   double refractionIndex;
 
+  _Dielectric() : refractionIndex(0) {}
   _Dielectric(const double refractionIndex)
       : refractionIndex(refractionIndex) {}
 
