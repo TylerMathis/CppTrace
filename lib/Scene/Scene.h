@@ -7,10 +7,14 @@
 #include "../Hittable/Hit.h"
 #include "../Hittable/HittableList.h"
 #include "../Image.h"
+#include "../ProgressIndicator.h"
 #include "../Ray.h"
 #include "../Vec3.h"
 
+#include "unistd.h"
+
 #include <atomic>
+#include <chrono>
 #include <iostream>
 #include <random>
 #include <string>
@@ -59,6 +63,7 @@ template <typename T> struct _Scene {
   }
 
   void render(Camera &camera, Image &image, const int threads = 7) {
+    std::cout << "Beginning render\n";
     std::vector<std::vector<std::pair<int, int>>> locations(threads);
     int curThread = 0;
     for (int row = 0; row < image.height; row++)
@@ -69,6 +74,7 @@ template <typename T> struct _Scene {
 
     std::atomic<int> progress = 0;
     double entries = image.width * image.height;
+    ProgressIndicator progressIndicator(entries);
 
     auto getJob = [&](int threadIdx) {
       for (auto [row, col] : locations[threadIdx]) {
@@ -83,13 +89,19 @@ template <typename T> struct _Scene {
         }
 
         image.setPixel(row, col, color);
-        std::cerr << (++progress / entries) << "\n";
+        progress++;
       }
     };
 
     std::vector<std::thread> jobs;
     for (int thread = 0; thread < threads; thread++)
       jobs.emplace_back(getJob, thread);
+
+    while (progress < entries) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      progressIndicator.indicate(progress);
+    }
+    progressIndicator.done();
 
     for (auto &job : jobs)
       job.join();

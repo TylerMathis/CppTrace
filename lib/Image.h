@@ -44,7 +44,7 @@ struct Image {
   }
 
   void write() {
-    std::cerr << "Writing image to " << name << "\n";
+    std::cout << "Writing image to " << name << "\n";
     stbi_write_png(name.c_str(), width, height, comps, data, width * comps);
   }
 };

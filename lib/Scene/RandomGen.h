@@ -32,7 +32,7 @@ std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
   };
 
   for (int i = 1; i <= objects; i++) {
-    std::cerr << "Placing " << i << "th object.\n";
+    std::cout << "Placing " << i << "th object.\n";
     double randomRad = std::sqrt(common::randomDouble(0.1, radBound));
     bool isBig = common::randomDouble() > 0.95;
     if (isBig)
