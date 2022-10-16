@@ -27,11 +27,13 @@ struct ProgressIndicator {
     }
     cout << "] ";
     cout << intProgress << "%\r";
+    cout.flush();
   }
 
   void done() {
     indicate(numSteps);
     cout << "\n";
+    cout.flush();
   }
 };
 
