@@ -62,7 +62,7 @@ template <typename T> struct _Scene {
     return color;
   }
 
-  void render(Camera &camera, Image &image, const int threads = 7) {
+  void render(Camera &camera, Image &image, const int threads = 19) {
     std::cout << "Beginning render\n";
     std::vector<std::vector<std::pair<int, int>>> locations(threads);
     int curThread = 0;

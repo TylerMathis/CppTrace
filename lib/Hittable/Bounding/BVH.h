@@ -56,14 +56,14 @@ struct _BVHNode : _Hittable<T, minT, maxT> {
     box = surroundingBox(boxLeft, boxRight);
   }
 
-  virtual bool hit(const Ray &ray, Hit &out) const override {
+  virtual bool hit(const Ray &ray, Hit &hit) const override {
     if (!box.hit(ray))
       return false;
 
     Hit l, r;
     bool hLeft = left->hit(ray, l);
     bool hRight = right->hit(ray, r);
-    out = std::min(l, r);
+    hit = std::min(l, r);
 
     return hLeft || hRight;
   }

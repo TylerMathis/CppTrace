@@ -66,6 +66,13 @@ struct _Triangle : public _Hittable<T, minT, maxT> {
                              std::max(std::max(a.y, b.y), c.y),
                              std::max(std::max(a.z, b.z), c.z));
 
+    if (minPoint.x == maxPoint.x)
+      minPoint.x -= 0.001, maxPoint.x += 0.001;
+    if (minPoint.y == maxPoint.y)
+      minPoint.y -= 0.001, maxPoint.y += 0.001;
+    if (minPoint.z == maxPoint.z)
+      minPoint.z -= 0.001, maxPoint.z += 0.001;
+
     return AABB(minPoint - normal.abs(), maxPoint + normal.abs());
   }
 };

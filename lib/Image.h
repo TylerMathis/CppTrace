@@ -1,12 +1,11 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include "Common.h"
 #include "Vec3.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
-
-#include "Common.h"
 
 #include "stdint.h"
 #include "stdlib.h"
