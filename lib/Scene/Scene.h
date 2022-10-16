@@ -13,6 +13,7 @@
 
 #include "unistd.h"
 
+#include <cfloat>
 #include <atomic>
 #include <chrono>
 #include <iostream>
@@ -22,33 +23,34 @@
 #include <utility>
 #include <vector>
 
-template <typename T> struct _Scene {
+struct Scene {
   HittableList objects;
   BVH bvh;
 
-  _Scene() {}
-  _Scene(std::vector<std::shared_ptr<Hittable>> &hittables)
+  Scene() = default;
+  explicit Scene(const std::vector<std::shared_ptr<Hittable>> &hittables)
       : objects(hittables), bvh(objects) {}
 
-  void pushHittable(std::shared_ptr<Hittable> hittable) {
+  void pushHittable(const std::shared_ptr<Hittable>& hittable) {
     objects.pushHittable(hittable);
     bvh = BVH(objects);
   }
-  void loadHittable(std::shared_ptr<Hittable> hittable) {
+  void loadHittable(const std::shared_ptr<Hittable>& hittable) {
     objects.loadHittable(hittable);
     bvh = BVH(objects);
   }
-  void loadHittables(std::vector<std::shared_ptr<Hittable>> hittables) {
+  void loadHittables(const std::vector<std::shared_ptr<Hittable>>& hittables) {
     objects.loadHittables(hittables);
     bvh = BVH(objects);
   }
 
-  Color3 getPixelColor(const Ray &ray, const int bouncesLeft) const {
+  // Recursively scatter the ray, depth limited by bouncesLeft
+  [[nodiscard]] Color3 getPixelColor(const Ray &ray, const int bouncesLeft) const {
     if (bouncesLeft <= 0)
-      return Color3(0, 0, 0);
+      return {0, 0, 0};
 
     Hit hit;
-    if (bvh.hit(ray, hit)) {
+    if (bvh.hit(ray, hit, 0.001, DBL_MAX)) {
       Color3 attenuation;
       Ray out;
       hit.material->scatter(ray, hit, attenuation, out);
@@ -62,7 +64,7 @@ template <typename T> struct _Scene {
     return color;
   }
 
-  void render(Camera &camera, Image &image, const int threads = 19) {
+  void render(Camera &camera, Image &image, const int threads = 19) const {
     std::cout << "Beginning render\n";
     std::vector<std::vector<std::pair<int, int>>> locations(threads);
     int curThread = 0;
@@ -73,7 +75,7 @@ template <typename T> struct _Scene {
       }
 
     std::atomic<int> progress = 0;
-    double entries = image.width * image.height;
+    int entries = image.width * image.height;
     ProgressIndicator progressIndicator(entries);
 
     auto getJob = [&](int threadIdx) {
@@ -109,7 +111,5 @@ template <typename T> struct _Scene {
     image.write();
   }
 };
-
-using Scene = _Scene<double>;
 
 #endif

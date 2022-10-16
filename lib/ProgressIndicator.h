@@ -9,13 +9,14 @@ struct ProgressIndicator {
   const int BAR_WIDTH = 70;
 
   int numSteps;
-  ProgressIndicator(const int numSteps) : numSteps(numSteps) { indicate(0); }
+  explicit ProgressIndicator(const int numSteps)
+      : numSteps(numSteps) { indicate(0); }
 
   void indicate(const int curStep) const {
-    double progress = (double)curStep / numSteps;
-    int intProgress = progress * 100;
+    double progress = (double) curStep / numSteps;
+    int intProgress = (int) (progress * 100);
 
-    int barProgress = BAR_WIDTH * progress;
+    int barProgress = (int) (BAR_WIDTH * progress);
     cout << "[";
     for (int i = 0; i < BAR_WIDTH; i++) {
       if (i < barProgress)
@@ -30,7 +31,7 @@ struct ProgressIndicator {
     cout.flush();
   }
 
-  void done() {
+  void done() const {
     indicate(numSteps);
     cout << "\n";
     cout.flush();

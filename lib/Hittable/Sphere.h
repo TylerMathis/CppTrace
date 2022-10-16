@@ -8,21 +8,23 @@
 #include "Hit.h"
 #include "Hittable.h"
 
-#include "limits.h"
+#include <climits>
 
-template <typename T, int minT = 0, int maxT = INT_MAX>
-struct _Sphere : public _Hittable<T, minT, maxT> {
+struct Sphere : public Hittable {
   Point3 center;
   double radius, radiusSq;
 
-  _Sphere() : center(Point3(0, 0, 0)), radius(0), radiusSq(0) {}
-  _Sphere(const Point3 &center, const double radius,
-          std::shared_ptr<Material> material)
+  Sphere() : center(Point3(0, 0, 0)), radius(0), radiusSq(0) {}
+  Sphere(const Point3 &center, const double radius,
+         const std::shared_ptr<Material> &material)
       : center(center), radius(radius), radiusSq(radius * radius) {
     this->material = material;
   }
 
-  virtual bool hit(const Ray &ray, Hit &hit) const override {
+  bool hit(const Ray &ray,
+           Hit &hit,
+           const double minT,
+           const double maxT) const override {
     Vec3 oc = ray.origin - center;
     auto a = ray.direction.mag2();
     auto bHalf = oc.dot(ray.direction);
@@ -35,9 +37,9 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
     auto sqrtD = sqrt(discriminant);
     double t = (-bHalf - sqrtD) / a;
 
-    if (!this->validT(t)) {
+    if (t < minT || t > maxT) {
       t = (-bHalf + sqrtD) / a;
-      if (!this->validT(t))
+      if (t < minT || t > maxT)
         return false;
     }
 
@@ -51,12 +53,10 @@ struct _Sphere : public _Hittable<T, minT, maxT> {
     return true;
   }
 
-  virtual AABB boundingBox() const override {
-    return AABB(center - Vec3(radius, radius, radius),
-                center + Vec3(radius, radius, radius));
+  [[nodiscard]] AABB boundingBox() const override {
+    return {center - Vec3(radius, radius, radius),
+            center + Vec3(radius, radius, radius)};
   }
 };
-
-using Sphere = _Sphere<double>;
 
 #endif

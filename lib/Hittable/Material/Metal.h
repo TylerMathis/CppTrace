@@ -7,11 +7,11 @@
 #include "../Hit.h"
 #include "Material.h"
 
-template <typename T> struct _Metal : public _Material<T> {
+struct Metal : public Material {
   Color3 albedo;
   double fuzziness;
 
-  _Metal(const Color3 &albedo, double fuzziness = 0)
+  Metal(const Color3 &albedo, double fuzziness = 0)
       : albedo(albedo), fuzziness(common::clamp(fuzziness, 0, 1)) {}
 
   virtual void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
@@ -21,7 +21,5 @@ template <typename T> struct _Metal : public _Material<T> {
     attenuation = albedo;
   }
 };
-
-using Metal = _Metal<double>;
 
 #endif

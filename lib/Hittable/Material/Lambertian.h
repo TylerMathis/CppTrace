@@ -6,19 +6,17 @@
 #include "../Hit.h"
 #include "Material.h"
 
-template <typename T> struct _Lambertian : public _Material<T> {
+struct Lambertian : public Material {
   Color3 albedo;
 
-  _Lambertian(const Color3 &albedo) : albedo(albedo) {}
+  explicit Lambertian(const Color3 &albedo) : albedo(albedo) {}
 
-  virtual void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
-                       Ray &out) const override {
+  void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
+               Ray &out) const override {
     Point3 target = hit.location + Vec3::randomInHemisphere(hit.normal);
     out = Ray(hit.location, target - hit.location);
     attenuation = albedo;
   }
 };
-
-using Lambertian = _Lambertian<double>;
 
 #endif

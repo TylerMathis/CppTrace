@@ -10,17 +10,15 @@
 
 #include "../OBJ_Loader.h"
 
-#include "limits.h"
-
+#include <climits>
 #include <iostream>
 #include <memory>
 #include <string>
 
-template <typename T, int minT = 0, int maxT = INT_MAX>
-struct _OBJ : public _Hittable<T, minT, maxT> {
+struct OBJ : public Hittable {
   BVH bvh;
 
-  _OBJ(std::string &filepath, std::shared_ptr<Material> material) {
+  OBJ(std::string &filepath, const std::shared_ptr<Material> &material) {
     objl::Loader Loader;
     if (!(Loader.LoadFile(filepath))) {
       std::cerr << "Error: OBJ path " << filepath << " is not a valid path";
@@ -44,13 +42,14 @@ struct _OBJ : public _Hittable<T, minT, maxT> {
     bvh = BVH(objects);
   }
 
-  virtual bool hit(const Ray &ray, Hit &hit) const override {
-    return bvh.hit(ray, hit);
+  bool hit(const Ray &ray,
+           Hit &hit,
+           const double minT,
+           const double maxT) const override {
+    return bvh.hit(ray, hit, minT, maxT);
   }
 
-  virtual AABB boundingBox() const override { return bvh.boundingBox(); }
+  [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
 };
-
-using OBJ = _OBJ<double>;
 
 #endif

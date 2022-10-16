@@ -4,26 +4,24 @@
 #include "../Vec3.h"
 #include "./Material/Material.h"
 
-#include "float.h"
-
+#include <cfloat>
 #include <memory>
+#include <utility>
 
-template <typename T> struct _Hit {
+struct Hit {
   Point3 location;
   Vec3 normal;
   std::shared_ptr<Material> material;
   double t;
-  bool front;
+  bool front{};
 
-  _Hit() : t(DBL_MAX) {}
-  _Hit(Point3 &location, Vec3 &normal, std::shared_ptr<Material> material,
-       double t, bool front)
-      : location(location), normal(normal), material(material), t(t),
+  Hit() : t(DBL_MAX) {}
+  Hit(const Point3 &location, const Vec3 &normal, std::shared_ptr<Material> material,
+      double t, bool front)
+      : location(location), normal(normal), material(std::move(material)), t(t),
         front(front) {}
 
-  bool operator<(const _Hit &o) const { return t < o.t; }
+  bool operator<(const Hit &o) const { return t < o.t; }
 };
-
-using Hit = _Hit<double>;
 
 #endif

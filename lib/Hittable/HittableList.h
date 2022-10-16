@@ -5,34 +5,33 @@
 #include "./Hit.h"
 #include "Hittable.h"
 
-#include "limits.h"
-
+#include <climits>
 #include <memory>
+#include <utility>
 #include <vector>
 
-template <typename T, int minT = 0, int maxT = INT_MAX>
-struct _HittableList : public _Hittable<T, minT, maxT> {
+struct HittableList : public Hittable {
   std::vector<std::shared_ptr<Hittable>> hittables;
 
-  _HittableList() {}
-  _HittableList(std::vector<std::shared_ptr<Hittable>> &hittables)
-      : hittables(hittables) {}
+  HittableList() = default;
+  explicit HittableList(std::vector<std::shared_ptr<Hittable>> hittables)
+      : hittables(std::move(hittables)) {}
 
-  void pushHittable(std::shared_ptr<Hittable> hittable) {
+  void pushHittable(const std::shared_ptr<Hittable>& hittable) {
     hittables.push_back(hittable);
   }
-  void loadHittable(std::shared_ptr<Hittable> hittable) {
+  void loadHittable(const std::shared_ptr<Hittable>& hittable) {
     hittables = {hittable};
   }
-  void loadHittables(std::vector<std::shared_ptr<Hittable>> _hittables) {
+  void loadHittables(const std::vector<std::shared_ptr<Hittable>>& _hittables) {
     hittables = _hittables;
   }
 
-  virtual bool hit(const Ray &ray, Hit &hit) const override {
+  bool hit(const Ray &ray, Hit &hit, const double minT, const double maxT) const override {
     Hit out, closest;
     bool found = false;
-    for (auto hittable : hittables)
-      if (hittable->hit(ray, out) && out < closest) {
+    for (const auto& hittable : hittables)
+      if (hittable->hit(ray, out, minT, maxT) && out < closest) {
         closest = out;
         found = true;
       }
@@ -43,7 +42,7 @@ struct _HittableList : public _Hittable<T, minT, maxT> {
     return found;
   }
 
-  virtual AABB boundingBox() const override {
+  [[nodiscard]] AABB boundingBox() const override {
     bool first = true;
     AABB out;
     for (auto &hittable : hittables) {
@@ -54,7 +53,5 @@ struct _HittableList : public _Hittable<T, minT, maxT> {
     return out;
   }
 };
-
-using HittableList = _HittableList<double>;
 
 #endif
