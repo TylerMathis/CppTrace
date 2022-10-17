@@ -1,6 +1,8 @@
 *.png
+*.obj
 *.mov
 .vscode
 venv
 main
 .DS_Store
+.idea
