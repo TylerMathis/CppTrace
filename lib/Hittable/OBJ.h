@@ -21,7 +21,7 @@ struct OBJ : public Hittable {
   OBJ(std::string &filepath, const std::shared_ptr<Material> &material) {
     objl::Loader Loader;
     if (!(Loader.LoadFile(filepath))) {
-      std::cerr << "Error: OBJ path " << filepath << " is not a valid path";
+      std::cerr << "Error: OBJ path " << filepath << " is not a valid path\n";
       return;
     }
     std::cout << "Loading object " << filepath << "\n";
