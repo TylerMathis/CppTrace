@@ -9,6 +9,7 @@
 struct Dielectric : public Material {
   double refractionIndex;
 
+  Dielectric() : refractionIndex(0) {}
   explicit Dielectric(const double refractionIndex)
       : refractionIndex(refractionIndex) {}
 

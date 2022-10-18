@@ -5,3 +5,4 @@
 venv
 main
 .DS_Store
+.idea

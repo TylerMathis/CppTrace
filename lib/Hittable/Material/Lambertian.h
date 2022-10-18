@@ -9,6 +9,7 @@
 struct Lambertian : public Material {
   Color3 albedo;
 
+  Lambertian() = default;
   explicit Lambertian(const Color3 &albedo) : albedo(albedo) {}
 
   void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,

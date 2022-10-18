@@ -11,6 +11,7 @@ struct Metal : public Material {
   Color3 albedo;
   double fuzziness;
 
+  Metal() : albedo(), fuzziness(0) {}
   Metal(const Color3 &albedo, double fuzziness = 0)
       : albedo(albedo), fuzziness(common::clamp(fuzziness, 0, 1)) {}
 
