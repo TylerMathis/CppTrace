@@ -1,9 +1,11 @@
-#ifndef PROGRESS_WRITER_H
-#define PROGRESS_WRITER_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
+
+#ifndef RAYTRACER_LIB_CLI_PROGRESS_INDICATOR_HPP_
+#define RAYTRACER_LIB_CLI_PROGRESS_INDICATOR_HPP_
 
 #include <iostream>
-
-using std::cout;
 
 struct ProgressIndicator {
   const int BAR_WIDTH = 70;
@@ -17,25 +19,25 @@ struct ProgressIndicator {
     int intProgress = (int) (progress * 100);
 
     int barProgress = (int) (BAR_WIDTH * progress);
-    cout << "[";
+    std::cout << "[";
     for (int i = 0; i < BAR_WIDTH; i++) {
       if (i < barProgress)
-        cout << "=";
+        std::cout << "=";
       else if (i == barProgress)
-        cout << ">";
+        std::cout << ">";
       else
-        cout << "-";
+        std::cout << "-";
     }
-    cout << "] ";
-    cout << intProgress << "%\r";
-    cout.flush();
+    std::cout << "] ";
+    std::cout << intProgress << "%\r";
+    std::cout.flush();
   }
 
   void done() const {
     indicate(numSteps);
-    cout << "\n";
-    cout.flush();
+    std::cout << "\n";
+    std::cout.flush();
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_CLI_PROGRESS_INDICATOR_HPP_

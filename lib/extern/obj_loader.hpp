@@ -1,6 +1,6 @@
 // OBJ_Loader.h - A Single Header OBJ Model Loader
-
-#pragma once
+#ifndef RAYTRACER_LIB_EXTERN_OBJ_LOADER_HPP_
+#define RAYTRACER_LIB_EXTERN_OBJ_LOADER_HPP_
 
 // Iostream - STD I/O Library
 #include <iostream>
@@ -258,8 +258,8 @@ Vector3 GenTriNormal(Vector3 t1, Vector3 t2, Vector3 t3) {
 bool inTriangle(Vector3 point, Vector3 tri1, Vector3 tri2, Vector3 tri3) {
   // Test to see if it is within an infinite prism that the triangle outlines.
   bool within_tri_prisim = SameSide(point, tri1, tri2, tri3) &&
-                           SameSide(point, tri2, tri1, tri3) &&
-                           SameSide(point, tri3, tri1, tri2);
+      SameSide(point, tri2, tri1, tri3) &&
+      SameSide(point, tri3, tri1, tri2);
 
   // If it isn't it will never be on the triangle
   if (!within_tri_prisim)
@@ -351,7 +351,7 @@ inline const T &getElement(const std::vector<T> &elements, std::string &index) {
 //
 // Description: The OBJ Model Loader
 class Loader {
-public:
+ public:
   // Default Constructor
   Loader() {}
   ~Loader() { LoadedMeshes.clear(); }
@@ -513,7 +513,7 @@ public:
           Indices.push_back(indnum);
 
           indnum = (unsigned int)((LoadedVertices.size()) - vVerts.size()) +
-                   iIndices[i];
+              iIndices[i];
           LoadedIndices.push_back(indnum);
         }
       }
@@ -624,7 +624,7 @@ public:
   // Loaded Material Objects
   std::vector<Material> LoadedMaterials;
 
-private:
+ private:
   // Generate vertices from a list of positions,
   //	tcoords, normals and a face line
   void GenVerticesFromRawOBJ(std::vector<Vertex> &oVerts,
@@ -671,41 +671,41 @@ private:
 
       // Calculate and store the vertex
       switch (vtype) {
-      case 1: // P
-      {
-        vVert.Position = algorithm::getElement(iPositions, svert[0]);
-        vVert.TextureCoordinate = Vector2(0, 0);
-        noNormal = true;
-        oVerts.push_back(vVert);
-        break;
-      }
-      case 2: // P/T
-      {
-        vVert.Position = algorithm::getElement(iPositions, svert[0]);
-        vVert.TextureCoordinate = algorithm::getElement(iTCoords, svert[1]);
-        noNormal = true;
-        oVerts.push_back(vVert);
-        break;
-      }
-      case 3: // P//N
-      {
-        vVert.Position = algorithm::getElement(iPositions, svert[0]);
-        vVert.TextureCoordinate = Vector2(0, 0);
-        vVert.Normal = algorithm::getElement(iNormals, svert[2]);
-        oVerts.push_back(vVert);
-        break;
-      }
-      case 4: // P/T/N
-      {
-        vVert.Position = algorithm::getElement(iPositions, svert[0]);
-        vVert.TextureCoordinate = algorithm::getElement(iTCoords, svert[1]);
-        vVert.Normal = algorithm::getElement(iNormals, svert[2]);
-        oVerts.push_back(vVert);
-        break;
-      }
-      default: {
-        break;
-      }
+        case 1: // P
+        {
+          vVert.Position = algorithm::getElement(iPositions, svert[0]);
+          vVert.TextureCoordinate = Vector2(0, 0);
+          noNormal = true;
+          oVerts.push_back(vVert);
+          break;
+        }
+        case 2: // P/T
+        {
+          vVert.Position = algorithm::getElement(iPositions, svert[0]);
+          vVert.TextureCoordinate = algorithm::getElement(iTCoords, svert[1]);
+          noNormal = true;
+          oVerts.push_back(vVert);
+          break;
+        }
+        case 3: // P//N
+        {
+          vVert.Position = algorithm::getElement(iPositions, svert[0]);
+          vVert.TextureCoordinate = Vector2(0, 0);
+          vVert.Normal = algorithm::getElement(iNormals, svert[2]);
+          oVerts.push_back(vVert);
+          break;
+        }
+        case 4: // P/T/N
+        {
+          vVert.Position = algorithm::getElement(iPositions, svert[0]);
+          vVert.TextureCoordinate = algorithm::getElement(iTCoords, svert[1]);
+          vVert.Normal = algorithm::getElement(iNormals, svert[2]);
+          oVerts.push_back(vVert);
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
 
@@ -821,7 +821,7 @@ private:
         // If Vertex is not an interior vertex
         float angle = math::AngleBetweenV3(pPrev.Position - pCur.Position,
                                            pNext.Position - pCur.Position) *
-                      (180 / 3.14159265359);
+            (180 / 3.14159265359);
         if (angle <= 0 && angle >= 180)
           continue;
 
@@ -1007,9 +1007,11 @@ private:
     // If not return false
     if (LoadedMaterials.empty())
       return false;
-    // If so return true
+      // If so return true
     else
       return true;
   }
 };
 } // namespace objl
+
+#endif //RAYTRACER_LIB_EXTERN_OBJ_LOADER_HPP_

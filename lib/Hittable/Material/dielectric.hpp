@@ -1,10 +1,14 @@
-#ifndef DIELECTRIC_H
-#define DIELECTRIC_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../../Ray.h"
-#include "../../Vec3.h"
-#include "../Hit.h"
-#include "Material.h"
+#ifndef RAYTRACER_LIB_HITTABLE_MATERIAL_DIELECTRIC_HPP_
+#define RAYTRACER_LIB_HITTABLE_MATERIAL_DIELECTRIC_HPP_
+
+#include "../../common/ray.hpp"
+#include "../../common/vec3.hpp"
+#include "../hit.hpp"
+#include "material.hpp"
 
 struct Dielectric : public Material {
   double refractionIndex;
@@ -44,4 +48,4 @@ struct Dielectric : public Material {
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_MATERIAL_DIELECTRIC_HPP_

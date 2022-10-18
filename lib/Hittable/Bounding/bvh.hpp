@@ -1,18 +1,24 @@
-#ifndef BVH_H
-#define BVH_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../../Common.h"
-#include "../../Ray.h"
-#include "../Hit.h"
-#include "../Hittable.h"
-#include "../HittableList.h"
-#include "AABB.h"
+#ifndef RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_
+#define RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_
 
+#include "../../common/common.hpp"
+#include "../../common/ray.hpp"
+#include "../hit.hpp"
+#include "../hittable.hpp"
+#include "../hittable_list.hpp"
+#include "aabb.hpp"
+
+#include <cassert>
 #include <climits>
 #include <memory>
 #include <random>
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 
 struct BVHNode : Hittable {
   std::shared_ptr<Hittable> left, right;
@@ -25,6 +31,7 @@ struct BVHNode : Hittable {
 
   BVHNode(const std::vector<std::shared_ptr<Hittable>> &_objects,
           const int start, const int end) {
+    if (_objects.empty()) return;
     auto objects = _objects;
 
     int axis = common::randomInt(0, 2);
@@ -76,4 +83,4 @@ struct BVHNode : Hittable {
 
 using BVH = BVHNode;
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_

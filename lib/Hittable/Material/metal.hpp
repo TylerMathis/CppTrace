@@ -1,11 +1,15 @@
-#ifndef METAL_H
-#define METAL_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../../Common.h"
-#include "../../Ray.h"
-#include "../../Vec3.h"
-#include "../Hit.h"
-#include "Material.h"
+#ifndef RAYTRACER_LIB_HITTABLE_MATERIAL_METAL_HPP_
+#define RAYTRACER_LIB_HITTABLE_MATERIAL_METAL_HPP_
+
+#include "../../common/common.hpp"
+#include "../../common/ray.hpp"
+#include "../../common/vec3.hpp"
+#include "../hit.hpp"
+#include "material.hpp"
 
 struct Metal : public Material {
   Color3 albedo;
@@ -23,4 +27,4 @@ struct Metal : public Material {
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_MATERIAL_METAL_HPP_

@@ -1,10 +1,14 @@
-#ifndef LAMBERTIAN_H
-#define LAMBERTIAN_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../../Ray.h"
-#include "../../Vec3.h"
-#include "../Hit.h"
-#include "Material.h"
+#ifndef RAYTRACER_LIB_HITTABLE_MATERIAL_LAMBERTIAN_HPP_
+#define RAYTRACER_LIB_HITTABLE_MATERIAL_LAMBERTIAN_HPP_
+
+#include "../../common/ray.hpp"
+#include "../../common/vec3.hpp"
+#include "../hit.hpp"
+#include "material.hpp"
 
 struct Lambertian : public Material {
   Color3 albedo;
@@ -20,4 +24,4 @@ struct Lambertian : public Material {
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_MATERIAL_LAMBERTIAN_HPP_

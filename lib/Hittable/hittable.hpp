@@ -1,10 +1,14 @@
-#ifndef HITTABLE_H
-#define HITTABLE_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../Ray.h"
-#include "./Bounding/AABB.h"
-#include "./Material/Material.h"
-#include "Hit.h"
+#ifndef RAYTRACER_LIB_HITTABLE_HITTABLE_HPP_
+#define RAYTRACER_LIB_HITTABLE_HITTABLE_HPP_
+
+#include "../common/ray.hpp"
+#include "bounding/aabb.hpp"
+#include "material/material.hpp"
+#include "hit.hpp"
 
 #include <memory>
 #include <climits>
@@ -24,4 +28,4 @@ inline bool boxCompare(const std::shared_ptr<Hittable> &a,
   return boxA.a[axis] < boxB.a[axis];
 }
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_HITTABLE_HPP_

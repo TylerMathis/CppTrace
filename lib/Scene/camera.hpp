@@ -1,9 +1,13 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "./Hittable/Hittable.h"
-#include "Ray.h"
-#include "Vec3.h"
+#ifndef RAYTRACER_LIB_SCENE_CAMERA_HPP_
+#define RAYTRACER_LIB_SCENE_CAMERA_HPP_
+
+#include "../hittable/hittable.hpp"
+#include "../common/ray.hpp"
+#include "../common/vec3.hpp"
 
 #include <cmath>
 #include <vector>
@@ -54,4 +58,4 @@ struct Camera {
   double lensRadius;
 };
 
-#endif
+#endif //RAYTRACER_LIB_SCENE_CAMERA_HPP_

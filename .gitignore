@@ -1,7 +1,16 @@
+# Artifacts
 *.png
 *.obj
 *.mov
+
+# Build
+cmake-build-*
+
+# Editor
 .vscode
+
+# Python env
 venv
-main
+
+# Mac
 .DS_Store

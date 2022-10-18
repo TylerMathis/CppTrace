@@ -1,9 +1,13 @@
-#ifndef HITTABLE_LIST_H
-#define HITTABLE_LIST_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../Ray.h"
-#include "./Hit.h"
-#include "Hittable.h"
+#ifndef RAYTRACER_LIB_HITTABLE_HITTABLE_LIST_HPP_
+#define RAYTRACER_LIB_HITTABLE_HITTABLE_LIST_HPP_
+
+#include "../common/ray.hpp"
+#include "hit.hpp"
+#include "hittable.hpp"
 
 #include <climits>
 #include <memory>
@@ -54,4 +58,4 @@ struct HittableList : public Hittable {
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_HITTABLE_LIST_HPP_

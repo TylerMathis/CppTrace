@@ -1,14 +1,18 @@
-#ifndef OBJ_H
-#define OBJ_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../Vec3.h"
-#include "./Bounding/BVH.h"
-#include "./Material/Lambertian.h"
-#include "Hittable.h"
-#include "HittableList.h"
-#include "Triangle.h"
+#ifndef RAYTRACER_LIB_HITTABLE_OBJ_HPP_
+#define RAYTRACER_LIB_HITTABLE_OBJ_HPP_
 
-#include "../OBJ_Loader.h"
+#include "../common/vec3.hpp"
+#include "bounding/bvh.hpp"
+#include "material/lambertian.hpp"
+#include "hittable.hpp"
+#include "hittable_list.hpp"
+#include "triangle.hpp"
+
+#include "../extern/obj_loader.hpp"
 
 #include <climits>
 #include <iostream>
@@ -52,4 +56,4 @@ struct OBJ : public Hittable {
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
 };
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_OBJ_HPP_

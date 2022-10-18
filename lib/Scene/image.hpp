@@ -1,11 +1,15 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "Common.h"
-#include "Vec3.h"
+#ifndef RAYTRACER_LIB_SCENE_IMAGE_HPP_
+#define RAYTRACER_LIB_SCENE_IMAGE_HPP_
+
+#include "../common/common.hpp"
+#include "../common/vec3.hpp"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+#include "../extern/stb_image_write.hpp"
 
 #include <cstdint>
 #include <cstdlib>
@@ -46,4 +50,4 @@ struct Image {
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_SCENE_IMAGE_HPP_

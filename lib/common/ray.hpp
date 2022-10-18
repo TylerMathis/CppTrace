@@ -1,7 +1,11 @@
-#ifndef RAY_H
-#define RAY_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "Vec3.h"
+#ifndef RAYTRACER_LIB_COMMON_RAY_HPP_
+#define RAYTRACER_LIB_COMMON_RAY_HPP_
+
+#include "vec3.hpp"
 
 struct Ray {
   Point3 origin;
@@ -16,4 +20,4 @@ struct Ray {
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_COMMON_RAY_HPP_

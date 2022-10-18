@@ -1,8 +1,12 @@
-#ifndef HIT_H
-#define HIT_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../Vec3.h"
-#include "./Material/Material.h"
+#ifndef RAYTRACER_LIB_HITTABLE_HIT_HPP_
+#define RAYTRACER_LIB_HITTABLE_HIT_HPP_
+
+#include "../common/vec3.hpp"
+#include "material/material.hpp"
 
 #include <cfloat>
 #include <memory>
@@ -24,4 +28,4 @@ struct Hit {
   bool operator<(const Hit &o) const { return t < o.t; }
 };
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_HIT_HPP_

@@ -1,12 +1,16 @@
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "../Ray.h"
-#include "../Vec3.h"
-#include "./Bounding/AABB.h"
-#include "./Material/Material.h"
-#include "Hit.h"
-#include "Hittable.h"
+#ifndef RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_
+#define RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_
+
+#include "../common/ray.hpp"
+#include "../common/vec3.hpp"
+#include "bounding/aabb.hpp"
+#include "material/material.hpp"
+#include "hit.hpp"
+#include "hittable.hpp"
 
 #include <climits>
 #include <memory>
@@ -75,4 +79,4 @@ struct Triangle : public Hittable {
   }
 };
 
-#endif
+#endif //RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_

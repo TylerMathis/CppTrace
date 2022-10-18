@@ -1,7 +1,11 @@
-#ifndef VEC3_H
-#define VEC3_H
+//
+// Created by Tyler Hostler-Mathis on 10/18/22.
+//
 
-#include "Common.h"
+#ifndef RAYTRACER_LIB_COMMON_VEC3_HPP_
+#define RAYTRACER_LIB_COMMON_VEC3_HPP_
+
+#include "common.hpp"
 
 #include <cmath>
 #include <stdexcept>
@@ -143,4 +147,4 @@ using Point3 = Vec3;
 using Color3 = Vec3;
 using Normal = Vec3;
 
-#endif
+#endif //RAYTRACER_LIB_COMMON_VEC3_HPP_
