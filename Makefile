@@ -1,5 +1,5 @@
 build:
-	g++ -std=c++17 -O2 main.cpp -o main
+	g++ -std=c++17 -O2 main.cpp -o build/main
 
 clean: clean_bin clean_out
 
