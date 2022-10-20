@@ -16,11 +16,12 @@ struct Lambertian : public Material {
   Lambertian() = default;
   explicit Lambertian(const Color3 &albedo) : albedo(albedo) {}
 
-  void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
+  bool scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
                Ray &out) const override {
     Point3 target = hit.location + Vec3::randomInHemisphere(hit.normal);
     out = Ray(hit.location, target - hit.location);
     attenuation = albedo;
+    return true;
   }
 };
 

@@ -24,14 +24,20 @@ struct Triangle : public Hittable {
   std::vector<Point3> points;
   Normal normal;
 
-  Triangle(const Point3 &a, const Point3 &b, const Point3 &c, const std::shared_ptr<Material> &material)
+  Triangle(const Point3 &a,
+           const Point3 &b,
+           const Point3 &c,
+           const std::shared_ptr<Material> &material)
       : a(a), b(b), c(c),
       // Wrap point to avoid modulo
         points({a, b, c, a}), normal((b - a).cross(c - a).unit()) {
     this->material = material;
   }
 
-  bool hit(const Ray &ray, Hit &hit, const double minT, const double maxT) const override {
+  bool hit(const Ray &ray,
+           Hit &hit,
+           const double minT,
+           const double maxT) const override {
     // If ray is parallel to triangle plane, no hit
     double normalDotRayDir = normal.dot(ray.direction);
     if (std::abs(normalDotRayDir) <= EPS)
@@ -55,8 +61,9 @@ struct Triangle : public Hittable {
 
     bool front = ray.direction.dot(normal) < 0;
     Normal hitNormal = front ? normal : -normal;
-    hit = Hit(location, hitNormal, this->material, t, front);
 
+    // TODO: Use actual uvs
+    hit = Hit(location, hitNormal, this->material, t, 0, 0, front);
     return true;
   }
 

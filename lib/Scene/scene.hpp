@@ -32,20 +32,33 @@ struct Scene {
   std::shared_ptr<Camera> camera;
   std::shared_ptr<Image> image;
 
+  Color3 ambient;
+
   HittableList objects;
   BVH bvh;
 
   Scene() = default;
   explicit Scene(std::shared_ptr<Camera> camera,
                  std::shared_ptr<Image> image,
+                 const Color3 &ambient = {0, 0, 0},
                  const std::vector<std::shared_ptr<Hittable>> &hittables = {})
       : camera(std::move(camera)),
         image(std::move(image)),
+        ambient(ambient),
         objects(hittables),
         bvh(objects) {}
 
+  void setAmbient(const Color3 &_ambient) {
+    ambient = _ambient;
+  }
+
   void pushHittable(const std::shared_ptr<Hittable> &hittable) {
     objects.pushHittable(hittable);
+    bvh = BVH(objects);
+  }
+  void pushHittables(const std::vector<std::shared_ptr<Hittable>> &hittables) {
+    for (auto &hittable : hittables)
+      objects.pushHittable(hittable);
     bvh = BVH(objects);
   }
   void loadHittable(const std::shared_ptr<Hittable> &hittable) {
@@ -64,21 +77,21 @@ struct Scene {
       return {0, 0, 0};
 
     Hit hit;
-    if (bvh.hit(ray, hit, 0.001, DBL_MAX)) {
-      Color3 attenuation;
-      Ray out;
-      hit.material->scatter(ray, hit, attenuation, out);
-      return getPixelColor(out, bouncesLeft - 1) * attenuation;
+    if (!bvh.hit(ray, hit, 0.001, DBL_MAX)) {
+      return ambient;
     }
 
-    Vec3 unitDirection = ray.direction.unit();
-    double t = (unitDirection.y + 1.0) / 2;
+    Color3 attenuation;
+    Ray out;
+    Color3 emitted = hit.material->emit(0 /* TODO hit.u */, 0, hit.location);
+    if (!hit.material->scatter(ray, hit, attenuation, out)) {
+      return emitted;
+    }
 
-    Color3 color = Color3(1, 1, 1) * (1.0 - t) + Color3(0.5, 0.7, 1.0) * t;
-    return color;
+    return emitted + getPixelColor(out, bouncesLeft - 1) * attenuation;
   }
 
-  void render(const int threads = 19) const {
+  void render(const int threads = 4) const {
     std::cout << "Beginning render\n";
     std::vector<std::vector<std::pair<int, int>>> locations(threads);
     int curThread = 0;

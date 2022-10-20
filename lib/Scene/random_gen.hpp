@@ -24,17 +24,18 @@
 
 const double refractionIndexGlass = 1.52;
 std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
-  srand(time(NULL));
+  srand(1920312032);
   const double locBound = 400;
   const double radBound = 4;
   const double colorBound = 1;
   std::vector<Sphere> scene;
 
   const auto invalidLoc = [&scene](const Vec3 &loc, const double rad) -> bool {
-    for (auto &s : scene)
-      if (loc.dist(s.center) <= rad + s.radius)
-        return true;
-    return false;
+    return std::any_of(begin(scene),
+                       end(scene),
+                       [&loc, &rad](Sphere &s) {
+                         return loc.dist(s.center) <= rad + s.radius;
+                       });
   };
 
   for (int i = 1; i <= objects; i++) {
@@ -50,14 +51,19 @@ std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
     } while (invalidLoc(randomPos, randomRad));
 
     std::shared_ptr<Material> randomMat;
-    Color3 randomColor = Color3::random(0.2, colorBound);
+    Color3 randomColor = Color3::random(0.3, colorBound);
     int materialType = common::randomInt(0, 4);
-    if (materialType <= 2)
-      randomMat = std::make_shared<Lambertian>(randomColor);
-    else if (materialType <= 3)
-      randomMat = std::make_shared<Metal>(randomColor);
-    else
-      randomMat = std::make_shared<Dielectric>(refractionIndexGlass);
+    switch (materialType) {
+      default:
+      case 0:randomMat = std::make_shared<Emissive>(randomColor);
+        break;
+      case 1:randomMat = std::make_shared<Metal>(randomColor);
+        break;
+      case 2:randomMat = std::make_shared<Lambertian>(randomColor);
+        break;
+      case 3:randomMat = std::make_shared<Dielectric>(refractionIndexGlass);
+        break;
+    }
 
     scene.emplace_back(randomPos, randomRad, randomMat);
   }

@@ -12,8 +12,14 @@
 struct Hit;
 
 struct Material {
-  virtual void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
+  virtual bool scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
                        Ray &out) const = 0;
+
+  [[nodiscard]] virtual Color3 emit(const double u,
+                                    const double v,
+                                    const Point3 &point) const {
+    return {};
+  }
 };
 
 #endif //RAYTRACER_LIB_HITTABLE_MATERIAL_MATERIAL_HPP_

@@ -13,6 +13,7 @@
 #include "hittable.hpp"
 
 #include <climits>
+#include <cmath>
 
 struct Sphere : public Hittable {
   Point3 center;
@@ -53,8 +54,20 @@ struct Sphere : public Hittable {
     if (!front)
       normal = -normal;
 
-    hit = Hit(location, normal, this->material, t, front);
+    double u, v;
+    calcUV(location, u, v);
+    hit = Hit(location, normal, this->material, t, u, v, front);
     return true;
+  }
+
+  static void calcUV(const Point3 &location,
+                     double &u,
+                     double &v) {
+    double theta = acos(-location.y);
+    double phi = atan2(-location.z, location.x) + M_PI;
+
+    u = phi / (2 * M_PI);
+    v = theta / M_PI;
   }
 
   [[nodiscard]] AABB boundingBox() const override {

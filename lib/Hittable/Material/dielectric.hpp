@@ -17,7 +17,7 @@ struct Dielectric : public Material {
   explicit Dielectric(const double refractionIndex)
       : refractionIndex(refractionIndex) {}
 
-  void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
+  bool scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
                Ray &out) const override {
     attenuation = Color3(1, 1, 1);
 
@@ -36,6 +36,7 @@ struct Dielectric : public Material {
                         : unitDirection.reflect(hit.normal);
 
     out = Ray(hit.location, outDirection);
+    return true;
   }
 
  private:

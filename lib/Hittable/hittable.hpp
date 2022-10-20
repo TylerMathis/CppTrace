@@ -17,7 +17,10 @@
 struct Hittable {
   std::shared_ptr<Material> material;
 
-  virtual bool hit(const Ray &ray, Hit &hit, double minT, double maxT) const = 0;
+  virtual bool hit(const Ray &ray,
+                   Hit &hit,
+                   double minT,
+                   double maxT) const = 0;
 
   [[nodiscard]] virtual AABB boundingBox() const = 0;
 };

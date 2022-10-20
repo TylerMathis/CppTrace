@@ -16,14 +16,15 @@ struct Metal : public Material {
   double fuzziness;
 
   Metal() : albedo(), fuzziness(0) {}
-  Metal(const Color3 &albedo, double fuzziness = 0)
+  explicit Metal(const Color3 &albedo, double fuzziness = 0)
       : albedo(albedo), fuzziness(common::clamp(fuzziness, 0, 1)) {}
 
-  virtual void scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
-                       Ray &out) const override {
+  bool scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
+               Ray &out) const override {
     Vec3 reflected = in.direction.unit().reflect(hit.normal);
     out = Ray(hit.location, reflected + Vec3::randomInUnitSphere() * fuzziness);
     attenuation = albedo;
+    return true;
   }
 };
 
