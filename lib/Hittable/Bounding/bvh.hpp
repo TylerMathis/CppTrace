@@ -21,7 +21,7 @@
 #include <iostream>
 
 struct BVHNode : Hittable {
-  std::shared_ptr<Hittable> left, right;
+  std::vector<std::shared_ptr<Hittable>> children;
   AABB box;
 
   BVHNode() = default;
@@ -35,32 +35,28 @@ struct BVHNode : Hittable {
     auto objects = _objects;
 
     int axis = common::randomInt(0, 2);
-    auto cmp = [&axis](const std::shared_ptr<Hittable> &a,
-                       const std::shared_ptr<Hittable> &b) {
-      return boxCompare(a, b, axis);
-    };
+    std::sort(objects.begin() + start,
+              objects.begin() + end + 1,
+              [&axis](const std::shared_ptr<Hittable> &a,
+                      const std::shared_ptr<Hittable> &b) {
+                return boxCompare(a, b, axis);
+              });
 
     int span = end - start + 1;
-    if (span == 1) {
-      left = right = objects[start];
-    } else if (span == 2) {
-      if (cmp(objects[start], objects[start + 1])) {
-        left = objects[start];
-        right = objects[start + 1];
-      } else {
-        left = objects[start + 1];
-        right = objects[start];
-      }
+    if (span <= 8) {
+      children = {begin(objects) + start, begin(objects) + end + 1};
     } else {
-      std::sort(objects.begin() + start, objects.begin() + end + 1, cmp);
-
       int mid = (start + end) >> 1;
-      left = std::make_shared<BVHNode>(objects, start, mid);
-      right = std::make_shared<BVHNode>(objects, mid + 1, end);
+      auto left = std::make_shared<BVHNode>(objects, start, mid);
+      auto right = std::make_shared<BVHNode>(objects, mid + 1, end);
+      children = {left, right};
     }
 
-    AABB boxLeft = left->boundingBox(), boxRight = right->boundingBox();
-    box = surroundingBox(boxLeft, boxRight);
+    box = children[0]->boundingBox();
+    for (int i = 1; i < children.size(); i++) {
+      AABB childBox = children[i]->boundingBox();
+      box = surroundingBox(box, childBox);
+    }
   }
 
   bool hit(const Ray &ray,
@@ -70,12 +66,14 @@ struct BVHNode : Hittable {
     if (!box.hit(ray, minT, maxT))
       return false;
 
-    Hit l, r;
-    bool hLeft = left->hit(ray, l, minT, maxT);
-    bool hRight = right->hit(ray, r, minT, maxT);
-    hit = std::min(l, r);
+    bool foundHit = false;
+    Hit childHit;
+    for (const auto &child : children) {
+      foundHit |= child->hit(ray, childHit, minT, maxT);
+      hit = std::min(hit, childHit);
+    }
 
-    return hLeft || hRight;
+    return foundHit;
   }
 
   [[nodiscard]] AABB boundingBox() const override { return box; }

@@ -24,8 +24,8 @@
 
 const double refractionIndexGlass = 1.52;
 std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
-  srand(1920312032);
-  const double locBound = 400;
+  srand(time(NULL));
+  const double locBound = 100;
   const double radBound = 4;
   const double colorBound = 1;
   std::vector<Sphere> scene;
@@ -72,7 +72,7 @@ std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
   for (auto &s : scene)
     ret.push_back(std::make_shared<Sphere>(s));
 
-  auto ground = std::make_shared<Lambertian>(Color3(0.8, 0.5, 0.7));
+  auto ground = std::make_shared<Lambertian>(Color3(0.5, 0.5, 0.5));
   ret.push_back(
       std::make_shared<Sphere>(Point3(0, -100000, 0), 100000, ground));
 

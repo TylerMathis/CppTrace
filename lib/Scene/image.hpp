@@ -13,23 +13,34 @@
 
 #include <cstdint>
 #include <cstdlib>
-
+#include <cfloat>
 #include <iostream>
 #include <string>
 
 struct Image {
   std::string name;
   int width, height, samples, bounces;
+  double minRayLength, maxRayLength;
   double aspectRatio;
   int comps = 3;
   uint8_t *data;
 
-  Image(const std::string &name, const int width, const int height,
-        const int samples = 50, const int bounces = 50)
-      : name(getPath(name)), width(width), height(height), samples(samples),
+  Image(const std::string &name,
+        const int width,
+        const int height,
+        const int samples = 50,
+        const int bounces = 50,
+        const double minRayLength = 0.001,
+        const double maxRayLength = DBL_MAX)
+      : name(getPath(name)),
+        width(width),
+        height(height),
+        samples(samples),
         bounces(bounces),
         data((uint8_t *) calloc(comps * width * height, sizeof(uint8_t))),
-        aspectRatio((double) width / height) {}
+        aspectRatio((double) width / height),
+        minRayLength(minRayLength),
+        maxRayLength(maxRayLength) {}
 
   static std::string getPath(const std::string &name) {
     return "./images/" + name + ".png";

@@ -17,7 +17,6 @@
 
 #include "unistd.h"
 
-#include <cfloat>
 #include <atomic>
 #include <chrono>
 #include <iostream>
