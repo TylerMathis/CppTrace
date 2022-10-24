@@ -9,8 +9,8 @@ int main() {
   const double aspectRatio = 1;
   const int width = 400;
   const int height = (int) (width / aspectRatio);
-  const int samples = 10;
-  const int bounces = 5;
+  const int samples = 20;
+  const int bounces = 10;
   Image image("cornell", width, height, samples, bounces, 0.001, 100);
 
   Point3 origin(0, 1, 2.7);
@@ -26,6 +26,6 @@ int main() {
               std::make_shared<Image>(image));
   auto box = cornellBox();
   scene.loadHittables(box);
-  scene.setAmbient(Color3(0.4, 0.6, 0.8));
+  scene.setAmbient(Color3(0.5, 0.5, 0.5));
   scene.render();
 }
