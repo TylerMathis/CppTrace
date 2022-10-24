@@ -6,12 +6,17 @@
 #define RAYTRACER_LIB_HITTABLE_MATERIAL_EMISSIVE_HPP_
 
 #include "material.hpp"
+#include "../textures/texture.hpp"
+
+#include <memory>
+#include <utility>
 
 struct Emissive : public Material {
-  Color3 emission;
+  std::shared_ptr<Texture> texture;
 
-  Emissive() : emission() {}
-  explicit Emissive(const Color3 &emission) : emission(emission) {}
+  Emissive() = default;
+  explicit Emissive(std::shared_ptr<Texture> texture)
+      : texture(std::move(texture)) {}
 
   bool scatter(const Ray &in, const Hit &hit, Color3 &attenuation,
                Ray &out) const override {
@@ -21,7 +26,7 @@ struct Emissive : public Material {
   [[nodiscard]] Color3 emit(const double u,
                             const double v,
                             const Point3 &point) const override {
-    return emission;
+    return texture->value(u, v, point);
   }
 };
 

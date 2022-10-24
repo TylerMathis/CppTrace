@@ -293,7 +293,7 @@ inline void split(const std::string &in, std::vector<std::string> &out,
       if (!temp.empty()) {
         out.push_back(temp);
         temp.clear();
-        i += (int)token.size() - 1;
+        i += (int) token.size() - 1;
       } else {
         out.push_back("");
       }
@@ -336,7 +336,7 @@ inline std::string firstToken(const std::string &in) {
 }
 
 // Get element at given index position
-template <class T>
+template<class T>
 inline const T &getElement(const std::vector<T> &elements, std::string &index) {
   int idx = std::stoi(index);
   if (idx < 0)
@@ -405,7 +405,7 @@ class Loader {
                     << "\t| normals > " << Normals.size() << "\t| triangles > "
                     << (Vertices.size() / 3)
                     << (!MeshMatNames.empty()
-                            ? "\t| material: " + MeshMatNames.back()
+                            ? "\t| materials: " + MeshMatNames.back()
                             : "");
         }
       }
@@ -509,10 +509,10 @@ class Loader {
         // Add Indices
         for (int i = 0; i < int(iIndices.size()); i++) {
           unsigned int indnum =
-              (unsigned int)((Vertices.size()) - vVerts.size()) + iIndices[i];
+              (unsigned int) ((Vertices.size()) - vVerts.size()) + iIndices[i];
           Indices.push_back(indnum);
 
-          indnum = (unsigned int)((LoadedVertices.size()) - vVerts.size()) +
+          indnum = (unsigned int) ((LoadedVertices.size()) - vVerts.size()) +
               iIndices[i];
           LoadedIndices.push_back(indnum);
         }
@@ -552,7 +552,7 @@ class Loader {
       if (algorithm::firstToken(curline) == "mtllib") {
         // Generate LoadedMaterial
 
-        // Generate a path to the material file
+        // Generate a path to the materials file
         std::vector<std::string> temp;
         algorithm::split(Path, temp, "/");
 
@@ -597,8 +597,8 @@ class Loader {
     for (int i = 0; i < MeshMatNames.size(); i++) {
       std::string matname = MeshMatNames[i];
 
-      // Find corresponding material name in loaded materials
-      // when found copy material variables into mesh material
+      // Find corresponding materials name in loaded materials
+      // when found copy materials variables into mesh materials
       for (int j = 0; j < LoadedMaterials.size(); j++) {
         if (LoadedMaterials[j].name == matname) {
           LoadedMeshes[i].MeshMaterial = LoadedMaterials[j];
@@ -651,7 +651,7 @@ class Loader {
         vtype = 1;
       }
 
-      // Check for position & texture - v1/vt1
+      // Check for position & textures - v1/vt1
       if (svert.size() == 2) {
         // Position & Texture
         vtype = 2;
@@ -875,7 +875,7 @@ class Loader {
 
   // Load Materials from .mtl file
   bool LoadMaterials(std::string path) {
-    // If the file is not a material file return false
+    // If the file is not a materials file return false
     if (path.substr(path.size() - 4, path.size()) != ".mtl")
       return false;
 
@@ -889,10 +889,10 @@ class Loader {
 
     bool listening = false;
 
-    // Go through each line looking for material variables
+    // Go through each line looking for materials variables
     std::string curline;
     while (std::getline(file, curline)) {
-      // new material and material name
+      // new materials and materials name
       if (algorithm::firstToken(curline) == "newmtl") {
         if (!listening) {
           listening = true;
@@ -903,7 +903,7 @@ class Loader {
             tempMaterial.name = "none";
           }
         } else {
-          // Generate the material
+          // Generate the materials
 
           // Push Back loaded Material
           LoadedMaterials.push_back(tempMaterial);
@@ -998,7 +998,7 @@ class Loader {
       }
     }
 
-    // Deal with last material
+    // Deal with last materials
 
     // Push Back loaded Material
     LoadedMaterials.push_back(tempMaterial);

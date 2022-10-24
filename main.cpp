@@ -3,7 +3,7 @@
 #include "./lib/scene/scene.hpp"
 #include "./lib/scene/cornell_box.hpp"
 #include "./lib/hittable/objects/sphere.hpp"
-#include "./lib/hittable/material/dielectric.hpp"
+#include "./lib/hittable/materials/dielectric.hpp"
 
 #include <memory>
 
