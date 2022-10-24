@@ -18,9 +18,7 @@ struct Rectangle : Hittable {
   Rectangle() = default;
   // Reflects point b of a triangle to make the rectangle
   explicit Rectangle(const Triangle &a)
-      : a(a), b(a.a, a.b + (a.a - a.b) + (a.c - a.b), a.c, a.material) {
-    std::cout << b.a << std::endl << b.b << std::endl << b.c << std::endl;
-  }
+      : a(a), b(a.a, a.b + (a.a - a.b) + (a.c - a.b), a.c, a.material) {}
 
   bool hit(const Ray &ray, Hit &hit, double minT, double maxT) const override {
     bool didHit = false;

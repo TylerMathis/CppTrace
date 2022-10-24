@@ -19,9 +19,10 @@
 std::vector<std::shared_ptr<Hittable>> cornellBox() {
   std::vector<std::shared_ptr<Hittable>> scene;
 
-  auto white = std::make_shared<Lambertian>(Color3(1, 1, 1));
-  auto red = std::make_shared<Lambertian>(Color3(1, 0.1, 0.1));
-  auto green = std::make_shared<Lambertian>(Color3(0.1, 0.1, 1));
+  auto white = std::make_shared<Lambertian>(Color3(0.9, 0.9, 0.9));
+  auto red = std::make_shared<Lambertian>(Color3(0.9, 0.1, 0.1));
+  auto green = std::make_shared<Lambertian>(Color3(0.1, 0.1, 0.9));
+  auto light = std::make_shared<Emissive>(Color3(1, 1, 1));
 
   auto floorTri =
       Triangle(Point3(-1, 0, 1), Point3(-1, 0, -1), Point3(1, 0, -1), white);
@@ -47,6 +48,14 @@ std::vector<std::shared_ptr<Hittable>> cornellBox() {
       Triangle(Point3(-1, 2, 1), Point3(-1, 2, -1), Point3(1, 2, -1), white);
   auto topWall = std::make_shared<Rectangle>(topWallTri);
   scene.push_back(topWall);
+
+  auto topLightTri =
+      Triangle(Point3(-0.25, 1.99, 0.25),
+               Point3(-0.25, 1.99, -0.25),
+               Point3(0.25, 1.99, -0.25),
+               light);
+  auto topLight = std::make_shared<Rectangle>(topLightTri);
+  scene.push_back(topLight);
 
   return scene;
 }

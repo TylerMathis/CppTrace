@@ -82,7 +82,7 @@ struct Scene {
 
     Color3 attenuation;
     Ray out;
-    Color3 emitted = hit.material->emit(0 /* TODO hit.u */, 0, hit.location);
+    Color3 emitted = hit.material->emit(hit.u, hit.v, hit.location);
     if (!hit.material->scatter(ray, hit, attenuation, out)) {
       return emitted;
     }
