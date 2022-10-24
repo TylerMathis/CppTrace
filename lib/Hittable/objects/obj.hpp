@@ -7,7 +7,7 @@
 
 #include "../../common/vec3.hpp"
 #include "../bounding/bvh.hpp"
-#include "../material/lambertian.hpp"
+#include "../materials/lambertian.hpp"
 #include "../hittable.hpp"
 #include "../hittable_list.hpp"
 #include "triangle.hpp"

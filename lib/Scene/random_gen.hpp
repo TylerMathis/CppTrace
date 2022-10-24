@@ -8,12 +8,13 @@
 #include "../common/common.hpp"
 #include "../common/vec3.hpp"
 #include "../hittable/hittable.hpp"
-#include "../hittable/material/dielectric.hpp"
-#include "../hittable/material/lambertian.hpp"
-#include "../hittable/material/emissive.hpp"
-#include "../hittable/material/material.hpp"
-#include "../hittable/material/metal.hpp"
+#include "../hittable/materials/dielectric.hpp"
+#include "../hittable/materials/lambertian.hpp"
+#include "../hittable/materials/emissive.hpp"
+#include "../hittable/materials/material.hpp"
+#include "../hittable/materials/metal.hpp"
 #include "../hittable/objects/sphere.hpp"
+#include "../hittable/textures/solid_color.hpp"
 
 #include <ctime>
 #include <iostream>
@@ -50,14 +51,15 @@ std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
 
     std::shared_ptr<Material> randomMat;
     Color3 randomColor = Color3::random(0.3, colorBound);
+    auto texture = std::make_shared<SolidColorTexture>(randomColor);
     int materialType = common::randomInt(0, 4);
     switch (materialType) {
       default:
-      case 0:randomMat = std::make_shared<Emissive>(randomColor);
+      case 0:randomMat = std::make_shared<Emissive>(texture);
         break;
-      case 1:randomMat = std::make_shared<Metal>(randomColor);
+      case 1:randomMat = std::make_shared<Metal>(texture);
         break;
-      case 2:randomMat = std::make_shared<Lambertian>(randomColor);
+      case 2:randomMat = std::make_shared<Lambertian>(texture);
         break;
       case 3:randomMat = std::make_shared<Dielectric>(refractionIndexGlass);
         break;
@@ -70,7 +72,9 @@ std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
   for (auto &s : scene)
     ret.push_back(std::make_shared<Sphere>(s));
 
-  auto ground = std::make_shared<Lambertian>(Color3(0.5, 0.5, 0.5));
+  auto groundTexture =
+      std::make_shared<SolidColorTexture>(Color3(0.5, 0.5, 0.5));
+  auto ground = std::make_shared<Lambertian>(groundTexture);
   ret.push_back(
       std::make_shared<Sphere>(Point3(0, -100000, 0), 100000, ground));
 

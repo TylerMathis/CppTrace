@@ -8,10 +8,11 @@
 #include "../common/common.hpp"
 #include "../common/vec3.hpp"
 #include "../hittable/hittable.hpp"
-#include "../hittable/material/lambertian.hpp"
-#include "../hittable/material/emissive.hpp"
-#include "../hittable/material/material.hpp"
+#include "../hittable/materials/lambertian.hpp"
+#include "../hittable/materials/emissive.hpp"
+#include "../hittable/materials/material.hpp"
 #include "../hittable/objects/rectangle.hpp"
+#include "../hittable/textures/solid_color.hpp"
 
 #include <memory>
 #include <vector>
@@ -19,10 +20,22 @@
 std::vector<std::shared_ptr<Hittable>> cornellBox() {
   std::vector<std::shared_ptr<Hittable>> scene;
 
-  auto white = std::make_shared<Lambertian>(Color3(0.9, 0.9, 0.9));
-  auto red = std::make_shared<Lambertian>(Color3(0.9, 0.1, 0.1));
-  auto green = std::make_shared<Lambertian>(Color3(0.1, 0.1, 0.9));
-  auto light = std::make_shared<Emissive>(Color3(1, 1, 1));
+  auto white = std::make_shared<Lambertian>(std::make_shared<SolidColorTexture>(
+      0.9,
+      0.9,
+      0.9));
+  auto red = std::make_shared<Lambertian>(std::make_shared<SolidColorTexture>(
+      0.9,
+      0.1,
+      0.1));
+  auto green = std::make_shared<Lambertian>(std::make_shared<SolidColorTexture>(
+      0.1,
+      0.1,
+      0.9));
+  auto light =
+      std::make_shared<Emissive>(std::make_shared<SolidColorTexture>(Color3(1,
+                                                                            1,
+                                                                            1)));
 
   auto floorTri =
       Triangle(Point3(-1, 0, 1), Point3(-1, 0, -1), Point3(1, 0, -1), white);

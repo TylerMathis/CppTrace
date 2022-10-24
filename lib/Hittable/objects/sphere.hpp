@@ -8,7 +8,7 @@
 #include "../../common/ray.hpp"
 #include "../../common/vec3.hpp"
 #include "../bounding/aabb.hpp"
-#include "../material/material.hpp"
+#include "../materials/material.hpp"
 #include "../hit.hpp"
 #include "../hittable.hpp"
 
@@ -50,12 +50,14 @@ struct Sphere : public Hittable {
 
     Point3 location(ray.at(t));
     Normal normal((location - center) / radius);
+
+    double u, v;
+    calcUV(normal, u, v);
+
     bool front = ray.direction.dot(normal) < 0;
     if (!front)
       normal = -normal;
 
-    double u, v;
-    calcUV(location, u, v);
     hit = Hit(location, normal, this->material, t, u, v, front);
     return true;
   }

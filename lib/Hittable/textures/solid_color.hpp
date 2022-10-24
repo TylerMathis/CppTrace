@@ -8,13 +8,13 @@
 #include "texture.hpp"
 #include "../../common/vec3.hpp"
 
-struct SolidColor : public Texture {
+struct SolidColorTexture : public Texture {
   Color3 color;
 
-  SolidColor() = default;
-  explicit SolidColor(const Color3 &color) : color(color) {}
-  SolidColor(const double r, const double g, const double b)
-      : SolidColor(Color3(r, g, b)) {}
+  SolidColorTexture() = default;
+  explicit SolidColorTexture(const Color3 &color) : color(color) {}
+  SolidColorTexture(const double r, const double g, const double b)
+      : SolidColorTexture(Color3(r, g, b)) {}
 
   [[nodiscard]] Color3 value(const double u,
                              const double v,

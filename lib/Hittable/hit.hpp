@@ -6,7 +6,7 @@
 #define RAYTRACER_LIB_HITTABLE_HIT_HPP_
 
 #include "../common/vec3.hpp"
-#include "material/material.hpp"
+#include "materials/material.hpp"
 
 #include <cfloat>
 #include <memory>

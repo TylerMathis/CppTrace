@@ -7,7 +7,7 @@
 
 #include "../common/ray.hpp"
 #include "bounding/aabb.hpp"
-#include "material/material.hpp"
+#include "materials/material.hpp"
 #include "hit.hpp"
 
 #include <memory>
