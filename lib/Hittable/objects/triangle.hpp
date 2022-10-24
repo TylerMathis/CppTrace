@@ -5,12 +5,12 @@
 #ifndef RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_
 #define RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_
 
-#include "../common/ray.hpp"
-#include "../common/vec3.hpp"
-#include "bounding/aabb.hpp"
-#include "material/material.hpp"
-#include "hit.hpp"
-#include "hittable.hpp"
+#include "../../common/ray.hpp"
+#include "../../common/vec3.hpp"
+#include "../bounding/aabb.hpp"
+#include "../material/material.hpp"
+#include "../hit.hpp"
+#include "../hittable.hpp"
 
 #include <climits>
 #include <memory>
@@ -24,6 +24,7 @@ struct Triangle : public Hittable {
   std::vector<Point3> points;
   Normal normal;
 
+  Triangle() = default;
   Triangle(const Point3 &a,
            const Point3 &b,
            const Point3 &c,

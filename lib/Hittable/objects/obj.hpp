@@ -5,14 +5,14 @@
 #ifndef RAYTRACER_LIB_HITTABLE_OBJ_HPP_
 #define RAYTRACER_LIB_HITTABLE_OBJ_HPP_
 
-#include "../common/vec3.hpp"
-#include "bounding/bvh.hpp"
-#include "material/lambertian.hpp"
-#include "hittable.hpp"
-#include "hittable_list.hpp"
+#include "../../common/vec3.hpp"
+#include "../bounding/bvh.hpp"
+#include "../material/lambertian.hpp"
+#include "../hittable.hpp"
+#include "../hittable_list.hpp"
 #include "triangle.hpp"
 
-#include "../extern/obj_loader.hpp"
+#include "../../extern/obj_loader.hpp"
 
 #include <climits>
 #include <iostream>

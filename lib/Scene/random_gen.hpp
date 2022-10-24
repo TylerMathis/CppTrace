@@ -5,17 +5,15 @@
 #ifndef RAYTRACER_LIB_SCENE_RANDOM_GEN_HPP_
 #define RAYTRACER_LIB_SCENE_RANDOM_GEN_HPP_
 
-#include "camera.hpp"
-#include "image.hpp"
-#include "scene.hpp"
 #include "../common/common.hpp"
 #include "../common/vec3.hpp"
 #include "../hittable/hittable.hpp"
 #include "../hittable/material/dielectric.hpp"
 #include "../hittable/material/lambertian.hpp"
+#include "../hittable/material/emissive.hpp"
 #include "../hittable/material/material.hpp"
 #include "../hittable/material/metal.hpp"
-#include "../hittable/sphere.hpp"
+#include "../hittable/objects/sphere.hpp"
 
 #include <ctime>
 #include <iostream>

@@ -15,7 +15,7 @@
 #include "../hittable/Bounding/BVH.hpp"
 #include "../hittable/hit.hpp"
 #include "../hittable/hittable_list.hpp"
-#include "../hittable/sphere.hpp"
+#include "../hittable/objects/sphere.hpp"
 
 #include <fstream>
 #include <iostream>

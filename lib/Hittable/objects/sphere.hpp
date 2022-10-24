@@ -5,12 +5,12 @@
 #ifndef RAYTRACER_LIB_HITTABLE_SPHERE_HPP_
 #define RAYTRACER_LIB_HITTABLE_SPHERE_HPP_
 
-#include "../common/ray.hpp"
-#include "../common/vec3.hpp"
-#include "bounding/aabb.hpp"
-#include "material/material.hpp"
-#include "hit.hpp"
-#include "hittable.hpp"
+#include "../../common/ray.hpp"
+#include "../../common/vec3.hpp"
+#include "../bounding/aabb.hpp"
+#include "../material/material.hpp"
+#include "../hit.hpp"
+#include "../hittable.hpp"
 
 #include <climits>
 #include <cmath>

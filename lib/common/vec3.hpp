@@ -9,6 +9,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <ostream>
 
 struct Vec3 {
   double x, y, z;
@@ -16,6 +17,10 @@ struct Vec3 {
   Vec3() : x(0), y(0), z(0) {}
   Vec3(const double e0, const double e1, const double e2)
       : x(e0), y(e1), z(e2) {}
+
+  friend std::ostream &operator<<(std::ostream &os, Vec3 v) {
+    return os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+  }
 
   double operator[](const int i) const {
     switch (i) {
