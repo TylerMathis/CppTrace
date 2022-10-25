@@ -11,8 +11,8 @@ int main() {
   const double aspectRatio = 1;
   const int width = 400;
   const int height = (int) (width / aspectRatio);
-  const int samples = 100;
-  const int bounces = 20;
+  const int samples = 10;
+  const int bounces = 10;
   Image image("cornell", width, height, samples, bounces, 0.001, 100);
 
   Point3 origin(0, 1, 2.7);

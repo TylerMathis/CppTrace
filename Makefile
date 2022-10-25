@@ -1,8 +1,19 @@
-all: build run
+ifeq ($(shell uname), Linux)
+	OPEN := xdg-open
+else
+	OPEN := open
+endif
 
-build:
+all: cmake-build bin-build run open
+
+cmake-build:
 	cmake -S . -B cmake-build
 
-run:
+bin-build:
 	make -C cmake-build
+
+run:
 	./cmake-build/raytracer
+	
+open:
+	$(OPEN) ./images/*
