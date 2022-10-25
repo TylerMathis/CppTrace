@@ -2,8 +2,6 @@
 #include "./lib/scene/image.hpp"
 #include "./lib/scene/scene.hpp"
 #include "./lib/scene/cornell_box.hpp"
-#include "./lib/hittable/objects/sphere.hpp"
-#include "./lib/hittable/textures/image.hpp"
 
 #include <memory>
 
@@ -11,7 +9,7 @@ int main() {
   const double aspectRatio = 1;
   const int width = 400;
   const int height = (int) (width / aspectRatio);
-  const int samples = 100;
+  const int samples = 10;
   const int bounces = 20;
   Image image("cornell", width, height, samples, bounces, 0.001, 100);
 
@@ -27,15 +25,13 @@ int main() {
   Scene scene(std::make_shared<Camera>(camera),
               std::make_shared<Image>(image));
 
-  // Load the skeleton
-  auto box = cornellBox();
-  scene.loadHittables(box);
+  auto box = cornell_scene::cornellBox();
+  auto prism = cornell_scene::prism();
 
-  auto earthTexture = std::make_shared<ImageTexture>("textures/earthmap.jpeg");
-  auto earthMat = std::make_shared<Lambertian>(earthTexture);
-  auto earth = std::make_shared<Sphere>(Point3(0, 1, 0), 0.5, earthMat);
-  scene.pushHittable(earth);
+  scene.pushHittables(box);
+  scene.pushHittables(prism);
 
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
+
   scene.render();
 }

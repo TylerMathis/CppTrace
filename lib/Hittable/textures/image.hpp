@@ -50,20 +50,21 @@ struct ImageTexture : public Texture {
     if (data == nullptr)
       return {1, 0.7, 0.75};
 
+    // Clamp u and v into valid space
     u = common::clamp(u, 0.0, 1.0);
     v = 1.0 - common::clamp(v, 0.0, 1.0);
 
+    // Convert u and v into their respective indices
     auto i = (int) (u * width);
     auto j = (int) (v * height);
 
+    // Again, clamp i and j
     if (i >= width) i = width - 1;
     if (j >= height) j = height - 1;
 
-    const auto colorScale = 1.0 / 255.0;
     int dataIndex = j * bytesPerScanline + i * bytesPerPixel;
-
     return Color3(data[dataIndex + 0], data[dataIndex + 1], data[dataIndex + 2])
-        * colorScale;
+        / 255.0;
   }
 };
 

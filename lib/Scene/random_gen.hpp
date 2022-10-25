@@ -21,6 +21,8 @@
 #include <memory>
 #include <vector>
 
+namespace random_scene {
+
 const double refractionIndexGlass = 1.52;
 std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
   srand(time(NULL));
@@ -80,5 +82,7 @@ std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
 
   return ret;
 }
+
+} // namespace random_scene
 
 #endif //RAYTRACER_LIB_SCENE_RANDOM_GEN_HPP_
