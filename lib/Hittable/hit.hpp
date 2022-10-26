@@ -17,8 +17,8 @@ struct Hit {
   Vec3 normal;
   std::shared_ptr<Material> material;
   double t;
-  double u, v;
-  bool front;
+  double u{}, v{};
+  bool front{};
 
   Hit() : t(DBL_MAX) {}
   Hit(const Point3 &location,

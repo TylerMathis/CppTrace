@@ -16,6 +16,7 @@
 #include "../hittable/objects/sphere.hpp"
 #include "../hittable/textures/solid_color.hpp"
 #include "../hittable/textures/image.hpp"
+#include "../hittable/objects/constant_medium.hpp"
 
 #include <memory>
 #include <vector>
@@ -94,11 +95,13 @@ std::vector<std::shared_ptr<Hittable>> prism() {
 
   auto prismTexture = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   auto prismMat = std::make_shared<Lambertian>(prismTexture);
-  auto prism = std::make_shared<RectangularPrism>(Point3(-0.5, 0, -0.5),
+  auto prism = std::make_shared<RectangularPrism>(Point3(-0.5, 0.01, -0.5),
                                                   Point3(0.5, 1.2, 0.5),
                                                   prismMat);
 
-  scene.push_back(prism);
+  scene.push_back(std::make_shared<ConstantMedium>(prism,
+                                                   0.5,
+                                                   Color3(0, 0, 0)));
 
   return scene;
 }
