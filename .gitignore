@@ -4,7 +4,7 @@
 *.mov
 
 # Build
-cmake-build-*
+cmake-build*
 
 # Editor
 .vscode

@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 struct BVHNode : Hittable {
   std::vector<std::shared_ptr<Hittable>> children;
