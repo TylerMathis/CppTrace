@@ -9,7 +9,7 @@ int main() {
   const double aspectRatio = 1;
   const int width = 400;
   const int height = (int) (width / aspectRatio);
-  const int samples = 10;
+  const int samples = 50;
   const int bounces = 20;
   Image image("cornell", width, height, samples, bounces, 0.001, 100);
 
