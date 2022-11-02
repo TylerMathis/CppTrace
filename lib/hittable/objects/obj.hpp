@@ -6,7 +6,7 @@
 #define RAYTRACER_LIB_HITTABLE_OBJ_HPP_
 
 #include "../../common/vec3.hpp"
-#include "../bounding/bvh.hpp"
+#include "../../accelerators/bvh.hpp"
 #include "../materials/lambertian.hpp"
 #include "../hittable.hpp"
 #include "../hittable_list.hpp"

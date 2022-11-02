@@ -11,7 +11,7 @@
 #include "../common/common.hpp"
 #include "../common/ray.hpp"
 #include "../common/vec3.hpp"
-#include "../hittable/bounding/bvh.hpp"
+#include "../accelerators/bvh.hpp"
 #include "../hittable/hit.hpp"
 #include "../hittable/hittable_list.hpp"
 

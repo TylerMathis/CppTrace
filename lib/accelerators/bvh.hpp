@@ -5,12 +5,12 @@
 #ifndef RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_
 #define RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_
 
-#include "../../common/common.hpp"
-#include "../../common/ray.hpp"
-#include "../hit.hpp"
-#include "../hittable.hpp"
-#include "../hittable_list.hpp"
-#include "aabb.hpp"
+#include "../common/common.hpp"
+#include "../common/ray.hpp"
+#include "../hittable/hit.hpp"
+#include "../hittable/hittable.hpp"
+#include "../hittable/hittable_list.hpp"
+#include "../hittable/bounding/aabb.hpp"
 
 #include <cassert>
 #include <climits>
