@@ -16,7 +16,7 @@ inline double randomDouble(const double min, const double max) {
 }
 
 inline int randomInt(const int min, const int max) {
-  return (int)randomDouble(min, max + 1);
+  return (int) randomDouble(min, max + 1);
 }
 
 inline double clamp(const double val, const double min, const double max) {

@@ -21,20 +21,20 @@ struct HittableList : public Hittable {
   explicit HittableList(std::vector<std::shared_ptr<Hittable>> hittables)
       : hittables(std::move(hittables)) {}
 
-  void pushHittable(const std::shared_ptr<Hittable>& hittable) {
+  void pushHittable(const std::shared_ptr<Hittable> &hittable) {
     hittables.push_back(hittable);
   }
-  void loadHittable(const std::shared_ptr<Hittable>& hittable) {
+  void loadHittable(const std::shared_ptr<Hittable> &hittable) {
     hittables = {hittable};
   }
-  void loadHittables(const std::vector<std::shared_ptr<Hittable>>& _hittables) {
+  void loadHittables(const std::vector<std::shared_ptr<Hittable>> &_hittables) {
     hittables = _hittables;
   }
 
   bool hit(const Ray &ray, Hit &hit, const double minT, const double maxT) const override {
     Hit out, closest;
     bool found = false;
-    for (const auto& hittable : hittables)
+    for (const auto &hittable : hittables)
       if (hittable->hit(ray, out, minT, maxT) && out < closest) {
         closest = out;
         found = true;
