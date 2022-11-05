@@ -2,8 +2,8 @@
 // Created by tyler on 11/4/2022.
 //
 
-#ifndef CPPTRACE_LIB_HITTABLE_OBJECTS_STL_HPP_
-#define CPPTRACE_LIB_HITTABLE_OBJECTS_STL_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_OBJECTS_PLY_HPP_
+#define CPPTRACE_LIB_HITTABLE_OBJECTS_PLy_HPP_
 
 #include "../../common/vec3.hpp"
 #include "../../accelerators/bvh.hpp"
@@ -12,25 +12,30 @@
 #include "../hittable_list.hpp"
 #include "triangle.hpp"
 
-#include "../../extern/stl_reader.hpp"
+#include "../../extern/happly.hpp"
 
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
+#include <array>
 
-struct STL : public Hittable {
+struct PLY : public Hittable {
   BVH bvh;
 
-  STL(const std::string &filepath, const std::shared_ptr<Material> &material) {
+  PLY(const std::string &filepath, const std::shared_ptr<Material> &material) {
     HittableList objects;
 
     try {
-      stl_reader::StlMesh<double, int> mesh(filepath);
+      happly::PLYData mesh(filepath);
 
-      for (int i = 0; i < mesh.num_tris(); i++) {
-        const double *a = mesh.vrt_coords(mesh.tri_corner_ind(i, 0));
-        const double *b = mesh.vrt_coords(mesh.tri_corner_ind(i, 1));
-        const double *c = mesh.vrt_coords(mesh.tri_corner_ind(i, 2));
+      std::vector<std::array<double, 3>> vertices = mesh.getVertexPositions();
+      std::vector<std::vector<int>> triangles = mesh.getFaceIndices<int>();
+
+      for (const auto &triangle : triangles) {
+        auto a = vertices[triangle[0]];
+        auto b = vertices[triangle[1]];
+        auto c = vertices[triangle[2]];
         auto ap = Point3(a[0], a[1], a[2]);
         auto bp = Point3(b[0], b[1], b[2]);
         auto cp = Point3(c[0], c[1], c[2]);
@@ -54,4 +59,4 @@ struct STL : public Hittable {
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
 };
 
-#endif //CPPTRACE_LIB_HITTABLE_OBJECTS_STL_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_OBJECTS_PLY_HPP_
