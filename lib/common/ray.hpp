@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_COMMON_RAY_HPP_
-#define RAYTRACER_LIB_COMMON_RAY_HPP_
+#ifndef CPPTRACE_LIB_COMMON_RAY_HPP_
+#define CPPTRACE_LIB_COMMON_RAY_HPP_
 
 #include "vec3.hpp"
 
@@ -20,4 +20,4 @@ struct Ray {
   }
 };
 
-#endif //RAYTRACER_LIB_COMMON_RAY_HPP_
+#endif //CPPTRACE_LIB_COMMON_RAY_HPP_

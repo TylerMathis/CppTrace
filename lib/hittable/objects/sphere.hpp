@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_SPHERE_HPP_
-#define RAYTRACER_LIB_HITTABLE_SPHERE_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_SPHERE_HPP_
+#define CPPTRACE_LIB_HITTABLE_SPHERE_HPP_
 
 #include "../../common/ray.hpp"
 #include "../../common/vec3.hpp"
@@ -78,4 +78,4 @@ struct Sphere : public Hittable {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_SPHERE_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_SPHERE_HPP_

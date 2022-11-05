@@ -1,10 +1,3 @@
-//
-// Created by Tyler Hostler-Mathis on 10/18/22.
-//
-
-#ifndef RAYTRACER_LIB_EXTERN_STB_IMAGE_WRITE_HPP_
-#define RAYTRACER_LIB_EXTERN_STB_IMAGE_WRITE_HPP_
-
 /* stb_image_write - v1.16 - public domain - http://nothings.org/stb
    writes out PNG/BMP/TGA/JPEG/HDR images to C stdio - Sean Barrett 2010-2015
                                      no warranty implied; use at your own risk
@@ -218,12 +211,12 @@ STBIWDEF void stbi_flip_vertically_on_write(int flip_boolean);
 #ifdef STB_IMAGE_WRITE_IMPLEMENTATION
 
 #ifdef _WIN32
-                                                                                                                        #ifndef _CRT_SECURE_NO_WARNINGS
-   #define _CRT_SECURE_NO_WARNINGS
-   #endif
-   #ifndef _CRT_NONSTDC_NO_DEPRECATE
-   #define _CRT_NONSTDC_NO_DEPRECATE
-   #endif
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+#ifndef _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE
+#endif
 #endif
 
 #ifndef STBI_WRITE_NO_STDIO
@@ -1956,5 +1949,3 @@ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------
 */
-
-#endif //RAYTRACER_LIB_EXTERN_STB_IMAGE_WRITE_HPP_

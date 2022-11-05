@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_SCENE_SCENE_HPP_
-#define RAYTRACER_LIB_SCENE_SCENE_HPP_
+#ifndef CPPTRACE_LIB_SCENE_SCENE_HPP_
+#define CPPTRACE_LIB_SCENE_SCENE_HPP_
 
 #include "camera.hpp"
 #include "image.hpp"
@@ -138,4 +138,4 @@ struct Scene {
   }
 };
 
-#endif //RAYTRACER_LIB_SCENE_SCENE_HPP_
+#endif //CPPTRACE_LIB_SCENE_SCENE_HPP_

@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_COMMON_COMMON_HPP_
-#define RAYTRACER_LIB_COMMON_COMMON_HPP_
+#ifndef CPPTRACE_LIB_COMMON_COMMON_HPP_
+#define CPPTRACE_LIB_COMMON_COMMON_HPP_
 
 #include <random>
 
@@ -29,4 +29,4 @@ inline double clamp(const double val, const double min, const double max) {
 
 } // namespace common
 
-#endif //RAYTRACER_LIB_COMMON_COMMON_HPP_
+#endif //CPPTRACE_LIB_COMMON_COMMON_HPP_

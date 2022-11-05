@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/23/22.
 //
 
-#ifndef RAYTRACER_LIB_SCENE_CORNELL_BOX_HPP_
-#define RAYTRACER_LIB_SCENE_CORNELL_BOX_HPP_
+#ifndef CPPTRACE_LIB_SCENE_CORNELL_BOX_HPP_
+#define CPPTRACE_LIB_SCENE_CORNELL_BOX_HPP_
 
 #include "../common/common.hpp"
 #include "../common/vec3.hpp"
@@ -109,4 +109,4 @@ std::vector<std::shared_ptr<Hittable>> prism() {
 } // namespace cornell
 
 
-#endif //RAYTRACER_LIB_SCENE_CORNELL_BOX_HPP_
+#endif //CPPTRACE_LIB_SCENE_CORNELL_BOX_HPP_

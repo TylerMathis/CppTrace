@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_HITTABLE_LIST_HPP_
-#define RAYTRACER_LIB_HITTABLE_HITTABLE_LIST_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_HITTABLE_LIST_HPP_
+#define CPPTRACE_LIB_HITTABLE_HITTABLE_LIST_HPP_
 
 #include "../common/ray.hpp"
 #include "hit.hpp"
@@ -58,4 +58,4 @@ struct HittableList : public Hittable {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_HITTABLE_LIST_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_HITTABLE_LIST_HPP_

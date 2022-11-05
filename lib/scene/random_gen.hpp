@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_SCENE_RANDOM_GEN_HPP_
-#define RAYTRACER_LIB_SCENE_RANDOM_GEN_HPP_
+#ifndef CPPTRACE_LIB_SCENE_RANDOM_GEN_HPP_
+#define CPPTRACE_LIB_SCENE_RANDOM_GEN_HPP_
 
 #include "../common/common.hpp"
 #include "../common/vec3.hpp"
@@ -85,4 +85,4 @@ std::vector<std::shared_ptr<Hittable>> randomScene(const int objects) {
 
 } // namespace random_scene
 
-#endif //RAYTRACER_LIB_SCENE_RANDOM_GEN_HPP_
+#endif //CPPTRACE_LIB_SCENE_RANDOM_GEN_HPP_

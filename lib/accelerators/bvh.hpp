@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_
-#define RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_BOUNDING_BVH_HPP_
+#define CPPTRACE_LIB_HITTABLE_BOUNDING_BVH_HPP_
 
 #include "../common/common.hpp"
 #include "../common/ray.hpp"
@@ -27,13 +27,12 @@ struct BVHNode : Hittable {
 
   BVHNode() = default;
 
-  explicit BVHNode(const HittableList &objects)
+  explicit BVHNode(HittableList &objects)
       : BVHNode(objects.hittables, 0, (int) objects.hittables.size() - 1) {}
 
-  BVHNode(const std::vector<std::shared_ptr<Hittable>> &_objects,
+  BVHNode(std::vector<std::shared_ptr<Hittable>> &objects,
           const int start, const int end) {
-    if (_objects.empty()) return;
-    auto objects = _objects;
+    if (objects.empty()) return;
 
     int axis = common::randomInt(0, 2);
     std::sort(objects.begin() + start,
@@ -82,4 +81,4 @@ struct BVHNode : Hittable {
 
 using BVH = BVHNode;
 
-#endif //RAYTRACER_LIB_HITTABLE_BOUNDING_BVH_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_BOUNDING_BVH_HPP_

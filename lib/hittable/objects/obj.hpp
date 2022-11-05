@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_OBJ_HPP_
-#define RAYTRACER_LIB_HITTABLE_OBJ_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_OBJ_HPP_
+#define CPPTRACE_LIB_HITTABLE_OBJ_HPP_
 
 #include "../../common/vec3.hpp"
 #include "../../accelerators/bvh.hpp"
@@ -14,7 +14,6 @@
 
 #include "../../extern/obj_loader.hpp"
 
-#include <climits>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -32,10 +31,10 @@ struct OBJ : public Hittable {
 
     HittableList objects;
     for (auto &mesh : Loader.LoadedMeshes) {
-      for (int j = 0; j < mesh.Indices.size(); j += 3) {
-        auto a = mesh.Vertices[mesh.Indices[j]].Position;
-        auto b = mesh.Vertices[mesh.Indices[j + 1]].Position;
-        auto c = mesh.Vertices[mesh.Indices[j + 2]].Position;
+      for (int i = 0; i < mesh.Indices.size(); i += 3) {
+        auto a = mesh.Vertices[mesh.Indices[i]].Position;
+        auto b = mesh.Vertices[mesh.Indices[i + 1]].Position;
+        auto c = mesh.Vertices[mesh.Indices[i + 2]].Position;
         auto ap = Point3(a.X, a.Y, a.Z);
         auto bp = Point3(b.X, b.Y, b.Z);
         auto cp = Point3(c.X, c.Y, c.Z);
@@ -56,4 +55,4 @@ struct OBJ : public Hittable {
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_OBJ_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_OBJ_HPP_

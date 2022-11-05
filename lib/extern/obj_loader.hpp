@@ -1,6 +1,6 @@
 // OBJ_Loader.h - A Single Header OBJ Model Loader
-#ifndef RAYTRACER_LIB_EXTERN_OBJ_LOADER_HPP_
-#define RAYTRACER_LIB_EXTERN_OBJ_LOADER_HPP_
+#ifndef CPPTRACE_LIB_EXTERN_OBJ_LOADER_HPP_
+#define CPPTRACE_LIB_EXTERN_OBJ_LOADER_HPP_
 
 // Iostream - STD I/O Library
 #include <iostream>
@@ -1014,4 +1014,4 @@ class Loader {
 };
 } // namespace objl
 
-#endif //RAYTRACER_LIB_EXTERN_OBJ_LOADER_HPP_
+#endif //CPPTRACE_LIB_EXTERN_OBJ_LOADER_HPP_

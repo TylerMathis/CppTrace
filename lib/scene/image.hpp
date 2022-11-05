@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_SCENE_IMAGE_HPP_
-#define RAYTRACER_LIB_SCENE_IMAGE_HPP_
+#ifndef CPPTRACE_LIB_SCENE_IMAGE_HPP_
+#define CPPTRACE_LIB_SCENE_IMAGE_HPP_
 
 #include "../common/common.hpp"
 #include "../common/vec3.hpp"
@@ -54,4 +54,4 @@ struct Image {
   }
 };
 
-#endif //RAYTRACER_LIB_SCENE_IMAGE_HPP_
+#endif //CPPTRACE_LIB_SCENE_IMAGE_HPP_

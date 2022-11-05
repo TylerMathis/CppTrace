@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/24/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_TEXTURES_TEXTURE_HPP_
-#define RAYTRACER_LIB_HITTABLE_TEXTURES_TEXTURE_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_TEXTURES_TEXTURE_HPP_
+#define CPPTRACE_LIB_HITTABLE_TEXTURES_TEXTURE_HPP_
 
 #include "../../common/vec3.hpp"
 
@@ -13,4 +13,4 @@ struct Texture {
                                      const Point3 &point) const = 0;
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_TEXTURES_TEXTURE_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_TEXTURES_TEXTURE_HPP_

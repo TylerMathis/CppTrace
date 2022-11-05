@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_SCENE_SCENE_TOOLS_HPP_
-#define RAYTRACER_LIB_SCENE_SCENE_TOOLS_HPP_
+#ifndef CPPTRACE_LIB_SCENE_SCENE_TOOLS_HPP_
+#define CPPTRACE_LIB_SCENE_SCENE_TOOLS_HPP_
 
 #include "camera.hpp"
 #include "image.hpp"
@@ -89,4 +89,4 @@ struct SceneTools {
                           const std::shared_ptr<Sphere> &sphere);
 };
 
-#endif //RAYTRACER_LIB_SCENE_SCENE_TOOLS_HPP_
+#endif //CPPTRACE_LIB_SCENE_SCENE_TOOLS_HPP_

@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/23/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_OBJECTS_RECTANGLE_HPP_
-#define RAYTRACER_LIB_HITTABLE_OBJECTS_RECTANGLE_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_OBJECTS_RECTANGLE_HPP_
+#define CPPTRACE_LIB_HITTABLE_OBJECTS_RECTANGLE_HPP_
 
 #include "../../common/ray.hpp"
 #include "../../common/vec3.hpp"
@@ -37,4 +37,4 @@ struct Rectangle : Hittable {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_OBJECTS_RECTANGLE_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_OBJECTS_RECTANGLE_HPP_

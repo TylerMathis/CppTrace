@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_SCENE_CAMERA_HPP_
-#define RAYTRACER_LIB_SCENE_CAMERA_HPP_
+#ifndef CPPTRACE_LIB_SCENE_CAMERA_HPP_
+#define CPPTRACE_LIB_SCENE_CAMERA_HPP_
 
 #include "../hittable/hittable.hpp"
 #include "../common/ray.hpp"
@@ -16,9 +16,13 @@ struct Camera {
   double viewportWidth, viewportHeight;
   Point3 origin;
 
-  Camera(const Point3 origin, const Point3 lookAt, const Vec3 up,
-         const double verticalFOV, const double aspectRatio,
-         const double aperture, const double focusDist)
+  Camera(const Point3 origin,
+         const Point3 lookAt,
+         const Vec3 up,
+         const double verticalFOV,
+         const double aspectRatio,
+         const double aperture,
+         const double focusDist)
       : origin(origin) {
     double theta = verticalFOV / 180 * M_PI;
     double h = tan(theta / 2);
@@ -58,4 +62,4 @@ struct Camera {
   double lensRadius;
 };
 
-#endif //RAYTRACER_LIB_SCENE_CAMERA_HPP_
+#endif //CPPTRACE_LIB_SCENE_CAMERA_HPP_

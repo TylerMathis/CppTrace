@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_
-#define RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_TRIANGLE_HPP_
+#define CPPTRACE_LIB_HITTABLE_TRIANGLE_HPP_
 
 #include "../../common/ray.hpp"
 #include "../../common/vec3.hpp"
@@ -87,4 +87,4 @@ struct Triangle : public Hittable {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_TRIANGLE_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_TRIANGLE_HPP_

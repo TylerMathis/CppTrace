@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/19/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_MATERIAL_EMISSIVE_HPP_
-#define RAYTRACER_LIB_HITTABLE_MATERIAL_EMISSIVE_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_MATERIAL_EMISSIVE_HPP_
+#define CPPTRACE_LIB_HITTABLE_MATERIAL_EMISSIVE_HPP_
 
 #include "material.hpp"
 #include "../textures/texture.hpp"
@@ -30,4 +30,4 @@ struct Emissive : public Material {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_MATERIAL_EMISSIVE_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_MATERIAL_EMISSIVE_HPP_

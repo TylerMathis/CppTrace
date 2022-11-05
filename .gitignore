@@ -3,6 +3,8 @@
 *.jpeg
 *.jpg
 *.obj
+*.stl
+*.ply
 *.mov
 
 # Build

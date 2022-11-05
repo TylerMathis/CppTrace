@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/25/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_MATERIALS_ISOTROPIC_HPP_
-#define RAYTRACER_LIB_HITTABLE_MATERIALS_ISOTROPIC_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_MATERIALS_ISOTROPIC_HPP_
+#define CPPTRACE_LIB_HITTABLE_MATERIALS_ISOTROPIC_HPP_
 
 #include "material.hpp"
 #include "../textures/texture.hpp"
@@ -31,4 +31,4 @@ struct Isotropic : public Material {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_MATERIALS_ISOTROPIC_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_MATERIALS_ISOTROPIC_HPP_

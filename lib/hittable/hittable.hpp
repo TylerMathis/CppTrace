@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_HITTABLE_HPP_
-#define RAYTRACER_LIB_HITTABLE_HITTABLE_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_HITTABLE_HPP_
+#define CPPTRACE_LIB_HITTABLE_HITTABLE_HPP_
 
 #include "../common/ray.hpp"
 #include "bounding/aabb.hpp"
@@ -31,4 +31,4 @@ inline bool boxCompare(const std::shared_ptr<Hittable> &a,
   return boxA.a[axis] < boxB.a[axis];
 }
 
-#endif //RAYTRACER_LIB_HITTABLE_HITTABLE_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_HITTABLE_HPP_

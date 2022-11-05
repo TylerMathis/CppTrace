@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_MATERIAL_METAL_HPP_
-#define RAYTRACER_LIB_HITTABLE_MATERIAL_METAL_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_MATERIAL_METAL_HPP_
+#define CPPTRACE_LIB_HITTABLE_MATERIAL_METAL_HPP_
 
 #include "../../common/common.hpp"
 #include "../../common/ray.hpp"
@@ -33,4 +33,4 @@ struct Metal : public Material {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_MATERIAL_METAL_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_MATERIAL_METAL_HPP_

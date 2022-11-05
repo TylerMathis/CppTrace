@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/24/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_TEXTURES_IMAGE_HPP_
-#define RAYTRACER_LIB_HITTABLE_TEXTURES_IMAGE_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_TEXTURES_IMAGE_HPP_
+#define CPPTRACE_LIB_HITTABLE_TEXTURES_IMAGE_HPP_
 
 #include "texture.hpp"
 #include "../../common/vec3.hpp"
@@ -68,4 +68,4 @@ struct ImageTexture : public Texture {
   }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_TEXTURES_IMAGE_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_TEXTURES_IMAGE_HPP_

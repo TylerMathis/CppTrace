@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_BOUNDING_AABB_HPP_
-#define RAYTRACER_LIB_HITTABLE_BOUNDING_AABB_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_BOUNDING_AABB_HPP_
+#define CPPTRACE_LIB_HITTABLE_BOUNDING_AABB_HPP_
 
 #include "../../common/ray.hpp"
 #include "../../common/vec3.hpp"
@@ -49,4 +49,4 @@ AABB surroundingBox(AABB &box0, AABB &box1) {
   return {a, b};
 }
 
-#endif //RAYTRACER_LIB_HITTABLE_BOUNDING_AABB_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_BOUNDING_AABB_HPP_

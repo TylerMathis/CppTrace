@@ -2,8 +2,8 @@
 // Created by Tyler Hostler-Mathis on 10/18/22.
 //
 
-#ifndef RAYTRACER_LIB_HITTABLE_HIT_HPP_
-#define RAYTRACER_LIB_HITTABLE_HIT_HPP_
+#ifndef CPPTRACE_LIB_HITTABLE_HIT_HPP_
+#define CPPTRACE_LIB_HITTABLE_HIT_HPP_
 
 #include "../common/vec3.hpp"
 #include "materials/material.hpp"
@@ -37,4 +37,4 @@ struct Hit {
   bool operator<(const Hit &o) const { return t < o.t; }
 };
 
-#endif //RAYTRACER_LIB_HITTABLE_HIT_HPP_
+#endif //CPPTRACE_LIB_HITTABLE_HIT_HPP_
