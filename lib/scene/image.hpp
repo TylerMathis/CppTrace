@@ -16,36 +16,29 @@
 #include <cfloat>
 #include <iostream>
 #include <string>
+#include <utility>
 
 struct Image {
-  std::string name;
+  std::string path;
   int width, height, samples, bounces;
-  double minRayLength, maxRayLength;
   double aspectRatio;
   int comps = 3;
   uint8_t *data;
 
-  Image(const std::string &name,
+  Image(std::string path,
         const int width,
         const int height,
         const int samples = 50,
         const int bounces = 50,
         const double minRayLength = 0.001,
         const double maxRayLength = DBL_MAX)
-      : name(getPath(name)),
+      : path(std::move(path)),
         width(width),
         height(height),
         samples(samples),
         bounces(bounces),
         data((uint8_t *) calloc(comps * width * height, sizeof(uint8_t))),
-        aspectRatio((double) width / height),
-        minRayLength(minRayLength),
-        maxRayLength(maxRayLength) {}
-
-  static std::string getPath(const std::string &name) {
-    return "./images/" + name + ".png";
-  }
-  void setName(const std::string &newName) { name = getPath(newName); }
+        aspectRatio((double) width / height) {}
 
   void setPixel(const int row, const int col, const Color3 &c) const {
     int byte = (row * width + col) * 3;
@@ -56,8 +49,8 @@ struct Image {
   }
 
   void write() const {
-    std::cout << "Writing image to " << name << "\n";
-    stbi_write_png(name.c_str(), width, height, comps, data, width * comps);
+    std::cout << "Writing image to " << path << "\n";
+    stbi_write_png(path.c_str(), width, height, comps, data, width * comps);
   }
 };
 

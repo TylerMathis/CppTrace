@@ -7,11 +7,11 @@
 
 int main() {
   const double aspectRatio = 1;
-  const int width = 400;
+  const int width = 500;
   const int height = (int) (width / aspectRatio);
-  const int samples = 50;
-  const int bounces = 20;
-  Image image("cornell", width, height, samples, bounces, 0.001, 100);
+  const int samples = 100;
+  const int bounces = 50;
+  Image image(R"(D:\code\proj\CppTrace\images\cornell.png)", width, height, samples, bounces);
 
   Point3 origin(0, 1, 2.7);
   Point3 lookAt(0, 1, 0);
@@ -30,8 +30,6 @@ int main() {
 
   scene.pushHittables(box);
   scene.pushHittables(prism);
-
-  scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
   scene.render();
 }
