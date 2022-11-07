@@ -31,7 +31,7 @@ int main() {
   auto material = std::make_shared<Lambertian>(texture);
   auto stl = std::make_shared<STL>(R"(D:\code\proj\CppTrace\objects\Ghost_Booh_N1.stl)", material);
 
-  scene.pushHittable(stl);
+  scene.pushHittables(stl->hittableList.hittables);
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
   scene.render(24);
