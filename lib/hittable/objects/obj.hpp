@@ -19,6 +19,7 @@
 #include <string>
 
 struct OBJ : public Hittable {
+  HittableList hittableList;
   BVH bvh;
 
   OBJ(std::string &filepath, const std::shared_ptr<Material> &material) {
@@ -29,7 +30,7 @@ struct OBJ : public Hittable {
     }
     std::cout << "Loading object " << filepath << "\n";
 
-    HittableList objects;
+    hittableList.clear();
     for (auto &mesh : Loader.LoadedMeshes) {
       for (int i = 0; i < mesh.Indices.size(); i += 3) {
         auto a = mesh.Vertices[mesh.Indices[i]].Position;
@@ -38,11 +39,11 @@ struct OBJ : public Hittable {
         auto ap = Point3(a.X, a.Y, a.Z);
         auto bp = Point3(b.X, b.Y, b.Z);
         auto cp = Point3(c.X, c.Y, c.Z);
-        objects.pushHittable(std::make_shared<Triangle>(ap, bp, cp, material));
+        hittableList.pushHittable(std::make_shared<Triangle>(ap, bp, cp, material));
       }
     }
 
-    bvh = BVH(objects);
+    bvh = BVH(hittableList);
   }
 
   bool hit(const Ray &ray,

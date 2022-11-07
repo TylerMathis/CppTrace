@@ -10,9 +10,6 @@
 # Build
 cmake-build*
 
-# Editor
-.vscode
-
 # Python env
 venv
 

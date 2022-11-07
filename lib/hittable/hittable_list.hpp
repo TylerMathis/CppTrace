@@ -30,6 +30,9 @@ struct HittableList : public Hittable {
   void loadHittables(const std::vector<std::shared_ptr<Hittable>> &_hittables) {
     hittables = _hittables;
   }
+  void clear() {
+    hittables.clear();
+  }
 
   bool hit(const Ray &ray, Hit &hit, const double minT, const double maxT) const override {
     Hit out, closest;
