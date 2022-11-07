@@ -3,7 +3,7 @@
 //
 
 #ifndef CPPTRACE_LIB_HITTABLE_OBJECTS_PLY_HPP_
-#define CPPTRACE_LIB_HITTABLE_OBJECTS_PLy_HPP_
+#define CPPTRACE_LIB_HITTABLE_OBJECTS_PLY_HPP_
 
 #include "../../common/vec3.hpp"
 #include "../../accelerators/bvh.hpp"
@@ -21,11 +21,11 @@
 #include <array>
 
 struct PLY : public Hittable {
+  HittableList hittableList;
   BVH bvh;
 
   PLY(const std::string &filepath, const std::shared_ptr<Material> &material) {
-    HittableList objects;
-
+    hittableList.clear();
     try {
       happly::PLYData mesh(filepath);
 
@@ -39,14 +39,14 @@ struct PLY : public Hittable {
         auto ap = Point3(a[0], a[1], a[2]);
         auto bp = Point3(b[0], b[1], b[2]);
         auto cp = Point3(c[0], c[1], c[2]);
-        objects.pushHittable(std::make_shared<Triangle>(ap, bp, cp, material));
+        hittableList.pushHittable(std::make_shared<Triangle>(ap, bp, cp, material));
       }
 
     } catch (std::exception &e) {
       std::cerr << e.what() << std::endl;
     }
 
-    bvh = BVH(objects);
+    bvh = BVH(hittableList);
   }
 
   bool hit(const Ray &ray,
