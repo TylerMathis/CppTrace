@@ -9,10 +9,10 @@
 
 int main() {
   const double aspectRatio = 1;
-  const int width = 500;
+  const int width = 250;
   const int height = (int) (width / aspectRatio);
-  const int samples = 20;
-  const int bounces = 10;
+  const int samples = 1;
+  const int bounces = 5;
   Image image(R"(D:\code\proj\CppTrace\images\booh.png)", width, height, samples, bounces);
 
   Point3 origin(0, 50, 100);
@@ -34,5 +34,5 @@ int main() {
   scene.pushHittables(stl->hittableList.hittables);
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
-  scene.render(24);
+  scene.render(12);
 }
