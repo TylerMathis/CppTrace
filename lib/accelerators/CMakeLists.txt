@@ -1,0 +1,1 @@
+list(APPEND CppTrace_SOURCES ${CMAKE_CURRENT_LIST_DIR}/bvh.hpp)
