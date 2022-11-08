@@ -16,15 +16,21 @@
 #include <vector>
 
 struct KDTree : public Hittable {
-  std::vector<std::shared_ptr<Hittable>> children;
-  AABB box;
+  std::vector<std::shared_ptr<Hittable>> objects;
+  struct node {
+    AABB box;
+    std::vector<int> objectIndicies;
+    int leftChildIndex, rightChildIndex;
+  };
+  std::vector<node> tree;
 
   KDTree() = default;
 
-  bool hit(const Ray &ray, Hit &hit, const double minT,
-           const double maxT) const override;
+  KDTree(const HittableList &);
 
-  [[nodiscard]] AABB boundingBox() const override { return box; }
+  KDTree(const std::vector<std::shared_ptr<Hittable>> &);
+
+  bool hit(const Ray &, Hit &, const double, const double) const override;
 };
 
 #endif // CPPTRACE_LIB_HITTABLE_KD_TREE_HPP_
