@@ -33,6 +33,8 @@ struct KDTree : public Hittable {
   int buildTree(const std::vector<int>, AABB);
 
   bool hit(const Ray &, Hit &, const double, const double) const override;
+
+  [[nodiscard]] AABB boundingBox() const override { return tree[0].box; }
 };
 
 #endif // CPPTRACE_LIB_HITTABLE_KD_TREE_HPP_
