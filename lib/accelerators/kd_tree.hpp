@@ -17,12 +17,12 @@
 
 struct KDTree : public Hittable {
   std::vector<std::shared_ptr<Hittable>> objects;
-  struct node {
+  struct Node {
     AABB box;
     std::vector<int> objectIndicies;
     int leftChildIndex, rightChildIndex;
   };
-  std::vector<node> tree;
+  std::vector<Node> tree;
 
   KDTree() = default;
 
