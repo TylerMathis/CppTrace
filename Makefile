@@ -13,7 +13,7 @@ bin-build:
 	make -C cmake-build
 
 run:
-	./cmake-build/raytracer
-	
+	./cmake-build/CppTrace
+
 open:
 	$(OPEN) ./images/*

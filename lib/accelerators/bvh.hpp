@@ -21,7 +21,7 @@
 #include <iostream>
 #include <algorithm>
 
-struct BVHNode : Hittable {
+struct BVHNode : public Hittable {
   std::vector<std::shared_ptr<Hittable>> children;
   AABB box;
 
