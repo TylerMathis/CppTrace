@@ -17,6 +17,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 
 struct STL : public Hittable {
   HittableList hittableList;
@@ -52,6 +53,8 @@ struct STL : public Hittable {
   }
 
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
+
+  [[nodiscard]] std::vector<std::shared_ptr<Hittable>> getHittables() const override { return hittableList.hittables; }
 };
 
 #endif //CPPTRACE_LIB_HITTABLE_OBJECTS_STL_HPP_

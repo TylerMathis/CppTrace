@@ -13,6 +13,7 @@
 #include <memory>
 #include <climits>
 #include <stdexcept>
+#include <vector>
 
 struct Hittable {
   std::shared_ptr<Material> material;
@@ -23,6 +24,8 @@ struct Hittable {
                    double maxT) const = 0;
 
   [[nodiscard]] virtual AABB boundingBox() const = 0;
+
+  [[nodiscard]] virtual std::vector<std::shared_ptr<Hittable>> getHittables() const { return {}; }
 };
 
 inline bool boxCompare(const std::shared_ptr<Hittable> &a,

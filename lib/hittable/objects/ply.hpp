@@ -57,6 +57,8 @@ struct PLY : public Hittable {
   }
 
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
+
+  [[nodiscard]] std::vector<std::shared_ptr<Hittable>> getHittables() const override { return hittableList.hittables; }
 };
 
 #endif //CPPTRACE_LIB_HITTABLE_OBJECTS_PLY_HPP_

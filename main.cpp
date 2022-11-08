@@ -25,7 +25,7 @@ int main() {
                 focusDist);
 
   Scene scene(std::make_shared<Camera>(camera),
-              std::make_shared<Image>(image));
+              std::make_shared<Image>(image), "bvh");
 
   auto texture = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   auto material = std::make_shared<Lambertian>(texture);

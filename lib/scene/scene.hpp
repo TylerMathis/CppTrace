@@ -33,19 +33,34 @@ struct Scene {
 
   Color3 ambient;
 
+  std::string acceleratorType;
   HittableList objects;
-  BVH bvh;
+  std::shared_ptr<Hittable> accelerator;
 
   Scene() = default;
   explicit Scene(std::shared_ptr<Camera> camera,
                  std::shared_ptr<Image> image,
+                 const std::string acceleratorType,
                  const Color3 &ambient = {0, 0, 0},
                  const std::vector<std::shared_ptr<Hittable>> &hittables = {})
       : camera(std::move(camera)),
         image(std::move(image)),
-        ambient(ambient),
         objects(hittables),
-        bvh(objects) {}
+        ambient(ambient),
+        acceleratorType(acceleratorType) {
+
+    if (acceleratorType != "bvh" && acceleratorType != "kdtree")
+      throw std::invalid_argument(
+          "Invalid accelerator type '" + acceleratorType + "', only [bvh, kdtree] are supported");
+
+    notifyAccelerator();
+  }
+
+  void notifyAccelerator() {
+    if (acceleratorType == "bvh")
+      accelerator = std::make_shared<BVH>(objects);
+    // TODO: Implement KDTREE when ready
+  }
 
   void setAmbient(const Color3 &_ambient) {
     ambient = _ambient;
@@ -53,20 +68,20 @@ struct Scene {
 
   void pushHittable(const std::shared_ptr<Hittable> &hittable) {
     objects.pushHittable(hittable);
-    bvh = BVH(objects);
+    notifyAccelerator();
   }
   void pushHittables(const std::vector<std::shared_ptr<Hittable>> &hittables) {
     for (auto &hittable : hittables)
       objects.pushHittable(hittable);
-    bvh = BVH(objects);
+    notifyAccelerator();
   }
   void loadHittable(const std::shared_ptr<Hittable> &hittable) {
     objects.loadHittable(hittable);
-    bvh = BVH(objects);
+    notifyAccelerator();
   }
   void loadHittables(const std::vector<std::shared_ptr<Hittable>> &hittables) {
     objects.loadHittables(hittables);
-    bvh = BVH(objects);
+    notifyAccelerator();
   }
 
   // Recursively scatter the ray, depth limited by bouncesLeft
@@ -76,7 +91,7 @@ struct Scene {
       return {0, 0, 0};
 
     Hit hit;
-    if (!bvh.hit(ray, hit, 0.001, DBL_MAX)) {
+    if (!accelerator->hit(ray, hit, 0.001, DBL_MAX)) {
       return ambient;
     }
 
