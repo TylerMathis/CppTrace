@@ -30,6 +30,8 @@ struct KDTree : public Hittable {
 
   KDTree(const std::vector<std::shared_ptr<Hittable>> &);
 
+  int buildTree(const std::vector<int>, AABB);
+
   bool hit(const Ray &, Hit &, const double, const double) const override;
 };
 
