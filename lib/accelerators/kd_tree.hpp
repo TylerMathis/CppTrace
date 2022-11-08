@@ -12,7 +12,10 @@
 #include "../hittable/hittable.hpp"
 #include "../hittable/hittable_list.hpp"
 
-struct KDTree : Hittable {
+#include <memory>
+#include <vector>
+
+struct KDTree : public Hittable {
   std::vector<std::shared_ptr<Hittable>> children;
   AABB box;
 
