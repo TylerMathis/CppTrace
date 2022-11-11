@@ -10,6 +10,7 @@
 #include "./lib/hittable/textures/solid_color.hpp"
 #include "./lib/scene/camera.hpp"
 #include "./lib/scene/scene.hpp"
+#include "./lib/accelerators/accelerators.hpp"
 
 #include <string>
 #include <utility>
@@ -18,9 +19,13 @@
 #include <iostream>
 
 struct Args {
-  std::string modelpath, accelerator;
+  std::string modelpath;
+  ACCELERATOR accelerator;
+
+  Args(std::string modelpath, ACCELERATOR accelerator)
+      : modelpath(std::move(modelpath)), accelerator(accelerator) {}
   Args(std::string modelpath, std::string accelerator)
-      : modelpath(std::move(modelpath)), accelerator(std::move(accelerator)) {}
+      : modelpath(std::move(modelpath)), accelerator(accelFromString(std::move(accelerator))) {}
 };
 
 Args parse(int argc, char *argv[]) {
@@ -50,9 +55,9 @@ std::shared_ptr<Hittable> buildModel(std::string modelpath) {
   std::shared_ptr<Texture> grey = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   std::shared_ptr<Material> lambert = std::make_shared<Lambertian>(grey);
 
-  if (extension == "obj") return std::make_shared<OBJ>(modelpath, lambert);
-  else if (extension == "ply") return std::make_shared<PLY>(modelpath, lambert);
-  else if (extension == "stl") return std::make_shared<STL>(modelpath, lambert);
+  if (extension == ".obj") return std::make_shared<OBJ>(modelpath, lambert);
+  else if (extension == ".ply") return std::make_shared<PLY>(modelpath, lambert);
+  else if (extension == ".stl") return std::make_shared<STL>(modelpath, lambert);
   else
     throw std::invalid_argument("Invalid file extension '" + extension + "', only [.obj, .ply, .stl] are supported.");
 }
@@ -67,10 +72,10 @@ int main(int argc, char *argv[]) {
   const int height = (int) (width / aspectRatio);
   const int samples = 1;
   const int bounces = 5;
-  Image image(R"(D:\code\proj\CppTrace\images\booh.png)", width, height, samples, bounces);
+  Image image("/Users/tylerhm/proj/CppTrace/images/out.png", width, height, samples, bounces);
 
-  Point3 origin(0, 50, 100);
-  Point3 lookAt(0, 50, 0);
+  Point3 origin(0, 0, 0);
+  Point3 lookAt(0,0, 1);
   Point3 up(0, 1, 0);
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
@@ -79,12 +84,12 @@ int main(int argc, char *argv[]) {
                 focusDist);
 
   Scene scene(std::make_shared<Camera>(camera),
-              std::make_shared<Image>(image), "bvh");
+              std::make_shared<Image>(image), args.accelerator);
 
-  scene.pushHittables(object->getHittables());
+  scene.loadHittables(object->getHittables());
 
   auto start = std::chrono::high_resolution_clock::now();
-  scene.render(12);
+  scene.render(1);
   auto end = std::chrono::high_resolution_clock::now();
 
   auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

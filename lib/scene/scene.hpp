@@ -7,6 +7,7 @@
 
 #include "camera.hpp"
 #include "image.hpp"
+#include "../accelerators/accelerators.hpp"
 #include "../cli/progress_indicator.hpp"
 #include "../common/common.hpp"
 #include "../common/ray.hpp"
@@ -21,7 +22,6 @@
 #include <chrono>
 #include <iostream>
 #include <random>
-#include <string>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -33,14 +33,13 @@ struct Scene {
 
   Color3 ambient;
 
-  std::string acceleratorType;
+  ACCELERATOR acceleratorType;
   HittableList objects;
   std::shared_ptr<Hittable> accelerator;
 
-  Scene() = default;
   explicit Scene(std::shared_ptr<Camera> camera,
                  std::shared_ptr<Image> image,
-                 const std::string acceleratorType,
+                 const ACCELERATOR acceleratorType,
                  const Color3 &ambient = {0, 0, 0},
                  const std::vector<std::shared_ptr<Hittable>> &hittables = {})
       : camera(std::move(camera)),
@@ -48,17 +47,13 @@ struct Scene {
         objects(hittables),
         ambient(ambient),
         acceleratorType(acceleratorType) {
-
-    if (acceleratorType != "bvh" && acceleratorType != "kdtree")
-      throw std::invalid_argument(
-          "Invalid accelerator type '" + acceleratorType + "', only [bvh, kdtree] are supported");
-
     notifyAccelerator();
   }
 
   void notifyAccelerator() {
-    if (acceleratorType == "bvh")
+    if (acceleratorType == BVH_ACCEL) {
       accelerator = std::make_shared<BVH>(objects);
+    }
     // TODO: Implement KDTREE when ready
   }
 
@@ -90,10 +85,11 @@ struct Scene {
     if (bouncesLeft <= 0)
       return {0, 0, 0};
 
-    Hit hit;
-    if (!accelerator->hit(ray, hit, 0.001, DBL_MAX)) {
+    Hit hit = accelerator->hit(ray, 0.001, 10000);
+    if (!hit.valid) {
       return ambient;
     }
+    assert(hit.material != nullptr);
 
     Color3 attenuation;
     Ray out;

@@ -59,21 +59,22 @@ struct BVHNode : Hittable {
     }
   }
 
-  bool hit(const Ray &ray,
-           Hit &hit,
+  [[nodiscard]] Hit hit(const Ray &ray,
            const double minT,
            const double maxT) const override {
     if (!box.hit(ray, minT, maxT))
-      return false;
+      return {};
 
-    bool foundHit = false;
-    Hit childHit;
+    Hit minHit;
     for (const auto &child : children) {
-      foundHit |= child->hit(ray, childHit, minT, maxT);
-      hit = std::min(hit, childHit);
+      Hit childHit = child->hit(ray, minT, maxT); {
+        if (childHit.valid && childHit < minHit) {
+          minHit = childHit;
+        }
+      }
     }
 
-    return foundHit;
+    return minHit;
   }
 
   [[nodiscard]] AABB boundingBox() const override { return box; }

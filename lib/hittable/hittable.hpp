@@ -18,8 +18,7 @@
 struct Hittable {
   std::shared_ptr<Material> material;
 
-  virtual bool hit(const Ray &ray,
-                   Hit &hit,
+  [[nodiscard]] virtual Hit hit(const Ray &ray,
                    double minT,
                    double maxT) const = 0;
 

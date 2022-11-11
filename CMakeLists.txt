@@ -5,4 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 include(lib/CMakeLists.txt)
 
-add_executable(CppTrace bench.cpp ${CppTrace_SOURCES})
+add_library(CppTraceLib ${CppTrace_SOURCES})
+
+add_executable(Render main.cpp)
+target_link_libraries(Render CppTraceLib)
+
+add_executable(Bench bench.cpp)
+target_link_libraries(Bench CppTraceLib)

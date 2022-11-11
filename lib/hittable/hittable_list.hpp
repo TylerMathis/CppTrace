@@ -34,19 +34,17 @@ struct HittableList : public Hittable {
     hittables.clear();
   }
 
-  bool hit(const Ray &ray, Hit &hit, const double minT, const double maxT) const override {
-    Hit out, closest;
+  [[nodiscard]] Hit hit(const Ray &ray, const double minT, const double maxT) const override {
+    Hit hit, closest;
     bool found = false;
     for (const auto &hittable : hittables)
-      if (hittable->hit(ray, out, minT, maxT) && out < closest) {
-        closest = out;
+      hit = hittable->hit(ray, minT, maxT);
+      if (hit.valid && hit < closest) {
+        closest = hit;
         found = true;
       }
 
-    if (found)
-      hit = closest;
-
-    return found;
+    return closest;
   }
 
   [[nodiscard]] AABB boundingBox() const override {

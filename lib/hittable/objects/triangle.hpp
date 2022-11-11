@@ -35,20 +35,19 @@ struct Triangle : public Hittable {
     this->material = material;
   }
 
-  bool hit(const Ray &ray,
-           Hit &hit,
-           const double minT,
-           const double maxT) const override {
+  [[nodiscard]] Hit hit(const Ray &ray,
+          const double minT,
+          const double maxT) const override {
     // If ray is parallel to triangle plane, no hit
     double normalDotRayDir = normal.dot(ray.direction);
     if (std::abs(normalDotRayDir) <= EPS)
-      return false;
+      return {};
 
     double d = -normal.dot(a);
     double t = -(normal.dot(ray.origin) + d) / normalDotRayDir;
 
     if (t < minT || t > maxT)
-      return false;
+      return {};
 
     Vec3 location = ray.at(t);
 
@@ -57,15 +56,14 @@ struct Triangle : public Hittable {
       Vec3 vecToLocation = location - points[i];
       Vec3 inFacing = edge.cross(vecToLocation);
       if (normal.dot(inFacing) < 0)
-        return false;
+        return {};
     }
 
     bool front = ray.direction.dot(normal) < 0;
     Normal hitNormal = front ? normal : -normal;
 
     // TODO: Use actual uvs
-    hit = Hit(location, hitNormal, this->material, t, 0, 0, front);
-    return true;
+    return {location, hitNormal, this->material, t, 0, 0, front};
   }
 
   [[nodiscard]] AABB boundingBox() const override {

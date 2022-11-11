@@ -20,15 +20,22 @@ struct Rectangle : Hittable {
   explicit Rectangle(const Triangle &a)
       : a(a), b(a.a, a.b + (a.a - a.b) + (a.c - a.b), a.c, a.material) {}
 
-  bool hit(const Ray &ray, Hit &hit, double minT, double maxT) const override {
+  [[nodiscard]] Hit hit(const Ray &ray, double minT, double maxT) const override {
     bool didHit = false;
 
     Hit h1, h2;
-    didHit |= a.hit(ray, h1, minT, maxT);
-    didHit |= b.hit(ray, h2, minT, maxT);
+    h1 = a.hit(ray, minT, maxT);
+    h2 = b.hit(ray, minT, maxT);
 
-    hit = std::min(h1, h2);
-    return didHit;
+    Hit minHit;
+    if (h1.valid && h1 < minHit) {
+      minHit = h1;
+    }
+    if (h2.valid && h2 < minHit) {
+      minHit = h2;
+    }
+
+    return minHit;
   }
 
   [[nodiscard]] AABB boundingBox() const override {

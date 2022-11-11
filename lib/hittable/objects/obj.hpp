@@ -23,7 +23,7 @@ struct OBJ : public Hittable {
   HittableList hittableList;
   BVH bvh;
 
-  OBJ(std::string &filepath, const std::shared_ptr<Material> &material) {
+  OBJ(std::string &filepath, const std::shared_ptr<Material>& material) {
     objl::Loader Loader;
     if (!(Loader.LoadFile(filepath))) {
       std::cerr << "Error: OBJ path " << filepath << " is not a valid path\n";
@@ -47,11 +47,10 @@ struct OBJ : public Hittable {
     bvh = BVH(hittableList);
   }
 
-  bool hit(const Ray &ray,
-           Hit &hit,
+  [[nodiscard]] Hit hit(const Ray &ray,
            const double minT,
            const double maxT) const override {
-    return bvh.hit(ray, hit, minT, maxT);
+    return bvh.hit(ray, minT, maxT);
   }
 
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }

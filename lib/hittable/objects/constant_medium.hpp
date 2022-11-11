@@ -37,20 +37,22 @@ struct ConstantMedium : public Hittable {
         negativeInverseDensity(-1.0 / density),
         phaseFunction(std::make_shared<Isotropic>(color)) {}
 
-  bool hit(const Ray &ray, Hit &hit, double minT, double maxT) const override {
+  Hit hit(const Ray &ray, double minT, double maxT) const override {
     Hit entry, exit;
 
-    if (!boundary->hit(ray, entry, DBL_MIN, DBL_MAX))
-      return false;
+    entry = boundary->hit(ray, minT, maxT);
+    if (!entry.valid)
+      return {};
 
-    if (!boundary->hit(ray, exit, entry.t + 0.001, DBL_MAX))
-      return false;
+    exit = boundary->hit(ray, entry.t + 0.001, maxT);
+    if (!exit.valid)
+      return {};
 
     entry.t = std::max(entry.t, minT);
     exit.t = std::min(exit.t, maxT);
 
     if (entry.t >= exit.t)
-      return false;
+      return {};
 
     entry.t = std::max(entry.t, 0.0);
 
@@ -60,12 +62,10 @@ struct ConstantMedium : public Hittable {
         distToHit = negativeInverseDensity * std::log(common::randomDouble());
 
     if (distToHit > intersectionLength)
-      return false;
+      return {};
 
     const double t = entry.t + distToHit / rayLength;
-    hit = Hit(ray.at(t), Vec3(1, 0, 0), phaseFunction, t, 0, 0, true);
-
-    return true;
+    return { ray.at(t), Vec3(1, 0, 0), phaseFunction, t, 0, 0, true };
   }
 
   [[nodiscard]] AABB boundingBox() const override {
