@@ -89,7 +89,6 @@ struct Scene {
     if (!hit.valid) {
       return ambient;
     }
-    assert(hit.material != nullptr);
 
     Color3 attenuation;
     Ray out;

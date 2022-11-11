@@ -74,12 +74,12 @@ int main(int argc, char *argv[]) {
   const int bounces = 5;
   Image image("/Users/tylerhm/proj/CppTrace/images/out.png", width, height, samples, bounces);
 
-  Point3 origin(0, 0, 0);
-  Point3 lookAt(0,0, 1);
+  Point3 origin(-7, 2, -5);
+  Point3 lookAt(-7,2, -10);
   Point3 up(0, 1, 0);
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
-  const double fov = 60;
+  const double fov = 90;
   Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture,
                 focusDist);
 
@@ -87,9 +87,10 @@ int main(int argc, char *argv[]) {
               std::make_shared<Image>(image), args.accelerator);
 
   scene.loadHittables(object->getHittables());
+  scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
   auto start = std::chrono::high_resolution_clock::now();
-  scene.render(1);
+  scene.render(12);
   auto end = std::chrono::high_resolution_clock::now();
 
   auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

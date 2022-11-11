@@ -16,13 +16,13 @@ struct Hit {
   Point3 location;
   Vec3 normal;
   std::shared_ptr<Material> material;
-  double t{};
+  double t;
+  bool valid;
+
   double u{}, v{};
   bool front{};
 
-  bool valid = false;
-
-  Hit() = default;
+  Hit() : t(DBL_MAX), valid(false) {}
   Hit(const Point3 &location,
       const Vec3 &normal,
       std::shared_ptr<Material> material,

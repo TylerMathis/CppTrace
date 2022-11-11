@@ -33,7 +33,7 @@ struct OBJ : public Hittable {
 
     hittableList.clear();
     for (auto &mesh : Loader.LoadedMeshes) {
-      for (int i = 0; i < mesh.Indices.size(); i += 3) {
+      for (int i = 0; i < mesh.Indices.size() - 3; i += 3) {
         auto a = mesh.Vertices[mesh.Indices[i]].Position;
         auto b = mesh.Vertices[mesh.Indices[i + 1]].Position;
         auto c = mesh.Vertices[mesh.Indices[i + 2]].Position;

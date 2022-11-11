@@ -44,7 +44,9 @@ struct BVHNode : Hittable {
 
     int span = end - start + 1;
     if (span <= 8) {
-      children = {begin(objects) + start, begin(objects) + end + 1};
+      assert(start >= 0 && start < size(objects));
+      assert(end >= 0 && end < size(objects));
+      children = std::vector<std::shared_ptr<Hittable>>(begin(objects) + start, begin(objects) + end + 1);
     } else {
       int mid = (start + end) >> 1;
       auto left = std::make_shared<BVHNode>(objects, start, mid);
@@ -60,17 +62,16 @@ struct BVHNode : Hittable {
   }
 
   [[nodiscard]] Hit hit(const Ray &ray,
-           const double minT,
-           const double maxT) const override {
+                        const double minT,
+                        const double maxT) const override {
     if (!box.hit(ray, minT, maxT))
       return {};
 
     Hit minHit;
     for (const auto &child : children) {
-      Hit childHit = child->hit(ray, minT, maxT); {
-        if (childHit.valid && childHit < minHit) {
-          minHit = childHit;
-        }
+      Hit childHit = child->hit(ray, minT, maxT);
+      if (childHit.valid && childHit < minHit) {
+        minHit = childHit;
       }
     }
 
