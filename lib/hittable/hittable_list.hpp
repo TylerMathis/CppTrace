@@ -8,6 +8,7 @@
 #include "../common/ray.hpp"
 #include "hit.hpp"
 #include "hittable.hpp"
+#include "./objects/triangle.hpp"
 
 #include <climits>
 #include <memory>
@@ -16,6 +17,7 @@
 
 struct HittableList : public Hittable {
   std::vector<std::shared_ptr<Hittable>> hittables;
+  std::vector<std::shared_ptr<Triangle>> triangles;
 
   HittableList() = default;
   explicit HittableList(std::vector<std::shared_ptr<Hittable>> hittables)
@@ -30,6 +32,9 @@ struct HittableList : public Hittable {
   void loadHittables(const std::vector<std::shared_ptr<Hittable>> &_hittables) {
     hittables = _hittables;
   }
+  void loadTriangles(const std::vector<std::shared_ptr<Triangle>> &_triangles) {
+    triangles = _triangles;
+  }
   void clear() {
     hittables.clear();
   }
@@ -39,10 +44,10 @@ struct HittableList : public Hittable {
     bool found = false;
     for (const auto &hittable : hittables)
       hit = hittable->hit(ray, minT, maxT);
-      if (hit.valid && hit < closest) {
-        closest = hit;
-        found = true;
-      }
+    if (hit.valid && hit < closest) {
+      closest = hit;
+      found = true;
+    }
 
     return closest;
   }

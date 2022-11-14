@@ -4,8 +4,10 @@ project(CppTrace)
 set(CMAKE_CXX_STANDARD 17)
 
 include(lib/CMakeLists.txt)
-
 add_library(CppTraceLib ${CppTrace_SOURCES})
+
+add_subdirectory(lib/extern/bvh)
+target_link_libraries(CppTraceLib PUBLIC bvh)
 
 add_executable(Render main.cpp)
 target_link_libraries(Render CppTraceLib)

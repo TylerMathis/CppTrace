@@ -15,16 +15,19 @@
 #include <stdexcept>
 #include <vector>
 
+struct Triangle;
+
 struct Hittable {
   std::shared_ptr<Material> material;
 
   [[nodiscard]] virtual Hit hit(const Ray &ray,
-                   double minT,
-                   double maxT) const = 0;
+                                double minT,
+                                double maxT) const = 0;
 
   [[nodiscard]] virtual AABB boundingBox() const = 0;
 
   [[nodiscard]] virtual std::vector<std::shared_ptr<Hittable>> getHittables() const { return {}; }
+  [[nodiscard]] virtual std::vector<std::shared_ptr<Triangle>> getTriangles() const { return {}; }
 };
 
 inline bool boxCompare(const std::shared_ptr<Hittable> &a,

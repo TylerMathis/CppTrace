@@ -13,6 +13,7 @@
 #include "../common/ray.hpp"
 #include "../common/vec3.hpp"
 #include "../accelerators/bvh.hpp"
+#include "../accelerators/madman_bvh.hpp"
 #include "../hittable/hit.hpp"
 #include "../hittable/hittable_list.hpp"
 
@@ -40,19 +41,17 @@ struct Scene {
   explicit Scene(std::shared_ptr<Camera> camera,
                  std::shared_ptr<Image> image,
                  const ACCELERATOR acceleratorType,
-                 const Color3 &ambient = {0, 0, 0},
-                 const std::vector<std::shared_ptr<Hittable>> &hittables = {})
+                 const Color3 &ambient = {0, 0, 0})
       : camera(std::move(camera)),
         image(std::move(image)),
-        objects(hittables),
         ambient(ambient),
-        acceleratorType(acceleratorType) {
-    notifyAccelerator();
-  }
+        acceleratorType(acceleratorType) {}
 
   void notifyAccelerator() {
     if (acceleratorType == BVH_ACCEL) {
       accelerator = std::make_shared<BVH>(objects);
+    } else if (acceleratorType == MADMAN_BVH) {
+      accelerator = std::make_shared<MadmanBVH>(objects.triangles, objects.triangles[0]->material);
     }
     // TODO: Implement KDTREE when ready
   }
@@ -78,6 +77,10 @@ struct Scene {
     objects.loadHittables(hittables);
     notifyAccelerator();
   }
+  void loadTriangles(const std::vector<std::shared_ptr<Triangle>> &triangles) {
+    objects.loadTriangles(triangles);
+    notifyAccelerator();
+  }
 
   // Recursively scatter the ray, depth limited by bouncesLeft
   [[nodiscard]] Color3 getPixelColor(const Ray &ray,
@@ -85,7 +88,7 @@ struct Scene {
     if (bouncesLeft <= 0)
       return {0, 0, 0};
 
-    Hit hit = accelerator->hit(ray, 0.001, 10000);
+    Hit hit = accelerator->hit(ray, 0.001, 10000000);
     if (!hit.valid) {
       return ambient;
     }

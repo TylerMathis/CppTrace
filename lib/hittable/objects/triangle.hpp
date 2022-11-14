@@ -36,8 +36,8 @@ struct Triangle : public Hittable {
   }
 
   [[nodiscard]] Hit hit(const Ray &ray,
-          const double minT,
-          const double maxT) const override {
+                        const double minT,
+                        const double maxT) const override {
     // If ray is parallel to triangle plane, no hit
     double normalDotRayDir = normal.dot(ray.direction);
     if (std::abs(normalDotRayDir) <= EPS)

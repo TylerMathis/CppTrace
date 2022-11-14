@@ -12,7 +12,6 @@
 #include "../hittable/hittable_list.hpp"
 #include "../hittable/bounding/aabb.hpp"
 
-#include <cassert>
 #include <climits>
 #include <memory>
 #include <random>
@@ -21,7 +20,7 @@
 #include <iostream>
 #include <algorithm>
 
-struct BVHNode : Hittable {
+struct BVHNode : public Hittable {
   std::vector<std::shared_ptr<Hittable>> children;
   AABB box;
 
@@ -44,8 +43,6 @@ struct BVHNode : Hittable {
 
     int span = end - start + 1;
     if (span <= 8) {
-      assert(start >= 0 && start < size(objects));
-      assert(end >= 0 && end < size(objects));
       children = std::vector<std::shared_ptr<Hittable>>(begin(objects) + start, begin(objects) + end + 1);
     } else {
       int mid = (start + end) >> 1;

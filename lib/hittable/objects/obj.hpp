@@ -21,9 +21,10 @@
 
 struct OBJ : public Hittable {
   HittableList hittableList;
+  std::vector<std::shared_ptr<Triangle>> triangles;
   BVH bvh;
 
-  OBJ(std::string &filepath, const std::shared_ptr<Material>& material) {
+  OBJ(std::string &filepath, const std::shared_ptr<Material> &material) {
     objl::Loader Loader;
     if (!(Loader.LoadFile(filepath))) {
       std::cerr << "Error: OBJ path " << filepath << " is not a valid path\n";
@@ -40,7 +41,9 @@ struct OBJ : public Hittable {
         auto ap = Point3(a.X, a.Y, a.Z);
         auto bp = Point3(b.X, b.Y, b.Z);
         auto cp = Point3(c.X, c.Y, c.Z);
-        hittableList.pushHittable(std::make_shared<Triangle>(ap, bp, cp, material));
+        auto triangle = std::make_shared<Triangle>(ap, bp, cp, material);
+        hittableList.pushHittable(triangle);
+        triangles.push_back(triangle);
       }
     }
 
@@ -48,14 +51,15 @@ struct OBJ : public Hittable {
   }
 
   [[nodiscard]] Hit hit(const Ray &ray,
-           const double minT,
-           const double maxT) const override {
+                        const double minT,
+                        const double maxT) const override {
     return bvh.hit(ray, minT, maxT);
   }
 
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
 
   [[nodiscard]] std::vector<std::shared_ptr<Hittable>> getHittables() const override { return hittableList.hittables; }
+  [[nodiscard]] std::vector<std::shared_ptr<Triangle>> getTriangles() const override { return triangles; }
 };
 
 #endif //CPPTRACE_LIB_HITTABLE_OBJ_HPP_
