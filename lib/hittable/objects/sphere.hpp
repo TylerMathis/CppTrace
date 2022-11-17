@@ -26,8 +26,7 @@ struct Sphere : public Hittable {
     this->material = material;
   }
 
-  bool hit(const Ray &ray,
-           Hit &hit,
+  [[nodiscard]] Hit hit(const Ray &ray,
            const double minT,
            const double maxT) const override {
     Vec3 oc = ray.origin - center;
@@ -37,7 +36,7 @@ struct Sphere : public Hittable {
     auto discriminant = bHalf * bHalf - a * c;
 
     if (discriminant < 0)
-      return false;
+      return {};
 
     auto sqrtD = sqrt(discriminant);
     double t = (-bHalf - sqrtD) / a;
@@ -45,7 +44,7 @@ struct Sphere : public Hittable {
     if (t < minT || t > maxT) {
       t = (-bHalf + sqrtD) / a;
       if (t < minT || t > maxT)
-        return false;
+        return {};
     }
 
     Point3 location(ray.at(t));
@@ -58,8 +57,7 @@ struct Sphere : public Hittable {
     if (!front)
       normal = -normal;
 
-    hit = Hit(location, normal, this->material, t, u, v, front);
-    return true;
+    return Hit(location, normal, this->material, t, u, v, front);
   }
 
   static void calcUV(const Point3 &location,

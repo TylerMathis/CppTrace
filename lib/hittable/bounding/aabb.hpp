@@ -35,6 +35,16 @@ struct AxisAlignedBoundingBox {
     }
     return true;
   }
+
+  int MaximumExtent() const {
+    std::vector<std::pair<double, int>> bounds = {
+        {std::abs(a.x - b.x), 0},
+        {std::abs(a.y - b.y), 1},
+        {std::abs(a.z - b.z), 2}
+    };
+    std::sort(begin(bounds), end(bounds));
+    return bounds[0].second;
+  }
 };
 
 using AABB = AxisAlignedBoundingBox;

@@ -4,6 +4,7 @@
 #include "./lib/hittable/objects/stl.hpp"
 #include "./lib/hittable/textures/solid_color.hpp"
 #include "./lib/hittable/materials/lambertian.hpp"
+#include "./lib/accelerators/accelerators.hpp"
 
 #include <memory>
 
@@ -25,7 +26,7 @@ int main() {
                 focusDist);
 
   Scene scene(std::make_shared<Camera>(camera),
-              std::make_shared<Image>(image));
+              std::make_shared<Image>(image), BVH_ACCEL);
 
   auto texture = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   auto material = std::make_shared<Lambertian>(texture);

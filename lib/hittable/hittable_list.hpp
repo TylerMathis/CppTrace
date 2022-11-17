@@ -8,6 +8,7 @@
 #include "../common/ray.hpp"
 #include "hit.hpp"
 #include "hittable.hpp"
+#include "./objects/triangle.hpp"
 
 #include <climits>
 #include <memory>
@@ -16,6 +17,7 @@
 
 struct HittableList : public Hittable {
   std::vector<std::shared_ptr<Hittable>> hittables;
+  std::vector<std::shared_ptr<Triangle>> triangles;
 
   HittableList() = default;
   explicit HittableList(std::vector<std::shared_ptr<Hittable>> hittables)
@@ -30,23 +32,24 @@ struct HittableList : public Hittable {
   void loadHittables(const std::vector<std::shared_ptr<Hittable>> &_hittables) {
     hittables = _hittables;
   }
+  void loadTriangles(const std::vector<std::shared_ptr<Triangle>> &_triangles) {
+    triangles = _triangles;
+  }
   void clear() {
     hittables.clear();
   }
 
-  bool hit(const Ray &ray, Hit &hit, const double minT, const double maxT) const override {
-    Hit out, closest;
+  [[nodiscard]] Hit hit(const Ray &ray, const double minT, const double maxT) const override {
+    Hit hit, closest;
     bool found = false;
     for (const auto &hittable : hittables)
-      if (hittable->hit(ray, out, minT, maxT) && out < closest) {
-        closest = out;
-        found = true;
-      }
+      hit = hittable->hit(ray, minT, maxT);
+    if (hit.valid && hit < closest) {
+      closest = hit;
+      found = true;
+    }
 
-    if (found)
-      hit = closest;
-
-    return found;
+    return closest;
   }
 
   [[nodiscard]] AABB boundingBox() const override {

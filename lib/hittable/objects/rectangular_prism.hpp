@@ -51,8 +51,8 @@ struct RectangularPrism : public Hittable {
     );
   }
 
-  bool hit(const Ray &ray, Hit &hit, double minT, double maxT) const override {
-    return sides.hit(ray, hit, minT, maxT);
+  [[nodiscard]] Hit hit(const Ray &ray, double minT, double maxT) const override {
+    return sides.hit(ray, minT, maxT);
   }
 
   [[nodiscard]] AABB boundingBox() const override {

@@ -17,9 +17,11 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 
 struct STL : public Hittable {
   HittableList hittableList;
+  std::vector<std::shared_ptr<Triangle>> triangles;
   BVH bvh;
 
   STL(const std::string &filepath, const std::shared_ptr<Material> &material) {
@@ -34,7 +36,9 @@ struct STL : public Hittable {
         auto ap = Point3(a[0], a[1], a[2]);
         auto bp = Point3(b[0], b[1], b[2]);
         auto cp = Point3(c[0], c[1], c[2]);
-        hittableList.pushHittable(std::make_shared<Triangle>(ap, bp, cp, material));
+        auto triangle = std::make_shared<Triangle>(ap, bp, cp, material);
+        hittableList.pushHittable(triangle);
+        triangles.push_back(triangle);
       }
 
     } catch (std::exception &e) {
@@ -44,14 +48,16 @@ struct STL : public Hittable {
     bvh = BVH(hittableList);
   }
 
-  bool hit(const Ray &ray,
-           Hit &hit,
-           const double minT,
-           const double maxT) const override {
-    return bvh.hit(ray, hit, minT, maxT);
+  [[nodiscard]] Hit hit(const Ray &ray,
+                        const double minT,
+                        const double maxT) const override {
+    return bvh.hit(ray, minT, maxT);
   }
 
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
+
+  [[nodiscard]] std::vector<std::shared_ptr<Hittable>> getHittables() const override { return hittableList.hittables; }
+  [[nodiscard]] std::vector<std::shared_ptr<Triangle>> getTriangles() const override { return triangles; }
 };
 
 #endif //CPPTRACE_LIB_HITTABLE_OBJECTS_STL_HPP_

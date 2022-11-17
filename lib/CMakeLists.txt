@@ -1,3 +1,6 @@
+list(APPEND CppTrace_SOURCES
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_trace.cpp)
+
 include(lib/accelerators/CMakeLists.txt)
 include(lib/cli/CMakeLists.txt)
 include(lib/common/CMakeLists.txt)

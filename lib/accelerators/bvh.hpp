@@ -12,7 +12,6 @@
 #include "../hittable/hittable_list.hpp"
 #include "../hittable/bounding/aabb.hpp"
 
-#include <cassert>
 #include <climits>
 #include <memory>
 #include <random>
@@ -44,7 +43,7 @@ struct BVHNode : public Hittable {
 
     int span = end - start + 1;
     if (span <= 8) {
-      children = {begin(objects) + start, begin(objects) + end + 1};
+      children = std::vector<std::shared_ptr<Hittable>>(begin(objects) + start, begin(objects) + end + 1);
     } else {
       int mid = (start + end) >> 1;
       auto left = std::make_shared<BVHNode>(objects, start, mid);
@@ -59,21 +58,21 @@ struct BVHNode : public Hittable {
     }
   }
 
-  bool hit(const Ray &ray,
-           Hit &hit,
-           const double minT,
-           const double maxT) const override {
+  [[nodiscard]] Hit hit(const Ray &ray,
+                        const double minT,
+                        const double maxT) const override {
     if (!box.hit(ray, minT, maxT))
-      return false;
+      return {};
 
-    bool foundHit = false;
-    Hit childHit;
+    Hit minHit;
     for (const auto &child : children) {
-      foundHit |= child->hit(ray, childHit, minT, maxT);
-      hit = std::min(hit, childHit);
+      Hit childHit = child->hit(ray, minT, maxT);
+      if (childHit.valid && childHit < minHit) {
+        minHit = childHit;
+      }
     }
 
-    return foundHit;
+    return minHit;
   }
 
   [[nodiscard]] AABB boundingBox() const override { return box; }

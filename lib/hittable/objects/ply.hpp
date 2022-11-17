@@ -49,14 +49,15 @@ struct PLY : public Hittable {
     bvh = BVH(hittableList);
   }
 
-  bool hit(const Ray &ray,
-           Hit &hit,
+  [[nodiscard]] Hit hit(const Ray &ray,
            const double minT,
            const double maxT) const override {
-    return bvh.hit(ray, hit, minT, maxT);
+    return bvh.hit(ray, minT, maxT);
   }
 
   [[nodiscard]] AABB boundingBox() const override { return bvh.boundingBox(); }
+
+  [[nodiscard]] std::vector<std::shared_ptr<Hittable>> getHittables() const override { return hittableList.hittables; }
 };
 
 #endif //CPPTRACE_LIB_HITTABLE_OBJECTS_PLY_HPP_
