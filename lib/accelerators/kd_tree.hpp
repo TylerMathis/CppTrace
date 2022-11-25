@@ -20,9 +20,15 @@ struct KDTree : public Hittable {
   struct Node {
     AABB box;
     std::vector<int> objectIndicies;
-    int leftChildIndex, rightChildIndex;
+    int leftChildIndex = -1, rightChildIndex = -1;
+    Node(const std::vector<int> &aObjectIndexList, const AABB &aBox)
+        : box(aBox), objectIndicies(aObjectIndexList) {}
+    constexpr bool isLeaf() const {
+      return leftChildIndex == -1 && rightChildIndex == -1;
+    }
   };
   std::vector<Node> tree;
+  int maxDepth;
 
   KDTree() = default;
 
@@ -30,7 +36,9 @@ struct KDTree : public Hittable {
 
   KDTree(const std::vector<std::shared_ptr<Hittable>> &);
 
-  int buildTree(const std::vector<int>, AABB);
+  int buildTree(const std::vector<int>, AABB, int);
+
+  Hit traverseHit(int, const Ray &, const double, const double) const;
 
   Hit hit(const Ray &, const double, const double) const override;
 
