@@ -64,6 +64,7 @@ struct AxisAlignedBoundingBox {
         rays.emplace_back(p, q - p);
       }
     }
+    assert(rays.size() == 12);
     return rays;
   }
 };
