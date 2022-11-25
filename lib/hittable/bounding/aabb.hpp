@@ -8,9 +8,9 @@
 #include "../../common/ray.hpp"
 #include "../../common/vec3.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <climits>
-#include <algorithm>
 
 struct AxisAlignedBoundingBox {
   Point3 a, b;
