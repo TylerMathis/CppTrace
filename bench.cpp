@@ -65,29 +65,23 @@ int main(int argc, char *argv[]) {
 
   auto object = buildModel(args.modelpath);
   const double aspectRatio = 1;
-  const int width = 250;
+  const int width = 100;
   const int height = (int) (width / aspectRatio);
   const int samples = 1;
   const int bounces = 1;
   auto image = std::make_shared<Image>(args.outputpath, width, height, samples, bounces);
 
-  Point3 origin(-3, 1, 0);
-  Point3 lookAt(0, 1, 1);
+  Point3 origin(0, 50, 100);
+  Point3 lookAt(0, 50, 0);
   Point3 up(0, 1, 0);
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
-  const double fov = 90;
+  const double fov = 60;
   auto camera = std::make_shared<Camera>(origin, lookAt, up, fov, aspectRatio, aperture,
                                          focusDist);
 
   std::ofstream results(args.outputpath + ".csv");
-  for (int acceleratorInt = BVH_ACCEL; acceleratorInt <= MADMAN_BVH; acceleratorInt++) {
-    auto accelerator = static_cast<const ACCELERATOR>(acceleratorInt);
-    results << stringFromAccel(accelerator);
-    if (accelerator != MADMAN_BVH)
-      results << ",";
-  }
-  results << "\n";
+  results << "structure_build,render\n";
 
   for (int acceleratorInt = BVH_ACCEL; acceleratorInt <= MADMAN_BVH; acceleratorInt++) {
     auto accelerator = static_cast<const ACCELERATOR>(acceleratorInt);
@@ -96,23 +90,25 @@ int main(int argc, char *argv[]) {
     image->reset(renderPath);
     Scene scene(camera, image, accelerator);
 
+    auto start = std::chrono::high_resolution_clock::now();
     if (accelerator == MADMAN_BVH) {
       scene.loadTriangles(object->getTriangles());
     } else {
       scene.loadHittables(object->getHittables());
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    results << diff.count() << ",";
+
     scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
-    auto start = std::chrono::high_resolution_clock::now();
+    start = std::chrono::high_resolution_clock::now();
     scene.render(1);
-    auto end = std::chrono::high_resolution_clock::now();
+    end = std::chrono::high_resolution_clock::now();
 
-    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    results << diff.count();
-    if (accelerator != MADMAN_BVH)
-      results << ",";
+    diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    results << diff.count() << "\n";
   }
-  results << "\n";
   results.close();
 
   return 0;
