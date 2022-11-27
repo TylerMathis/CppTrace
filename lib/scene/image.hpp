@@ -40,6 +40,12 @@ struct Image {
         data((uint8_t *) calloc(comps * width * height, sizeof(uint8_t))),
         aspectRatio((double) width / height) {}
 
+  void reset(const std::string &newPath) {
+    free(data);
+    data = (uint8_t *) calloc(comps * width * height, sizeof(uint8_t));
+    path = newPath;
+  }
+
   void setPixel(const int row, const int col, const Color3 &c) const {
     int byte = (row * width + col) * 3;
     Color3 sampleAndGammaCorrected = (c * (1.0 / samples)).sqrt();

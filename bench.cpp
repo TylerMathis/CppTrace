@@ -17,36 +17,25 @@
 #include <memory>
 #include <chrono>
 #include <iostream>
+#include <fstream>
 
 struct Args {
   std::string modelpath, outputpath;
-  ACCELERATOR accelerator;
 
-  Args(std::string modelpath, std::string outputpath, ACCELERATOR accelerator)
-      : modelpath(std::move(modelpath)), outputpath(std::move(outputpath)), accelerator(accelerator) {}
-  Args(std::string modelpath, std::string outputpath, std::string accelerator)
-      : modelpath(std::move(modelpath)),
-        outputpath(std::move(outputpath)),
-        accelerator(accelFromString(std::move(accelerator))) {}
+  Args(std::string modelpath, std::string outputpath)
+      : modelpath(std::move(modelpath)), outputpath(std::move(outputpath)) {}
 };
 
 Args parse(int argc, char *argv[]) {
   cmdline::parser parser;
 
   parser.add<std::string>("modelpath", 'm', "Absolute path to model location", true);
-  parser.add<std::string>("accelerator",
-                          'a',
-                          "Accelerator structure to benchmark",
-                          true,
-                          "",
-                          cmdline::oneof<std::string>("bvh", "kdtree", "madman_bvh"));
   parser.add<std::string>("outputpath", 'o', "Absolute path of output png", true);
 
   parser.parse_check(argc, argv);
 
   Args args(parser.get<std::string>("modelpath"),
-            parser.get<std::string>("outputpath"),
-            parser.get<std::string>("accelerator"));
+            parser.get<std::string>("outputpath"));
 
   return args;
 }
@@ -67,43 +56,64 @@ std::shared_ptr<Hittable> buildModel(std::string modelpath) {
     throw std::invalid_argument("Invalid file extension '" + extension + "', only [.obj, .ply, .stl] are supported.");
 }
 
+std::string buildRenderPath(const std::string &outputpath, const ACCELERATOR &accelerator) {
+  return outputpath + "_" + stringFromAccel(accelerator) + ".png";
+}
+
 int main(int argc, char *argv[]) {
   auto args = parse(argc, argv);
 
   auto object = buildModel(args.modelpath);
-
   const double aspectRatio = 1;
   const int width = 250;
   const int height = (int) (width / aspectRatio);
   const int samples = 1;
   const int bounces = 1;
-  Image image(args.outputpath, width, height, samples, bounces);
+  auto image = std::make_shared<Image>(args.outputpath, width, height, samples, bounces);
 
-  Point3 origin(0, 50, 100);
-  Point3 lookAt(0, 50, 0);
+  Point3 origin(-3, 1, 0);
+  Point3 lookAt(0, 1, 1);
   Point3 up(0, 1, 0);
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
   const double fov = 90;
-  Camera camera(origin, lookAt, up, fov, image.aspectRatio, aperture,
-                focusDist);
+  auto camera = std::make_shared<Camera>(origin, lookAt, up, fov, aspectRatio, aperture,
+                                         focusDist);
 
-  Scene scene(std::make_shared<Camera>(camera),
-              std::make_shared<Image>(image), args.accelerator);
-
-  if (args.accelerator == MADMAN_BVH) {
-    scene.loadTriangles(object->getTriangles());
-  } else {
-    scene.loadHittables(object->getHittables());
+  std::ofstream results(args.outputpath + ".csv");
+  for (int acceleratorInt = BVH_ACCEL; acceleratorInt <= MADMAN_BVH; acceleratorInt++) {
+    auto accelerator = static_cast<const ACCELERATOR>(acceleratorInt);
+    results << stringFromAccel(accelerator);
+    if (accelerator != MADMAN_BVH)
+      results << ",";
   }
-  scene.setAmbient(Color3(0.5, 0.5, 0.5));
+  results << "\n";
 
-  auto start = std::chrono::high_resolution_clock::now();
-  scene.render(1);
-  auto end = std::chrono::high_resolution_clock::now();
+  for (int acceleratorInt = BVH_ACCEL; acceleratorInt <= MADMAN_BVH; acceleratorInt++) {
+    auto accelerator = static_cast<const ACCELERATOR>(acceleratorInt);
 
-  auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-  std::cout << diff.count() << std::endl;
+    auto renderPath = buildRenderPath(args.outputpath, accelerator);
+    image->reset(renderPath);
+    Scene scene(camera, image, accelerator);
+
+    if (accelerator == MADMAN_BVH) {
+      scene.loadTriangles(object->getTriangles());
+    } else {
+      scene.loadHittables(object->getHittables());
+    }
+    scene.setAmbient(Color3(0.5, 0.5, 0.5));
+
+    auto start = std::chrono::high_resolution_clock::now();
+    scene.render(1);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    results << diff.count();
+    if (accelerator != MADMAN_BVH)
+      results << ",";
+  }
+  results << "\n";
+  results.close();
 
   return 0;
 }
