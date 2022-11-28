@@ -10,7 +10,7 @@
 
 int main() {
   const double aspectRatio = 1;
-  const int width = 250;
+  const int width = 100;
   const int height = (int) (width / aspectRatio);
   const int samples = 1;
   const int bounces = 5;
