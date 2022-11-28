@@ -116,10 +116,7 @@ std::pair<AABB, AABB> splitBox(const AABB &box, int axis, int dist) {
 }
 
 bool overlap(std::pair<int, int> a, std::pair<int, int> b) {
-  return (a.first < b.first && b.first < a.second) ||
-      (a.first < b.second && b.second < a.second) ||
-      (b.first < a.first && a.first < b.second) ||
-      (b.first < a.second && a.second < b.second);
+  return a.first < b.second && b.first < a.second;
 }
 
 bool boxOverlap(const AABB &box0, const AABB &box1) {
