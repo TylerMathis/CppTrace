@@ -29,8 +29,8 @@ struct AxisAlignedBoundingBox {
       double t1 = (b[i] - ray.origin[i]) * invD;
       if (invD < 0)
         std::swap(t0, t1);
-      double tMin = std::max((double)minT, t0);
-      double tMax = std::min((double)maxT, t1);
+      double tMin = std::max((double) minT, t0);
+      double tMax = std::min((double) maxT, t1);
       if (tMax <= tMin)
         return false;
     }
@@ -109,26 +109,23 @@ std::pair<AABB, AABB> splitBoxOnZ(const AABB &box, int dist) {
 
 std::pair<AABB, AABB> splitBox(const AABB &box, int axis, int dist) {
   switch (axis) {
-  case 0:
-    return splitBoxOnX(box, dist);
-  case 1:
-    return splitBoxOnY(box, dist);
-  default:
-    return splitBoxOnZ(box, dist);
+    case 0:return splitBoxOnX(box, dist);
+    case 1:return splitBoxOnY(box, dist);
+    default:return splitBoxOnZ(box, dist);
   }
 }
 
 bool overlap(std::pair<int, int> a, std::pair<int, int> b) {
   return (a.first < b.first && b.first < a.second) ||
-         (a.first < b.second && b.second < a.second) ||
-         (b.first < a.first && a.first < b.second) ||
-         (b.first < a.second && a.second < b.second);
+      (a.first < b.second && b.second < a.second) ||
+      (b.first < a.first && a.first < b.second) ||
+      (b.first < a.second && a.second < b.second);
 }
 
 bool boxOverlap(const AABB &box0, const AABB &box1) {
   return overlap({box0.a.x, box0.b.x}, {box1.a.x, box1.b.x}) &&
-         overlap({box0.a.y, box0.b.y}, {box1.a.y, box1.b.y}) &&
-         overlap({box0.a.z, box0.b.z}, {box1.a.z, box1.b.z});
+      overlap({box0.a.y, box0.b.y}, {box1.a.y, box1.b.y}) &&
+      overlap({box0.a.z, box0.b.z}, {box1.a.z, box1.b.z});
 }
 
 #endif // CPPTRACE_LIB_HITTABLE_BOUNDING_AABB_HPP_

@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 enum ACCELERATOR {
-  KD_TREE,
+  KD_TREE_ACCEL,
   BVH_ACCEL,
   MADMAN_BVH,
 };
@@ -19,7 +19,7 @@ ACCELERATOR accelFromString(std::string accelerator) {
     c = (char) std::tolower(c);
 
   if (accelerator == "kd_tree")
-    return KD_TREE;
+    return KD_TREE_ACCEL;
   else if (accelerator == "bvh")
     return BVH_ACCEL;
   else if (accelerator == "madman_bvh")
@@ -29,7 +29,7 @@ ACCELERATOR accelFromString(std::string accelerator) {
 }
 
 std::string stringFromAccel(ACCELERATOR accelerator) {
-  if (accelerator == KD_TREE)
+  if (accelerator == KD_TREE_ACCEL)
     return "kd_tree";
   else if (accelerator == BVH_ACCEL)
     return "bvh";

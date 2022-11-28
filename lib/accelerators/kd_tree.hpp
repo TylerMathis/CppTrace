@@ -13,6 +13,7 @@
 #include "../hittable/hittable_list.hpp"
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 struct KDTree : public Hittable {
@@ -21,9 +22,9 @@ struct KDTree : public Hittable {
     AABB box;
     std::vector<int> objectIndicies;
     int leftChildIndex = -1, rightChildIndex = -1;
-    Node(const std::vector<int> &aObjectIndexList, const AABB &aBox)
-        : box(aBox), objectIndicies(aObjectIndexList) {}
-    constexpr bool isLeaf() const {
+    Node(std::vector<int> aObjectIndexList, const AABB &aBox)
+        : box(aBox), objectIndicies(std::move(aObjectIndexList)) {}
+    [[nodiscard]] constexpr bool isLeaf() const {
       return leftChildIndex == -1 && rightChildIndex == -1;
     }
   };
@@ -32,9 +33,9 @@ struct KDTree : public Hittable {
 
   KDTree() = default;
 
-  KDTree(const HittableList &hittableList) : KDTree(hittableList.hittables) {}
+  explicit KDTree(const HittableList &hittableList) : KDTree(hittableList.hittables) {}
 
-  KDTree(const std::vector<std::shared_ptr<Hittable>> &hittables)
+  explicit KDTree(const std::vector<std::shared_ptr<Hittable>> &hittables)
       : objects(hittables), maxDepth(8 + 1.3 * std::log(hittables.size())) {
     std::vector<int> indicies(hittables.size());
     std::iota(indicies.begin(), indicies.end(), 0);
@@ -60,10 +61,9 @@ struct KDTree : public Hittable {
 
     auto hasIntersection = [](const auto &rays,
                               const std::shared_ptr<Hittable> &obj) -> bool {
-      for (const auto &ray : rays)
-        if (obj->hit(ray, 0, 1).valid)
-          return true;
-      return false;
+      return std::any_of(begin(rays), end(rays), [&obj](const auto &ray) {
+        return obj->hit(ray, 0, 1).valid;
+      });
     };
 
     std::vector<int> leftIndicies, rightIndicies;
@@ -74,7 +74,7 @@ struct KDTree : public Hittable {
         rightIndicies.push_back(i);
     }
 
-    int vert = tree.size() - 1;
+    int vert = (int) tree.size() - 1;
 
     tree[vert].leftChildIndex = buildTree(leftIndicies, leftBox, depth + 1);
     tree[vert].rightChildIndex = buildTree(rightIndicies, rightBox, depth + 1);
@@ -82,7 +82,7 @@ struct KDTree : public Hittable {
     return vert;
   }
 
-  Hit traverseHit(int vert, const Ray &ray, const double minT,
+  [[nodiscard]] Hit traverseHit(int vert, const Ray &ray, const double minT,
                   const double maxT) const {
     if (vert == -1 || !tree[vert].box.hit(ray, minT, maxT))
       return {};
@@ -100,7 +100,7 @@ struct KDTree : public Hittable {
 
     Hit minHit;
     for (auto childIndex :
-         {tree[vert].leftChildIndex, tree[vert].rightChildIndex}) {
+        {tree[vert].leftChildIndex, tree[vert].rightChildIndex}) {
       Hit childHit = traverseHit(childIndex, ray, minT, maxT);
       if (childHit.valid && childHit < minHit) {
         minHit = childHit;
@@ -110,7 +110,7 @@ struct KDTree : public Hittable {
     return minHit;
   }
 
-  Hit hit(const Ray &ray, const double minT, const double maxT) const {
+  [[nodiscard]] Hit hit(const Ray &ray, const double minT, const double maxT) const override {
     return traverseHit(0, ray, minT, maxT);
   }
 

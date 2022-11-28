@@ -53,7 +53,7 @@ struct Scene {
       accelerator = std::make_shared<BVH>(objects);
     } else if (acceleratorType == MADMAN_BVH) {
       accelerator = std::make_shared<MadmanBVH>(objects.triangles, objects.triangles[0]->material);
-    } else if (acceleratorType == KD_TREE) {
+    } else if (acceleratorType == KD_TREE_ACCEL) {
       accelerator = std::make_shared<KDTree>(objects);
     }
   }

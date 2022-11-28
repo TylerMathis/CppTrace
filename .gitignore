@@ -6,6 +6,7 @@
 *.stl
 *.ply
 *.mov
+*.csv
 
 # Build
 cmake-build*

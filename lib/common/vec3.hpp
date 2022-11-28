@@ -18,11 +18,11 @@ struct Vec3 {
   Vec3(const double e0, const double e1, const double e2)
       : x(e0), y(e1), z(e2) {}
 
-  friend std::ostream &operator<<(std::ostream &os, Vec3 v) {
+  inline friend std::ostream &operator<<(std::ostream &os, Vec3 v) {
     return os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
   }
 
-  double operator[](const int i) const {
+  inline double operator[](const int i) const {
     switch (i) {
       case 0:return x;
       case 1:return y;
@@ -31,7 +31,7 @@ struct Vec3 {
     }
   }
 
-  double &operator[](const int i) {
+  inline double &operator[](const int i) {
     switch (i) {
       case 0:return x;
       case 1:return y;
@@ -40,68 +40,68 @@ struct Vec3 {
     }
   }
 
-  Vec3 operator-() const { return {-x, -y, -z}; }
+  inline Vec3 operator-() const { return {-x, -y, -z}; }
 
-  Vec3 operator+(const Vec3 &o) const {
+  inline Vec3 operator+(const Vec3 &o) const {
     return {x + o.x, y + o.y, z + o.z};
   }
-  Vec3 operator-(const Vec3 &o) const {
+  inline Vec3 operator-(const Vec3 &o) const {
     return {x - o.x, y - o.y, z - o.z};
   }
-  Vec3 operator*(const Vec3 &o) const {
+  inline Vec3 operator*(const Vec3 &o) const {
     return {x * o.x, y * o.y, z * o.z};
   }
-  Vec3 operator+(const double s) const { return {x + s, y + s, z + s}; }
-  Vec3 operator-(const double s) const { return {x - s, y - s, z - s}; }
-  Vec3 operator*(const double s) const { return {x * s, y * s, z * s}; }
-  Vec3 operator/(const double s) const { return {x / s, y / s, z / s}; }
+  inline Vec3 operator+(const double s) const { return {x + s, y + s, z + s}; }
+  inline Vec3 operator-(const double s) const { return {x - s, y - s, z - s}; }
+  inline Vec3 operator*(const double s) const { return {x * s, y * s, z * s}; }
+  inline Vec3 operator/(const double s) const { return {x / s, y / s, z / s}; }
 
-  Vec3 &operator+=(const Vec3 &o) {
+  inline Vec3 &operator+=(const Vec3 &o) {
     x += o.x, y += o.y, z += o.z;
     return *this;
   }
-  Vec3 &operator-=(const Vec3 &o) {
+  inline Vec3 &operator-=(const Vec3 &o) {
     x -= o.x, y -= o.y, z -= o.z;
     return *this;
   }
-  Vec3 &operator*=(const Vec3 &o) {
+  inline Vec3 &operator*=(const Vec3 &o) {
     x *= o.x, y *= o.y, z *= o.z;
     return *this;
   }
-  Vec3 &operator*=(const double s) {
+  inline Vec3 &operator*=(const double s) {
     x *= s, y *= s, z *= s;
     return *this;
   }
-  Vec3 &operator/=(const double s) {
+  inline Vec3 &operator/=(const double s) {
     x /= s, y /= s, z /= s;
     return *this;
   }
 
-  [[nodiscard]] Vec3 cross(const Vec3 &o) const {
+  [[nodiscard]] inline Vec3 cross(const Vec3 &o) const {
     return {y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x};
   }
 
-  [[nodiscard]] double dot(const Vec3 &o) const {
+  [[nodiscard]] inline double dot(const Vec3 &o) const {
     return x * o.x + y * o.y + z * o.z;
   }
-  [[nodiscard]] double mag2() const { return x * x + y * y + z * z; }
-  [[nodiscard]] double mag() const { return std::sqrt(mag2()); }
-  [[nodiscard]] double dist(const Vec3 &o) const { return (*this - o).mag(); }
+  [[nodiscard]] inline double mag2() const { return x * x + y * y + z * z; }
+  [[nodiscard]] inline double mag() const { return std::sqrt(mag2()); }
+  [[nodiscard]] inline double dist(const Vec3 &o) const { return (*this - o).mag(); }
 
-  [[nodiscard]] Vec3 unit() const { return *this / mag(); }
-  [[nodiscard]] Vec3 sqrt() const {
+  [[nodiscard]] inline Vec3 unit() const { return *this / mag(); }
+  [[nodiscard]] inline Vec3 sqrt() const {
     return {std::sqrt(x), std::sqrt(y), std::sqrt(z)};
   }
-  [[nodiscard]] Vec3 abs() const {
+  [[nodiscard]] inline Vec3 abs() const {
     return {std::abs(x), std::abs(y), std::abs(z)};
   }
 
-  [[nodiscard]] Vec3 reflect(const Vec3 &axis) const {
+  [[nodiscard]] inline Vec3 reflect(const Vec3 &axis) const {
     Vec3 vec = *this;
     return vec - axis * 2 * vec.dot(axis);
   }
 
-  [[nodiscard]] Vec3 refract(const Vec3 &normal,
+  [[nodiscard]] inline Vec3 refract(const Vec3 &normal,
                              const double refractionRatio) const {
     Vec3 vec = *this;
 
@@ -122,7 +122,7 @@ struct Vec3 {
             common::randomDouble(min, max)};
   }
 
-  static Vec3 randomInUnitSphere() {
+  inline static Vec3 randomInUnitSphere() {
     while (true) {
       Vec3 p = random(-1, 1);
       if (p.mag2() >= 1)
@@ -131,14 +131,14 @@ struct Vec3 {
     }
   }
 
-  static Vec3 randomInHemisphere(const Vec3 &normal) {
+  inline static Vec3 randomInHemisphere(const Vec3 &normal) {
     Vec3 inUnitSphere = randomInUnitSphere();
     if (inUnitSphere.dot(normal) > 0.0)
       return inUnitSphere;
     return -inUnitSphere;
   }
 
-  static Vec3 randomInUnitDisk() {
+  inline static Vec3 randomInUnitDisk() {
     while (true) {
       Vec3 p(common::randomDouble(-1, 1), common::randomDouble(-1, 1), 0);
       if (p.mag2() >= 1)
