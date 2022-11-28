@@ -58,10 +58,12 @@ struct AxisAlignedBoundingBox {
     };
     for (int mask = 0; mask < 8; mask++) {
       auto p = constructPoint(mask);
-      for (int supermask = (mask + 1) | mask; supermask < 8;
+      for (int supermask = mask; supermask < 8;
            supermask = (supermask + 1) | mask) {
-        auto q = constructPoint(supermask);
-        rays.emplace_back(p, q - p);
+        if (__builtin_popcount(mask ^ supermask) == 1) {
+          auto q = constructPoint(supermask);
+          rays.emplace_back(p, q - p);
+        }
       }
     }
     assert(rays.size() == 12);
