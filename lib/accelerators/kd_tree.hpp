@@ -47,7 +47,7 @@ struct KDTree : public Hittable {
   }
 
   int buildTree(const std::vector<int> indicies, AABB box, int depth) {
-    if (depth > maxDepth)
+    if (indicies.empty() || depth > maxDepth)
       return -1;
 
     tree.emplace_back(indicies, box);
@@ -74,7 +74,7 @@ struct KDTree : public Hittable {
         rightIndicies.push_back(i);
     }
 
-    int vert = tree.size();
+    int vert = tree.size() - 1;
 
     tree[vert].leftChildIndex = buildTree(leftIndicies, leftBox, depth + 1);
     tree[vert].rightChildIndex = buildTree(rightIndicies, rightBox, depth + 1);
