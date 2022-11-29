@@ -20,68 +20,50 @@
 struct Triangle : public Hittable {
   const double EPS = 1e-6;
 
-  Point3 a, b, c;
-  std::vector<Point3> points;
+  Point3 p0;
+  Vec3 e1, e2;
   Normal normal;
 
   Triangle() = default;
-  Triangle(const Point3 &a,
-           const Point3 &b,
-           const Point3 &c,
+  Triangle(const Point3 &p0,
+           const Point3 &p1,
+           const Point3 &p2,
            const std::shared_ptr<Material> &material)
-      : a(a), b(b), c(c),
+      : p0(p0), e1(p0 - p1), e2(p2 - p0),
       // Wrap point to avoid modulo
-        points({a, b, c, a}), normal((b - a).cross(c - a).unit()) {
+        normal(e1.cross(e2)) {
     this->material = material;
   }
+
+  [[nodiscard]] Point3 p1() const { return p0 - e1; }
+  [[nodiscard]] Point3 p2() const { return p0 + e2; }
 
   [[nodiscard]] Hit hit(const Ray &ray,
                         const double minT,
                         const double maxT) const override {
-    // If ray is parallel to triangle plane, no hit
-    double normalDotRayDir = normal.dot(ray.direction);
-    if (std::abs(normalDotRayDir) <= EPS)
-      return {};
+    auto c = p0 - ray.origin;
+    auto r = ray.direction.cross(c);
+    auto invDet = 1.0 / normal.dot(ray.direction);
 
-    double d = -normal.dot(a);
-    double t = -(normal.dot(ray.origin) + d) / normalDotRayDir;
+    auto u = r.dot(e2) * invDet;
+    auto v = r.dot(e1) * invDet;
+    auto w = 1.0 - u - v;
 
-    if (t < minT || t > maxT)
-      return {};
-
-    Vec3 location = ray.at(t);
-
-    for (int i = 0; i < 3; i++) {
-      Vec3 edge = points[i + 1] - points[i];
-      Vec3 vecToLocation = location - points[i];
-      Vec3 inFacing = edge.cross(vecToLocation);
-      if (normal.dot(inFacing) < 0)
-        return {};
+    if (u >= EPS && v >= EPS && w >= EPS) {
+      auto t = normal.dot(c) * invDet;
+      if (t >= minT && t <= maxT) {
+        return {ray.at(t), normal, this->material, t, u, v, true};
+      }
     }
 
-    bool front = ray.direction.dot(normal) < 0;
-    Normal hitNormal = front ? normal : -normal;
-
-    // TODO: Use actual uvs
-    return {location, hitNormal, this->material, t, 0, 0, front};
+    return {};
   }
 
   [[nodiscard]] AABB boundingBox() const override {
-    Point3 minPoint = Point3(std::min(std::min(a.x, b.x), c.x),
-                             std::min(std::min(a.y, b.y), c.y),
-                             std::min(std::min(a.z, b.z), c.z));
-    Point3 maxPoint = Point3(std::max(std::max(a.x, b.x), c.x),
-                             std::max(std::max(a.y, b.y), c.y),
-                             std::max(std::max(a.z, b.z), c.z));
-
-    if (minPoint.x == maxPoint.x)
-      minPoint.x -= 0.001, maxPoint.x += 0.001;
-    if (minPoint.y == maxPoint.y)
-      minPoint.y -= 0.001, maxPoint.y += 0.001;
-    if (minPoint.z == maxPoint.z)
-      minPoint.z -= 0.001, maxPoint.z += 0.001;
-
-    return {minPoint - normal.abs(), maxPoint + normal.abs()};
+    AABB box(p0);
+    box = surroundingBox(box, AABB(p1()));
+    box = surroundingBox(box, AABB(p2()));
+    return box;
   }
 };
 
