@@ -105,7 +105,7 @@ struct Scene {
     return emitted + getPixelColor(out, bouncesLeft - 1) * attenuation;
   }
 
-  void render(const int threads = 4) const {
+  void render(const int threads = (int) std::thread::hardware_concurrency() - 1) const {
     std::cout << "Beginning render\n";
     std::vector<std::vector<std::pair<int, int>>> locations(threads);
     int curThread = 0;

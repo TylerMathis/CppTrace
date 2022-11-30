@@ -20,6 +20,9 @@ struct AxisAlignedBoundingBox {
   [[maybe_unused]] AxisAlignedBoundingBox(const Point3 &a, const Point3 &b)
       : a(a), b(b) {}
 
+  [[maybe_unused]] AxisAlignedBoundingBox(const Point3 &a)
+      : a(a), b(a) {}
+
   // Pixar AABB hit optimization -- Andrew Kensler
   [[nodiscard]] bool hit(const Ray &ray, const double minT,
                          const double maxT) const {

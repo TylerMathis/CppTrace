@@ -46,9 +46,9 @@ struct MadmanBVH : public Hittable {
     for (const auto &tri_ref : tris) {
       auto tri = *tri_ref;
       triangles.emplace_back(
-          Vector3(tri.a.x, tri.a.y, tri.a.z),
-          Vector3(tri.b.x, tri.b.y, tri.b.z),
-          Vector3(tri.c.x, tri.c.y, tri.c.z)
+          Vector3(tri.p0.x, tri.p0.y, tri.p0.z),
+          Vector3(tri.p1().x, tri.p1().y, tri.p1().z),
+          Vector3(tri.p2().x, tri.p2().y, tri.p2().z)
       );
     }
 
