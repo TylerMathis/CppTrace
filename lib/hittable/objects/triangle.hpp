@@ -30,7 +30,6 @@ struct Triangle : public Hittable {
            const Point3 &p2,
            const std::shared_ptr<Material> &material)
       : p0(p0), e1(p0 - p1), e2(p2 - p0),
-      // Wrap point to avoid modulo
         normal(e1.cross(e2)) {
     this->material = material;
   }
