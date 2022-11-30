@@ -33,9 +33,16 @@ struct STL : public Hittable {
         const double *a = mesh.vrt_coords(mesh.tri_corner_ind(i, 0));
         const double *b = mesh.vrt_coords(mesh.tri_corner_ind(i, 1));
         const double *c = mesh.vrt_coords(mesh.tri_corner_ind(i, 2));
+        const double *n= mesh.tri_normal (i);
         auto ap = Point3(a[0], a[1], a[2]);
         auto bp = Point3(b[0], b[1], b[2]);
         auto cp = Point3(c[0], c[1], c[2]);
+        auto ab = (bp - ap);
+        auto ac = (cp - ap);
+        auto normal = Vec3(n[0], n[1], n[2]);
+        if (normal.dot(ab.cross(ac)) > 0) {
+          std::swap(bp, cp);
+        }
         auto triangle = std::make_shared<Triangle>(ap, bp, cp, material);
         hittableList.pushHittable(triangle);
         triangles.push_back(triangle);
