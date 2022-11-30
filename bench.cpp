@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
   std::ofstream results(args.outputpath + ".csv");
   results << "structure_build,render\n";
 
-  for (int acceleratorInt = KD_TREE_ACCEL; acceleratorInt <= MADMAN_BVH; acceleratorInt++) {
+  for (int acceleratorInt = SIMPLE_LIST; acceleratorInt <= MADMAN_BVH; acceleratorInt++) {
     auto accelerator = static_cast<const ACCELERATOR>(acceleratorInt);
 
     auto renderPath = buildRenderPath(args.outputpath, accelerator);

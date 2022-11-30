@@ -12,8 +12,8 @@ int main() {
   const double aspectRatio = 1;
   const int width = 100;
   const int height = (int) (width / aspectRatio);
-  const int samples = 10;
-  const int bounces = 10;
+  const int samples = 1;
+  const int bounces = 1;
   Image image(R"(/Users/tylerhm/proj/CppTrace/images/booh.png)", width, height, samples, bounces);
 
   Point3 origin(0, 50, 100);
@@ -26,7 +26,7 @@ int main() {
                 focusDist);
 
   Scene scene(std::make_shared<Camera>(camera),
-              std::make_shared<Image>(image), BVH_ACCEL);
+              std::make_shared<Image>(image), SIMPLE_LIST);
 
   auto texture = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   auto material = std::make_shared<Lambertian>(texture);
@@ -35,5 +35,5 @@ int main() {
   scene.loadHittables(stl->getHittables());
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
-  scene.render();
+  scene.render(1);
 }
