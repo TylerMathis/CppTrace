@@ -9,6 +9,9 @@ add_library(CppTraceLib ${CppTrace_SOURCES})
 add_subdirectory(lib/extern/bvh)
 target_link_libraries(CppTraceLib PUBLIC bvh)
 
+add_subdirectory(lib/extern/Fast-BVH)
+target_link_libraries(CppTraceLib PUBLIC FastBVH)
+
 add_executable(Render main.cpp)
 target_link_libraries(Render CppTraceLib)
 

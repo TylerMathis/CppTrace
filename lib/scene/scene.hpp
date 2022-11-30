@@ -15,6 +15,7 @@
 #include "../accelerators/bvh.hpp"
 #include "../accelerators/madman_bvh.hpp"
 #include "../accelerators/kd_tree.hpp"
+#include "../accelerators/fast_bvh.hpp"
 #include "../hittable/hit.hpp"
 #include "../hittable/hittable_list.hpp"
 
@@ -55,6 +56,8 @@ struct Scene {
       accelerator = std::make_shared<MadmanBVH>(objects.triangles, objects.triangles[0]->material);
     } else if (acceleratorType == KD_TREE_ACCEL) {
       accelerator = std::make_shared<KDTree>(objects);
+    } else if (acceleratorType == FAST_BVH) {
+      accelerator = std::make_shared<FastBVHImpl>(objects.triangles, objects.triangles[0]->material);
     }
   }
 

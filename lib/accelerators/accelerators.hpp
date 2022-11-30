@@ -12,6 +12,7 @@ enum ACCELERATOR {
   KD_TREE_ACCEL,
   BVH_ACCEL,
   MADMAN_BVH,
+  FAST_BVH,
 };
 
 ACCELERATOR accelFromString(std::string accelerator) {
@@ -24,6 +25,8 @@ ACCELERATOR accelFromString(std::string accelerator) {
     return BVH_ACCEL;
   else if (accelerator == "madman_bvh")
     return MADMAN_BVH;
+  else if (accelerator == "fast_bvh")
+    return FAST_BVH;
 
   throw std::invalid_argument("Invalid accelerator name in conversion: " + accelerator);
 }
@@ -35,6 +38,8 @@ std::string stringFromAccel(ACCELERATOR accelerator) {
     return "bvh";
   else if (accelerator == MADMAN_BVH)
     return "madman_bvh";
+  else if (accelerator == FAST_BVH)
+    return "fast_bvh";
 }
 
 #endif // CPPTRACE_LIB_ACCELERATORS_ACCELERATORS_HPP_

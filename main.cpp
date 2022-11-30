@@ -10,9 +10,9 @@
 
 int main() {
   const double aspectRatio = 1;
-  const int width = 100;
+  const int width = 1000;
   const int height = (int) (width / aspectRatio);
-  const int samples = 10;
+  const int samples = 100;
   const int bounces = 10;
   Image image(R"(/Users/tylerhm/proj/CppTrace/images/booh.png)", width, height, samples, bounces);
 
@@ -26,13 +26,13 @@ int main() {
                 focusDist);
 
   Scene scene(std::make_shared<Camera>(camera),
-              std::make_shared<Image>(image), BVH_ACCEL);
+              std::make_shared<Image>(image), FAST_BVH);
 
   auto texture = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   auto material = std::make_shared<Lambertian>(texture);
   auto stl = std::make_shared<STL>(R"(/Users/tylerhm/proj/CppTrace/objects/booh.stl)", material);
 
-  scene.loadHittables(stl->getHittables());
+  scene.loadTriangles(stl->getTriangles());
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
   scene.render();
