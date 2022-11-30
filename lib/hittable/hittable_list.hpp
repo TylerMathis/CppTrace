@@ -41,12 +41,10 @@ struct HittableList : public Hittable {
 
   [[nodiscard]] Hit hit(const Ray &ray, const double minT, const double maxT) const override {
     Hit hit, closest;
-    bool found = false;
-    for (const auto &hittable : hittables)
+    for (const auto &hittable : hittables) {
       hit = hittable->hit(ray, minT, maxT);
-    if (hit.valid && hit < closest) {
-      closest = hit;
-      found = true;
+      if (hit.valid && hit < closest)
+        closest = hit;
     }
 
     return closest;

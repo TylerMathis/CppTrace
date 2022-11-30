@@ -35,5 +35,5 @@ int main() {
   scene.loadTriangles(stl->getTriangles());
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
-  scene.render();
+  scene.render(1);
 }

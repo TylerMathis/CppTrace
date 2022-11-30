@@ -9,6 +9,7 @@
 #include <unordered_map>
 
 enum ACCELERATOR {
+  SIMPLE_LIST,
   KD_TREE_ACCEL,
   BVH_ACCEL,
   MADMAN_BVH,
@@ -19,6 +20,8 @@ ACCELERATOR accelFromString(std::string accelerator) {
   for (char &c : accelerator)
     c = (char) std::tolower(c);
 
+  if (accelerator == "simple_list")
+    return SIMPLE_LIST;
   if (accelerator == "kd_tree")
     return KD_TREE_ACCEL;
   else if (accelerator == "bvh")
@@ -32,7 +35,9 @@ ACCELERATOR accelFromString(std::string accelerator) {
 }
 
 std::string stringFromAccel(ACCELERATOR accelerator) {
-  if (accelerator == KD_TREE_ACCEL)
+  if (accelerator == SIMPLE_LIST)
+    return "simple_list";
+  else if (accelerator == KD_TREE_ACCEL)
     return "kd_tree";
   else if (accelerator == BVH_ACCEL)
     return "bvh";
