@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
   std::ofstream results(args.outputpath + ".csv");
   results << "accelerator,build,render\n";
 
-  for (int acceleratorInt = SIMPLE_LIST; acceleratorInt <= MADMAN_BVH; acceleratorInt++) {
+  for (int acceleratorInt = KD_TREE_ACCEL; acceleratorInt <= FAST_BVH; acceleratorInt++) {
     auto accelerator = static_cast<const ACCELERATOR>(acceleratorInt);
     results << stringFromAccel(accelerator) << ",";
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
     Scene scene(camera, image, accelerator);
 
     auto start = std::chrono::high_resolution_clock::now();
-    if (accelerator == MADMAN_BVH) {
+    if (accelerator == MADMAN_BVH || accelerator == FAST_BVH) {
       scene.loadTriangles(object->getTriangles());
     } else {
       scene.loadHittables(object->getHittables());
