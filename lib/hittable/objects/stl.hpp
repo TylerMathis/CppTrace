@@ -23,17 +23,19 @@ struct STL : public Hittable {
   HittableList hittableList;
   std::vector<std::shared_ptr<Triangle>> triangles;
   BVH bvh;
+  int numTriangles;
 
   STL(const std::string &filepath, const std::shared_ptr<Material> &material) {
     hittableList.clear();
     try {
       stl_reader::StlMesh<double, int> mesh(filepath);
 
+      numTriangles = (int) mesh.num_tris();
       for (int i = 0; i < mesh.num_tris(); i++) {
         const double *a = mesh.vrt_coords(mesh.tri_corner_ind(i, 0));
         const double *b = mesh.vrt_coords(mesh.tri_corner_ind(i, 1));
         const double *c = mesh.vrt_coords(mesh.tri_corner_ind(i, 2));
-        const double *n= mesh.tri_normal (i);
+        const double *n = mesh.tri_normal (i);
         auto ap = Point3(a[0], a[1], a[2]);
         auto bp = Point3(b[0], b[1], b[2]);
         auto cp = Point3(c[0], c[1], c[2]);
@@ -51,6 +53,7 @@ struct STL : public Hittable {
     } catch (std::exception &e) {
       std::cerr << e.what() << std::endl;
     }
+
 
     bvh = BVH(hittableList);
   }
