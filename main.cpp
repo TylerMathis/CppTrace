@@ -13,11 +13,11 @@ int main() {
   const int width = 1000;
   const int height = (int) (width / aspectRatio);
   const int samples = 100;
-  const int bounces = 10;
-  Image image(R"(/Users/tylerhm/proj/CppTrace/images/booh.png)", width, height, samples, bounces);
+  const int bounces = 5;
+  Image image(R"(/Users/tylerhm/proj/CppTrace/images/loop.png)", width, height, samples, bounces);
 
-  Point3 origin(0, 50, 100);
-  Point3 lookAt(0, 50, 0);
+  Point3 origin(0, 60, 60);
+  Point3 lookAt(0, -10, 0);
   Point3 up(0, 1, 0);
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
@@ -30,10 +30,10 @@ int main() {
 
   auto texture = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   auto material = std::make_shared<Lambertian>(texture);
-  auto stl = std::make_shared<STL>(R"(/Users/tylerhm/proj/CppTrace/objects/booh.stl)", material);
+  auto stl = std::make_shared<STL>(R"(/Users/tylerhm/proj/CppTrace/objects/loop.stl)", material);
 
   scene.loadTriangles(stl->getTriangles());
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
-  scene.render(1);
+  scene.render();
 }

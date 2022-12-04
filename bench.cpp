@@ -21,16 +21,24 @@
 #include <vector>
 #include <map>
 
-std::vector<std::string> models = {"booh", "pickle"};
+std::vector<std::string> models = {"booh", "pickle", "loop"};
 
 std::map<std::string, Point3> origins = {
+    {"loop", Point3(0, 60, 60)},
     {"booh", Point3(0, 40, 75)},
     {"pickle", Point3(20, 12.5, 20)},
 };
 
-std::map<std::string, double> heights = {
+std::map<std::string, int> heights = {
+    {"loop", 100},
     {"booh", 100},
     {"pickle", 150},
+};
+
+std::map<std::string, Point3> lookAts = {
+    {"loop", Point3(0, -10, 0)},
+    {"booh", Point3(0, 40, 0)},
+    {"pickle", Point3(0, 12.5, 0)},
 };
 
 struct Args {
@@ -80,7 +88,7 @@ int main(int argc, char *argv[]) {
     auto image = std::make_shared<Image>(args.outputpath + model + ".png", width, height, samples, bounces);
 
     auto origin = origins[model];
-    Point3 lookAt(0, origin.y, 0);
+    auto lookAt = lookAts[model];
     Point3 up(0, 1, 0);
     const double aperture = 0;
     const double focusDist = (origin - lookAt).mag();

@@ -18,7 +18,7 @@ enum ACCELERATOR {
 
 ACCELERATOR accelFromString(std::string accelerator) {
   for (char &c : accelerator)
-    c = (char) std::tolower(c);
+    c = (char)std::tolower(c);
 
   if (accelerator == "simple_list")
     return SIMPLE_LIST;
@@ -31,7 +31,8 @@ ACCELERATOR accelFromString(std::string accelerator) {
   else if (accelerator == "fast_bvh")
     return FAST_BVH;
 
-  throw std::invalid_argument("Invalid accelerator name in conversion: " + accelerator);
+  throw std::invalid_argument("Invalid accelerator name in conversion: " +
+                              accelerator);
 }
 
 std::string stringFromAccel(ACCELERATOR accelerator) {
@@ -45,6 +46,7 @@ std::string stringFromAccel(ACCELERATOR accelerator) {
     return "madman_bvh";
   else if (accelerator == FAST_BVH)
     return "fast_bvh";
+  return "";
 }
 
 #endif // CPPTRACE_LIB_ACCELERATORS_ACCELERATORS_HPP_
