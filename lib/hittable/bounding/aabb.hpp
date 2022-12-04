@@ -128,4 +128,8 @@ bool boxOverlap(const AABB &box0, const AABB &box1) {
       overlap({box0.a.z, box0.b.z}, {box1.a.z, box1.b.z});
 }
 
+double surfaceArea(const AABB &box) {
+  return (box.b.x - box.a.x) * (box.b.y - box.a.y) * (box.b.z - box.a.z);
+}
+
 #endif // CPPTRACE_LIB_HITTABLE_BOUNDING_AABB_HPP_

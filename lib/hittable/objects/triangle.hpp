@@ -64,6 +64,10 @@ struct Triangle : public Hittable {
     box = surroundingBox(box, AABB(p2()));
     return box;
   }
+
+  [[nodiscard]] Point3 getCenter() const override {
+    return p0 + (e1 / 3.0) - (e2 / 3.0);
+  }
 };
 
 #endif //CPPTRACE_LIB_HITTABLE_TRIANGLE_HPP_

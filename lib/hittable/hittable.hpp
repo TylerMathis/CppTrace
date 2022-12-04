@@ -26,6 +26,8 @@ struct Hittable {
 
   [[nodiscard]] virtual AABB boundingBox() const = 0;
 
+  [[nodiscard]] virtual Point3 getCenter() const { return {}; }
+
   [[nodiscard]] virtual std::vector<std::shared_ptr<Hittable>> getHittables() const { return {}; }
   [[nodiscard]] virtual std::vector<std::shared_ptr<Triangle>> getTriangles() const { return {}; }
 };
