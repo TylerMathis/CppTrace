@@ -21,23 +21,26 @@
 #include <vector>
 #include <map>
 
-std::vector<std::string> models = {"booh", "pickle", "loop"};
+std::vector<std::string> models = {"booh", "pickle", "loop", "free"};
 
 std::map<std::string, Point3> origins = {
     {"loop", Point3(0, 60, 60)},
     {"booh", Point3(0, 40, 75)},
+    {"free", Point3(0, 0, 100)},
     {"pickle", Point3(20, 12.5, 20)},
 };
 
 std::map<std::string, int> heights = {
     {"loop", 100},
     {"booh", 100},
+    {"free", 70},
     {"pickle", 150},
 };
 
 std::map<std::string, Point3> lookAts = {
     {"loop", Point3(0, -10, 0)},
     {"booh", Point3(0, 40, 0)},
+    {"free", Point3(0, 0, 0)},
     {"pickle", Point3(0, 12.5, 0)},
 };
 

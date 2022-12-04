@@ -10,14 +10,14 @@
 
 int main() {
   const double aspectRatio = 1;
-  const int width = 1000;
+  const int width = 100;
   const int height = (int) (width / aspectRatio);
-  const int samples = 100;
-  const int bounces = 5;
-  Image image(R"(/Users/tylerhm/proj/CppTrace/images/loop.png)", width, height, samples, bounces);
+  const int samples = 1;
+  const int bounces = 1;
+  Image image(R"(/Users/tylerhm/proj/CppTrace/images/booh.png)", width, height, samples, bounces);
 
-  Point3 origin(0, 60, 60);
-  Point3 lookAt(0, -10, 0);
+  Point3 origin(0, 40, 75);
+  Point3 lookAt(0, 40, 0);
   Point3 up(0, 1, 0);
   const double aperture = 0;
   const double focusDist = (origin - lookAt).mag();
@@ -26,14 +26,14 @@ int main() {
                 focusDist);
 
   Scene scene(std::make_shared<Camera>(camera),
-              std::make_shared<Image>(image), FAST_BVH);
+              std::make_shared<Image>(image), BVH_ACCEL);
 
   auto texture = std::make_shared<SolidColorTexture>(0.5, 0.5, 0.5);
   auto material = std::make_shared<Lambertian>(texture);
-  auto stl = std::make_shared<STL>(R"(/Users/tylerhm/proj/CppTrace/objects/loop.stl)", material);
+  auto stl = std::make_shared<STL>(R"(/Users/tylerhm/proj/CppTrace/objects/booh.stl)", material);
 
-  scene.loadTriangles(stl->getTriangles());
+  scene.loadHittables(stl->getHittables());
   scene.setAmbient(Color3(0.5, 0.5, 0.5));
 
-  scene.render();
+  scene.render(1);
 }
