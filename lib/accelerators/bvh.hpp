@@ -24,7 +24,12 @@
 enum AXIS {
   X,
   Y,
-  Z
+  Z,
+};
+
+enum SPLIT_METHOD {
+  MIDDLE,
+  SWEEP_SAH,
 };
 
 struct BVHNode : public Hittable {
@@ -33,8 +38,8 @@ struct BVHNode : public Hittable {
 
   BVHNode() = default;
 
-  explicit BVHNode(HittableList &objects)
-      : BVHNode(objects.hittables, 0, (int) objects.hittables.size() - 1) {}
+  explicit BVHNode(HittableList &objects, SPLIT_METHOD splitMethod = SWEEP_SAH)
+      : BVHNode(objects.hittables, 0, (int) objects.hittables.size() - 1, splitMethod) {}
 
   static void sortOnAxis(std::vector<std::shared_ptr<Hittable>> &objects, AXIS axis, int start, int end) {
     std::sort(objects.begin() + start,
@@ -48,7 +53,7 @@ struct BVHNode : public Hittable {
   }
 
   BVHNode(std::vector<std::shared_ptr<Hittable>> &objects,
-          const int start, const int end) {
+          const int start, const int end, SPLIT_METHOD splitMethod) {
     if (objects.empty()) return;
 
     int span = end - start + 1;
@@ -56,31 +61,41 @@ struct BVHNode : public Hittable {
       children = std::vector<std::shared_ptr<Hittable>>(begin(objects) + start, begin(objects) + end + 1);
     } else {
       // [surface area, split, axis]
-      std::tuple<double, int, AXIS> bestSplit = {DBL_MAX, start, X};
-      for (int axisInt = 0; axisInt < 3; axisInt++) {
-        auto axis = static_cast<const AXIS>(axisInt);
-        sortOnAxis(objects, axis, start, end);
+      int splitLoc;
+      if (splitMethod == SWEEP_SAH) {
+        std::tuple<double, int, AXIS> bestSplit = {DBL_MAX, start, X};
+        for (int axisInt = 0; axisInt < 3; axisInt++) {
+          auto axis = static_cast<const AXIS>(axisInt);
+          sortOnAxis(objects, axis, start, end);
 
-        AABB LSA[span];
-        LSA[0] = AABB(objects[start]->boundingBox());
-        for (int l = 1; l < span; l++)
-          LSA[l] = surroundingBox(LSA[l - 1], objects[start + l]->boundingBox());
+          std::vector<AABB> LSA;
+          LSA.emplace_back(objects[start]->boundingBox());
+          for (int l = 1; l < span; l++)
+            LSA.push_back(surroundingBox(LSA[l - 1], objects[start + l]->boundingBox()));
 
-        AABB RSA[span];
-        RSA[span - 1] = AABB(objects[end]->boundingBox());
-        for (int r = 1; r < span; r++)
-          RSA[span - 1 - r] = surroundingBox(RSA[span - r], objects[end - r]->boundingBox());
+          std::vector<AABB> RSA;
+          RSA.emplace_back(objects[end]->boundingBox());
+          for (int r = 1; r < span; r++)
+            RSA.push_back(surroundingBox(RSA[r - 1], objects[end - r]->boundingBox()));
+          std::reverse(std::begin(RSA), std::end(RSA));
 
-        for (int i = 0; i < span - 1; i++) {
-          double cost = surfaceArea(LSA[i]) * i + surfaceArea(RSA[i]) * (span - i);
-          int split = start + i;
-          bestSplit = std::min(bestSplit, std::make_tuple(cost, split, axis));
+          for (int i = 0; i < span - 1; i++) {
+            double cost = surfaceArea(LSA[i]) * i + surfaceArea(RSA[i]) * (span - i);
+            int split = start + i;
+            bestSplit = std::min(bestSplit, std::make_tuple(cost, split, axis));
+          }
         }
+
+        sortOnAxis(objects, get<2>(bestSplit), start, end);
+        splitLoc = get<1>(bestSplit);
+      } else {
+        auto axis = static_cast<const AXIS>(common::randomInt(0, 2));
+        sortOnAxis(objects, axis, start, end);
+        splitLoc = (start + end) >> 1;
       }
 
-      sortOnAxis(objects, get<2>(bestSplit), start, end);
-      auto left = std::make_shared<BVHNode>(objects, start, get<1>(bestSplit));
-      auto right = std::make_shared<BVHNode>(objects, get<1>(bestSplit) + 1, end);
+      auto left = std::make_shared<BVHNode>(objects, start, splitLoc, splitMethod);
+      auto right = std::make_shared<BVHNode>(objects, splitLoc + 1, end, splitMethod);
       children = {left, right};
     }
 

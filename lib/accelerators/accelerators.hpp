@@ -12,6 +12,7 @@ enum ACCELERATOR {
   SIMPLE_LIST,
   KD_TREE_ACCEL,
   BVH_ACCEL,
+  BVH_SAH,
   MADMAN_BVH,
   FAST_BVH,
 };
@@ -26,6 +27,8 @@ ACCELERATOR accelFromString(std::string accelerator) {
     return KD_TREE_ACCEL;
   else if (accelerator == "bvh")
     return BVH_ACCEL;
+  else if (accelerator == "bvh_sah")
+    return BVH_SAH;
   else if (accelerator == "madman_bvh")
     return MADMAN_BVH;
   else if (accelerator == "fast_bvh")
@@ -42,6 +45,8 @@ std::string stringFromAccel(ACCELERATOR accelerator) {
     return "kd_tree";
   else if (accelerator == BVH_ACCEL)
     return "bvh";
+  else if (accelerator == BVH_SAH)
+    return "bvh_sah";
   else if (accelerator == MADMAN_BVH)
     return "madman_bvh";
   else if (accelerator == FAST_BVH)

@@ -53,7 +53,9 @@ struct Scene {
     if (acceleratorType == SIMPLE_LIST) {
       accelerator = std::make_shared<HittableList>(objects);
     } else if (acceleratorType == BVH_ACCEL) {
-      accelerator = std::make_shared<BVH>(objects);
+      accelerator = std::make_shared<BVH>(objects, MIDDLE);
+    } else if (acceleratorType == BVH_SAH) {
+      accelerator = std::make_shared<BVH>(objects, SWEEP_SAH);
     } else if (acceleratorType == MADMAN_BVH) {
       accelerator = std::make_shared<MadmanBVH>(objects.triangles, objects.triangles[0]->material);
     } else if (acceleratorType == KD_TREE_ACCEL) {
